@@ -1,0 +1,144 @@
+@font-face {
+    font-family: 'Helvetica Neue Thin';
+    src: url('helveticaneue-thin-webfont.eot');
+    src: url('helveticaneue-thin-webfont.eot?#iefix') format('embedded-opentype'),
+         url('helveticaneue-thin-webfont.woff') format('woff'),
+         url('helveticaneue-thin-webfont.ttf') format('truetype'),
+         url('helveticaneue-thin-webfont.svg#helvetica_neueregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.container {
+    z-index: 10000;
+    position: relative;
+}
+
+.icon {
+    width: 60%;
+    border-radius:10px;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    border: #000000 3px solid;
+  }
+  
+  .put {
+    width: 70px;
+    border-radius:10px;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    border: #000000 3px solid;
+  }
+
+.offset {
+    padding-top: 3%;   
+}
+
+.normal {
+    font-family: "proxima-nova",sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    color: black;
+    text-align: center;
+}
+
+.light {
+    font-family: "Helvetica Neue Thin",sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 45px;   
+    color: black;
+    text-align: center;
+}
+
+.smaller {
+    font-family: "Helvetica Neue Thin",sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 20px;   
+    color: black;
+    text-align: center;
+}
+
+.even-smaller {
+    font-family: "Helvetica Neue Thin",sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 18px;   
+    color: black;
+    text-align: center;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;   
+}
+
+.glyphs {
+    color: black;
+    font-size: 25px;
+    bottom: 20px;
+    padding-bottom:20px;
+}
+
+.icon-twitter {
+    padding-right: 10px;   
+}
+
+.icon-github {
+    padding-right: 10px;   
+}
+
+.icon-tumblr {
+    padding-right: 10px;   
+}
+
+a {
+    color: white;
+    font-weight: 400;
+    text-decoration: none;
+}
+a:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.bump {
+    padding-top: 20px;   
+}
+
+.bump-top {
+    padding-top: 10px;   
+}
+
+@media (min-width: 768px) {
+    .hideme {
+        display: none;   
+    }
+}
+
+@media (max-width: 768px) {
+    .hideme {
+        display: inline;   
+    }
+}
+
+html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+  }
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by its height */
+  margin: 0 auto -60px;
+  /* Pad bottom by footer height */
+  padding: 0 0 60px;
+}
+
