@@ -28,7 +28,7 @@ function party() {
         $(dance).show();
         playing = true
         $('*:not(button)').css('color', 'white');
-        document.body.style.backgroundColor = "black";
+        document.body.style.backgroundColor = "#1e272e";
     } else {
         player.pauseVideo()
         $(dance).hide();
