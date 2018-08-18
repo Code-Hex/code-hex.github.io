@@ -4,20 +4,19 @@ tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+var videos = [
+    'bk-BPRXYk9g',
+    'Qkuu0Lwb5EM'
+]
 var player
 function onYouTubeIframeAPIReady() {
+    var idx = Math.floor(Math.random() * videos.length)
     player = new YT.Player('player', {
         height: '315',
         width: '460',
-        videoId: 'Qkuu0Lwb5EM',
-        events: {
-        }
+        videoId: videos[idx],
+        events: {}
     });
-}
-
-var idx
-function _mirror_ball() {
-    
 }
 
 var loop
