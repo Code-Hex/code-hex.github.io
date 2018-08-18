@@ -19,20 +19,17 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
-var loop
 var interval = 700
 var playing = false
 var dance = '.dance-floor'
 function party() {
     if (!playing) {
-        loop = setInterval(_mirror_ball, interval);
         player.playVideo()
         $(dance).show();
         playing = true
         $('*:not(button)').css('color', 'white');
         document.body.style.backgroundColor = "black";
     } else {
-        clearInterval(loop);
         player.pauseVideo()
         $(dance).hide();
         playing = false
