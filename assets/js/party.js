@@ -15,43 +15,29 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
-
-
-var colors = [
-    "#cbff8a",
-    "#75cc57",
-    "#459ce6",
-    "#fa6b52",
-    "#5dcca7",
-    "#ffff00"
-]
-
 var idx
-var white = "white"
 function _mirror_ball() {
-    for (;;) {
-        var i = Math.floor(Math.random() * colors.length)
-        if (idx !== i) {
-            idx = i
-            break
-        }
-    }
-    console.log(colors[idx] + " " + idx)
-    document.body.style.backgroundColor = colors[idx];
+    
 }
 
 var loop
-var interval = 100
+var interval = 700
 var playing = false
+var dance = '.dance-floor'
 function party() {
     if (!playing) {
         loop = setInterval(_mirror_ball, interval);
         player.playVideo()
+        $(dance).show();
         playing = true
+        $('*:not(button)').css('color', 'white');
+        document.body.style.backgroundColor = "black";
     } else {
         clearInterval(loop);
-        document.body.style.backgroundColor = white
         player.pauseVideo()
+        $(dance).hide();
         playing = false
+        $('*:not(button)').css('color', 'black');
+        document.body.style.backgroundColor = "white";
     }
 }
