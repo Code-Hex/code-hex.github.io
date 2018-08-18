@@ -11,23 +11,19 @@ function onYouTubeIframeAPIReady() {
         width: '460',
         videoId: 'Qkuu0Lwb5EM',
         events: {
-            'onStateChange': onPlayerStateChange
         }
     });
 }
 
-var playing = false
-function onPlayerStateChange(event) {
-    playing = event.data == YT.PlayerState.PLAYING
-}
+
 
 var colors = [
     "#cbff8a",
     "#75cc57",
     "#459ce6",
-    "#7b2742",
-    "#f9583c",
-    "#dd355b"
+    "#fa6b52",
+    "#5dcca7",
+    "#ffff00"
 ]
 
 var idx
@@ -40,18 +36,22 @@ function _mirror_ball() {
             break
         }
     }
-    console.log("Hello!!!" + colors[idx] + " " + idx)
+    console.log(colors[idx] + " " + idx)
     document.body.style.backgroundColor = colors[idx];
 }
 
-var timeout;
+var loop
+var interval = 100
+var playing = false
 function party() {
     if (!playing) {
-        timeout = setTimeout(_mirror_ball, 1000);
+        loop = setInterval(_mirror_ball, interval);
         player.playVideo()
+        playing = true
     } else {
-        clearTimeout(timeout);
+        clearInterval(loop);
         document.body.style.backgroundColor = white
         player.pauseVideo()
+        playing = false
     }
 }
