@@ -2,6 +2,10 @@
     display: none;
 }
 
+.dancers {
+    position: absolute;
+}
+
 .mirror_ball {
     position: absolute;
     top: 10px;

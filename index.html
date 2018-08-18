@@ -13,26 +13,51 @@
   <script>
     $(function() {
       $(".dancer").draggable();
-    });
+      var dancers = {
+        '.smooch': {
+          width:  234,
+          height: 300
+        },
+        '.donkey': {
+          width:  200,
+          height: 157
+        },
+        '.poo': {
+          width:  300,
+          height: 300
+        }
+      }
+      Object.keys(dancers).forEach(function (key) {
+        $(key).css({
+          'position': 'relative',
+          'left': Math.floor(Math.random() * (window.innerWidth - dancers[key].width)) + 'px',
+          'right': 'auto',
+          'top': -1 * Math.floor(Math.random() * (document.body.clientHeight - dancers[key].height)) + 'px',
+          'bottom': 'auto',
+        })
+      })
+    })
   </script>
 </head>
 <body>
-  <h1>Welcome to codehex page!!</h1>
+  <h1>Welcome to page!!</h1>
   <h2>Would you like to dance? <button onclick="party()">Let's party!!</button></h2>
   <div class="dance-floor">
     <div class="header-bar"></div>
     <div class="mirror_ball"><img src="assets/images/mirror_ball.gif"></div>
     <div class="bird"><img src="assets/images/bird.gif"></div>
-    <div>
-      <div class="dancer"><img src="assets/images/smooch.gif"></div>
+    <div class="dancers">
+      <div class="dancer smooch"><img src="assets/images/smooch.gif"></div>
+      <div class="dancer donkey"><img width="200px" src="assets/images/donkey.gif"></div>
+      <div class="dancer poo"><img width="300px" src="assets/images/poo.gif"></div>
     </div>
     <center><div id="player"></div></center>
   </div>
   <p>Related my info</p>
   <ul>
     <li><span><a href="https://okinawa.pm.org/">Okinawa.pm</a></span></li>
-    <li><span>GitHub: <a href="https://github.com/Code-Hex">Code-Hex</a></span></li>
-    <li><span>Twitter: <a href="https://twitter.com/codehex/">@CodeHex</a></span></li>
+    <li><span>GitHub: <a href="https://github.com/Code-Hex"></a></span></li>
+    <li><span>: <a href="https://twitter.com/codehex/"></a></span></li>
   </ul>
   <p>What's this?</p>
   <ul>
