@@ -16,8 +16,14 @@ function onYouTubeIframeAPIReady() {
         height: '315',
         width: '460',
         videoId: videos[idx],
-        events: {}
+        events: {
+            'onReady': onPlayerReady,
+        }
     });
+}
+
+function onPlayerReady(event) {
+    event.target.mute();
 }
 
 var interval = 700
