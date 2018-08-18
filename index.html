@@ -1,151 +1,38 @@
-<!--
-/***
- ______          __     __  __         
-/ ____/___  ____/ /__  / / / /__  _  __
-/ /   / __ \/ __  / _ \/ /_/ / _ \| |/_/
-/ /___/ /_/ / /_/ /  __/ __  /  __/>  <  
-\____/\____/\__,_/\___/_/ /_/\___/_/|_|  
-***/
-
-Welcome My Portfolio (≧∇≦) by CodeHex
--->
-<!DOCTYPE html>
-<html lang="ja">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">    
-  <title>CodeHex's Portfolio</title>
-  <meta name="viewport" content='width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'/>
-  <link href='css/custom.css' rel='stylesheet' />
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <script src="https://use.fontawesome.com/d7dd0c7389.js"></script>
+  <meta charset="utf-8">
+  <title>The codehex web</title>
+  <meta name="description" content="The codehex web">
+  <meta name="author" content="codehex">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script src="assets/js/party.js"></script>
+  <script>
+    $(function() {
+      $(".dancer").draggable();
+    });
+  </script>
 </head>
 <body>
-  <header class="profile">
-      <div class="container">
-        <div class="col-lg-8 col-md-7 col-sm-6">
-          <div class="avatar">
-            <img src="https://avatars0.githubusercontent.com/u/6500104?v=3&s=460">
-          </div>
-          <div class="introduction">
-            <div class="design">
-              <h1>上川　慶</h1>
-              <div class="social">
-                <a href="http://twitter.com/codehex"><i class="fa fa-twitter fa-3x" aria-hidden="true"></i></a>
-                <a href="https://github.com/Code-Hex"><i class="fa fa-github fa-3x" aria-hidden="true"></i></a>
-                <a href="http://omoituita.ga/"><i class="fa fa-tumblr fa-3x" aria-hidden="true"></i></a>
-              </div>
-            </div>
-            <p class="lead">沖縄でエイサーをやったり, ヤンバルへドライブに行ったりしています.<br>趣味はカメの世話とネットサーフィンとプログラミングです. Perl大好きです.</p>
-          </div>
-        </div>
-      </div>
-  </header>
-  <main>
-    <div class="container">
-      <div class="bs-docs-section">
-        <div class="col-lg-12">
-          <div class="row">
-            <div class="page-header">
-              <h2>Projects</h2>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="projects">
-          <div class="row">
-            <div class="container">
-              <div class="item">
-                <div class="portfolio-col screenshot">
-                  <iframe width="90%" height="315px" src="https://www.youtube.com/embed/6dqoVRL1LrY" frameborder="0" allowfullscreen></iframe>
-                </div>
-                <div class="portfolio-col description-container">
-                  <div class="project-header">
-                    <div class="project-title"><h3><a href="https://github.com/Code-Hex/White-MobileTerminal">White-MobileTerminal</a></h3></div>
-                  </div>
-                  <p class="description">JailBreak 済み iOS 端末向けの Terminal アプリである <a href="https://code.google.com/p/mobileterminal/">Mobileterminal</a> というプロジェクトを fork して主にデザイン面に力を注いだプロジェクト. White-Terminal では 前作にはないプロンプトの背景色, フォントの変更, フォントカラーの変更, カーソルカラーの変更などができるようになった. 更に, function key や control key, tab, esc が使えるようになったため, シグナルの送信も楽になった. 途中から OCR の機能をオープンソースである <a href="https://github.com/tesseract-ocr/tesseract">Tesseract</a> を用いて使えるようにした. 容量が大きすぎて配布元のサーバーにアップロードしても反映されなくなったため開発が停止しているが, Swift を使用してモダンな形でリメイクしようと構想中. 現在総合ダウンロード数は <a href="http://apt.thebigboss.org/stats.php?dev=codehex">50000</a> 回を超えている</p>
-                  <ul class="dependence">
-                    <li>C</li>
-                    <li>Objective-C</li>
-                    <li>MobileTerminal</li>
-                    <li>Tesseract-ocr</li>
-                    <li>Color-Picker-for-iOS</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <hr class="separator"></hr>
-          </div>
-          <div class="row">
-            <div class="container">
-              <div class="item">
-                <div class="portfolio-col screenshot">
-                  <a href="https://asciinema.org/a/a505e9fpkdpd7ycefyjs3h5bb" target="_blank"><img src="https://asciinema.org/a/a505e9fpkdpd7ycefyjs3h5bb.png"/></a>
-                </div>
-                <div class="portfolio-col description-container">
-                  <div class="project-header">
-                    <div class="project-title"><h3><a href="https://github.com/Code-Hex/pget">Pget</a></h3></div>
-                  </div>
-                  <p class="description">2016 年の <a href="http://hackers-champloo.org/2016/">Hackers Champloo</a> の開発合宿で仕上げようとした作品. 開発合宿の期間中に完成までに至らなかったため, カンファレンスの部での LT についてはなんとか<a href="http://www.slideshare.net/KeiKamikawa/ss-63433918">ごまかした</a>. このコマンドは Range access が可能なサーバーに対してコマンド側で指定した数分の goroutine を作成して並列処理でダウンロードを行う. 最終的に, 分割されたファイルがダウンロードされ, それらを結合するといったクライアントである. 現在は構想した段階までは完成してはいないが, ダウンロードを行う前にコンピュータのディスクの容量は足りているか, 対象の URL がリダイレクトを行い, その最後の URL が Range access に対応しているかなどの確認や, 並列ダウンロード中に何かしらのエラーが発生した場合, ダウンロードのために作成された goroutine が安全に終了するように工夫されている.</p>
-                  <ul class="dependence">
-                    <li>Go</li>
-                    <li>jessevdk/go-flags</li>
-                    <li>pkg/errors</li>
-                    <li>cheggaaa/pb.v1</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="bs-docs-section">
-          <div class="col-lg-12">
-            <div class="row">
-              <div class="page-header">
-                <h2>Others</h2>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="others">
-        <div class="row">
-          <div class="container">
-            <ul class="list">
-              <li>最近は自然言語処理にはまってます. Perl で <a href="https://github.com/Code-Hex/Ngram">Ngram</a> 作ったりしてました.</li>
-              <li>Mac で Swift からホットキーをキャプチャできるライブラリ<a href="https://github.com/Code-Hex/HotKeyCapture">HotKeyCapture</a> を作ってました.</li>
-              <li><a href="https://pilotmoon.com/popclip/">PopClip</a> の拡張も作ったことあります. <a href="https://github.com/Code-Hex/Color-Capture">Color-Capture</a></li>
-              <li><a href="https://github.com/Code-Hex/SnakeGame">SnakeGame</a>を自分で作って, はまってしまって講義中に遊んでしまいました.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="bs-docs-section">
-          <div class="col-lg-12">
-            <div class="row">
-              <div class="page-header">
-                <h2>Activities</h2>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="activities">
-        <div class="row">
-          <div class="container">
-            <ul class="list">
-              <li><a href="https://turtle.gq/">ホームページ</a> <- Mojolicious でできてます!! </li>
-              <li><a href="http://okinawa.pm.org/organizers.html">Okinawa.pm</a> オーガナイザー</li>
-              <li><a href="http://perl-entrance.blog.jp/archives/1058766393.html">Perl入学式 in 沖縄</a> やってます!!</li>
-              <li><a href="http://yomitanpm.org/entry/20150823.html">YAPC::Asia 2015</a>へ行ってきました!! (黄色い服です)</li>
-              <li><a href="http://ctf.katsudon.org/user/CodeHex">akictf</a> やってました!!</li>
-              <li>おかげでセキュリティ・ミニキャンプ in 沖縄 2015へ参加することもできました!!</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
+  <h1>Welcome to codehex page!!</h1>
+  <h2>Would you like to dance? <button onclick="party()">Let's party!!</button></h2>
+  <div>
+    <div class="dancer"><img src="assets/images/smooch.gif"></div>
+  </div>
+  <p style="text-align: center;"><div id="player"></div></p>
+  <!-- <script src="js/scripts.js"></script> -->
+  <p>Related my info</p>
+  <ul>
+    <li><span><a href="https://okinawa.pm.org/">Okinawa.pm</a></span></li>
+    <li><span>GitHub: <a href="https://github.com/Code-Hex">Code-Hex</a></span></li>
+    <li><span>Twitter: <a href="https://twitter.com/codehex/">@CodeHex</a></span></li>
+  </ul>
+  <p>What's this?</p>
+  <ul>
+    <li>Panasonic NN-E225M</li>
+    <iframe src="https://commons.wikimedia.org/wiki/File:Panasonic_NN-E225M_microwave.flac?embedplayer=yes" width="300" height="80" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+  </ul>
 </body>
+</html>
