@@ -36,13 +36,13 @@ function party() {
         playing = true
         $('*:not(button)').css('color', 'white');
         document.body.style.backgroundColor = "#1e272e"
-        $('button').text = 'Stop party...'
+        $('button').text('Stop party...')
     } else {
         player.pauseVideo()
         $(dance).hide()
         playing = false
         $('*:not(button)').css('color', 'black')
         document.body.style.backgroundColor = "white"
-        $('button').text = "Let's party!!"
+        $('button').text("Let's party!!")
     }
 }
