@@ -32,15 +32,17 @@ var dance = '.dance-floor'
 function party() {
     if (!playing) {
         player.playVideo()
-        $(dance).show();
+        $(dance).show()
         playing = true
         $('*:not(button)').css('color', 'white');
-        document.body.style.backgroundColor = "#1e272e";
+        document.body.style.backgroundColor = "#1e272e"
+        $('button').text = 'Stop party...'
     } else {
         player.pauseVideo()
-        $(dance).hide();
+        $(dance).hide()
         playing = false
-        $('*:not(button)').css('color', 'black');
-        document.body.style.backgroundColor = "white";
+        $('*:not(button)').css('color', 'black')
+        document.body.style.backgroundColor = "white"
+        $('button').text = "Let's party!!"
     }
 }
