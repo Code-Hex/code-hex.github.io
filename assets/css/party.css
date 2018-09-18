@@ -1,5 +1,18 @@
+main {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
 .dance-floor {
+    position: absolute;
     display: none;
+    z-index: 100;
+}
+
+.dance-stage {
+    position: relative;
 }
 
 .dancers {
@@ -29,6 +42,10 @@
     background-image: gradient(linear,0 50%,100% 50%,color-stop(0,#e75239),color-stop(12.5%,#e75239),color-stop(12.5%,#ff961c),color-stop(25%,#ff961c),color-stop(25%,#ffcc27),color-stop(37.5%,#ffcc27),color-stop(37.5%,#fce62f),color-stop(50%,#fce62f),color-stop(50%,#cde35b),color-stop(62.5%,#cde35b),color-stop(62.5%,#82cc33),color-stop(75%,#82cc33),color-stop(75%,#41bece),color-stop(87.5%,#41bece),color-stop(87.5%,#049cdb),color-stop(100%,#049cdb));
      -webkit-animation: headercolors 15s linear 0s infinite;
     animation: headercolors 15s linear 0s infinite;
+}
+
+.audio {
+    z-index: 0;
 }
 
 @-webkit-keyframes headercolors {
