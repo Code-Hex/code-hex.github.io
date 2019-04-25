@@ -2,75 +2,27 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8">
-  <title>The codehex web</title>
+  <title>codehex homepage</title>
   <meta name="description" content="The codehex web">
   <meta name="author" content="codehex">
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <link rel="stylesheet" href="assets/css/party.css">
-  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-  <script src="assets/js/party.js"></script>
-  <script>
-    $(function() {
-      $(".dancer").draggable();
-      var dancers = {
-        '.smooch': {
-          width:  234,
-          height: 300
-        },
-        '.donkey': {
-          width:  200,
-          height: 157
-        },
-        '.poo': {
-          width:  300,
-          height: 300
-        }
-      }
-      Object.keys(dancers).forEach(function (key) {
-        $(key).css({
-          'position': 'relative',
-          'left': Math.floor(Math.random() * (window.innerWidth - dancers[key].width)) + 'px',
-          'right': 'auto',
-          'top': -1 * Math.floor(Math.random() * (document.body.clientHeight - dancers[key].height)) + 'px',
-          'bottom': 'auto',
-        })
-      })
-    })
-  </script>
 </head>
 <body>
   <main>
-    <h1>Welcome to codehex web</h1>
-    <h3>Would you like to dance? <button onclick="party()">Let's party!!</button></h2>
-    <div class="dance-floor">
-      <div class="header-bar"></div>
-      <div class="dance-stage">
-        <div class="mirror_ball"><img src="https://res.cloudinary.com/codehex/video/upload/v1537235671/me/images/mirror_ball.mp4"></div>
-        <div class="bird"><img src="https://res.cloudinary.com/codehex/image/upload/v1536385579/me/images/bird.gif"></div>
-        <div class="dancers">
-          <div class="dancer smooch"><img src="https://res.cloudinary.com/codehex/video/upload/v1537235657/me/images/smooch.mp4"></div>
-          <div class="dancer donkey"><img width="200px" src="https://res.cloudinary.com/codehex/image/upload/v1536385582/me/images/donkey.gif"></div>
-          <div class="dancer poo"><img width="300px" src="https://res.cloudinary.com/codehex/image/upload/v1536385673/me/images/poo.gif"></div>
-        </div>
-        <center><div id="player"></div></center>
-      </div>
-    </div>
+    <h1>codehex homepage</h1>
+    <img src="/assets/svg/codehex.svg">
     <p>Related my info</p>
     <ul>
       <li><span><a href="https://okinawa.pm.org/">Okinawa.pm</a></span></li>
-      <li><span>GitHub: <a href="https://github.com/Code-Hex">Code-Hex</a></span></li>
+      <li><span>GitHub: <a href="https://github.com/Code-Hex/">Code-Hex</a></span></li>
       <li><span>Twitter: <a href="https://twitter.com/codehex/">@codehex</a></span></li>
+      <li><span>Hatena: <a href="http://profile.hatena.ne.jp/codehex/">codehex</a></span></li>
+      <li><span>CPAN: <a href="https://metacpan.org/author/CODEHEX/">CODEHEX</a></span></li>
       <li><span>Blog: <a href="https://codehex.hateblo.jp/">codehex.hateblo.jp</a></span></li>
     </ul>
-    <p>What's this?</p>
+    <p>Maps</p>
     <ul>
-      <li><a href="http://ja.uncyclopedia.info/wiki/%E3%81%82%E3%81%82%E3%81%82%E3%81%82%E3%81%82%E3%81%82%E3%81%82%E3%81%82%E3%81%82!">あああああああああ!</a></li>
-      <li>Panasonic NN-E225M</li>
-      <audio class="audio" controls>
-        <source src="https://res.cloudinary.com/codehex/video/upload/v1536385707/me/sounds/Panasonic_NN-E225M_microwave.flac" />
-        <p>You need browser which is supported to play the audio tags.</p>
-      </audio>
+      <li><span><a href="/unknown.html">My Unknown List</a></span></li>
+      <li><span><a href="/stylish.html">My Stylish Page （工事中）</a></span></li>
     </ul>
   </main>
 </body>
