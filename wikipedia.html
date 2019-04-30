@@ -53,6 +53,16 @@
         <h1 class="has-text-grey-dark is-large">Random Wikipedia</h1>
         <button v-on:click="nextWikipedia" class="button is-info is-medium is-uppercase">Next ❯</button>
         <button v-on:click="previousWikipedia" class="button is-uppercase">❮ Previous</button>
+        <div class="control">
+          <label class="radio">
+            <input type="radio" value="ja" v-model="lang" v-on:change="langChanged" checked>
+            ja
+          </label>
+          <label class="radio">
+            <input type="radio" value="en" v-model="lang" v-on:change="langChanged">
+            en
+          </label>
+        </div>
         <a :href="wikipedia" class="button">View on wikipedia</a>
         <div class="memo">
           <p>This tool was developed by using <a href="https://ja.wikipedia.org/wiki/%E7%89%B9%E5%88%A5:ApiSandbox">MediaWiki web service API</a>.</p>
@@ -66,41 +76,62 @@
     </div>
   </main>
   <script>
-    const url = 'https://ja.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=10&format=json'
     var app = new Vue({
       el: '#app',
       data: {
         wikipedia: '',
         pages: [],
-        page: 0,
+        history: [],
+        history_index: 0,
+        lang: 'ja',
       },
       methods: {
         nextWikipedia: function() {
-          if (this.pages.length <= this.page + 1) {
+          if (this.history.length > this.history_index + 1) {
+            this.history_index++
+            this.wikipedia = this.history[this.history_index]
             return
           }
-          this.page++
-          this.wikipedia = this.pages[this.page]
-          if (this.pages.length == this.page + 1) {
+          if (this.pages.length == 0) {
             this.loadMoreWikipedia()
-            return
           }
+          this.wikipedia = this.pages.shift()
+          this.history.push(this.wikipedia)
+          this.history_index++
         },
         previousWikipedia: function() {
-          if (this.page - 1 < 0) {
+          if (this.history_index - 1 < 0) {
             return
           }
-          this.page--
-          this.wikipedia = this.pages[this.page]
+          this.history_index--
+          this.wikipedia = this.history[this.history_index]
         },
         loadMoreWikipedia: function() {
-          axios.get(url, {
+          axios.get(`https://${this.lang}.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=10&format=json`, {
             adapter: axiosJsonpAdapter,
           }).then(response => {
             const query = response.data.query
             query.random.forEach((v) => {
-              this.pages.push('https://ja.wikipedia.org/wiki/' + encodeURIComponent(v.title))
+              this.pages.push(`https://${this.lang}.wikipedia.org/wiki/` + encodeURIComponent(v.title))
             })
+          })
+          .catch(error => {
+            console.log(error)
+          })
+        },
+        langChanged: function() {
+          this.pages = []
+          this.init()
+          this.history_index++
+        },
+        init: function() {
+          axios.get(`https://${this.lang}.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=10&format=json`, {
+            adapter: axiosJsonpAdapter,
+          }).then(response => {
+            const query = response.data.query
+            this.pages = query.random.map((v) => `https://${this.lang}.wikipedia.org/wiki/` + encodeURIComponent(v.title))
+            this.wikipedia = this.pages.shift()
+            this.history.push(this.wikipedia)
           })
           .catch(error => {
             console.log(error)
@@ -108,16 +139,7 @@
         }
       },
       mounted() {
-        axios.get(url, {
-            adapter: axiosJsonpAdapter,
-          }).then(response => {
-            const query = response.data.query
-            this.pages = query.random.map((v) => 'https://ja.wikipedia.org/wiki/' + encodeURIComponent(v.title))
-            this.wikipedia = this.pages[this.page]
-          })
-          .catch(error => {
-            console.log(error)
-          })
+        this.init()
       }
     })
   </script>
