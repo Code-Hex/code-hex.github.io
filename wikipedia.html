@@ -112,7 +112,7 @@
             adapter: axiosJsonpAdapter,
           }).then(response => {
             const query = response.data.query
-            this.pages = query.random.map((v) => 'http://ja.wikipedia.org/wiki/' + encodeURIComponent(v.title))
+            this.pages = query.random.map((v) => 'https://ja.wikipedia.org/wiki/' + encodeURIComponent(v.title))
             this.wikipedia = this.pages[this.page]
           })
           .catch(error => {
