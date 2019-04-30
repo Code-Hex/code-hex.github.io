@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>codehex wikipedia</title>
+  <meta name="description" content="codehex homepage">
+  <meta name="author" content="codehex">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.css" />
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios-jsonp/dist/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <style>
+    html {
+      background-color: #ecf0f1;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: #bdc3c7 1px solid;
+    }
+    a.button {
+      margin: 26px 0;
+    }
+    .button {
+      width: 300px;
+      margin: 5px 0;
+    }
+    .container {
+      margin: 70px auto;
+    }
+    .frame {
+      height: 750px;
+    }
+    .centered {
+      text-align: center;
+    }
+    .memo {
+      text-align: left;
+      background-color: #f5f6fa;
+      border: #bdc3c7 1px solid;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <div id="app" class="columns is-centered">
+      <div class="centered column">
+        <h1 class="is-large">Random Wikipedia</h1>
+        <button v-on:click="nextWikipedia" class="button is-info is-medium is-uppercase">Next ❯</button>
+        <button v-on:click="previousWikipedia" class="button is-uppercase">❮ Previous</button>
+        <a :href="wikipedia" class="button">View on wikipedia</a>
+        <div class="memo">
+          <p>This tool was developed by using <a href="https://ja.wikipedia.org/wiki/%E7%89%B9%E5%88%A5:ApiSandbox">MediaWiki web service API</a>.</p>
+          <p>Please send feedback or suggestions to <a href="https://twitter.com/codehex">@codehex</a></p>
+          <p>My <a href="https://codehex.me">homepage</a></p>
+        </div>
+      </div>
+      <div class="frame column is-four-fifths">
+        <iframe :src="wikipedia" frameborder="0"></iframe>
+      </div>
+    </div>
+  </main>
+  <script>
+    const url = 'https://ja.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=10&format=json'
+    var app = new Vue({
+      el: '#app',
+      data: {
+        wikipedia: '',
+        pages: [],
+        page: 0,
+      },
+      methods: {
+        nextWikipedia: function() {
+          if (this.pages.length <= this.page + 1) {
+            return
+          }
+          this.page++
+          this.wikipedia = this.pages[this.page]
+          if (this.pages.length == this.page + 1) {
+            this.loadMoreWikipedia()
+            return
+          }
+        },
+        previousWikipedia: function() {
+          if (this.page - 1 < 0) {
+            return
+          }
+          this.page--
+          this.wikipedia = this.pages[this.page]
+        },
+        loadMoreWikipedia: function() {
+          axios.get(url, {
+            adapter: axiosJsonpAdapter,
+          }).then(response => {
+            const query = response.data.query
+            query.random.forEach((v) => {
+              this.pages.push('http://ja.wikipedia.org/wiki/' + encodeURIComponent(v.title))
+            })
+          })
+          .catch(error => {
+            console.log(error)
+          })
+        }
+      },
+      mounted() {
+        axios.get(url, {
+            adapter: axiosJsonpAdapter,
+          }).then(response => {
+            const query = response.data.query
+            this.pages = query.random.map((v) => 'http://ja.wikipedia.org/wiki/' + encodeURIComponent(v.title))
+            this.wikipedia = this.pages[this.page]
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+    })
+  </script>
+</body>
+</html>
