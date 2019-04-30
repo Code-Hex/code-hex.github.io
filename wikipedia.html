@@ -24,7 +24,7 @@
     }
     .button {
       width: 300px;
-      margin: 5px 0;
+      margin: 5px auto;
     }
     .container {
       margin: 70px auto;
@@ -33,7 +33,7 @@
       height: 750px;
     }
     .centered {
-      text-align: center;
+      margin: 0 auto;
     }
     .memo {
       text-align: left;
@@ -41,12 +41,15 @@
       border: #bdc3c7 1px solid;
       border-radius: 3px;
     }
+    #app > div.content.column {
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <main class="container">
-    <div id="app" class="columns is-centered">
-      <div class="centered column">
+    <div id="app" class="columns centered">
+      <div class="content column">
         <h1 class="is-large">Random Wikipedia</h1>
         <button v-on:click="nextWikipedia" class="button is-info is-medium is-uppercase">Next ❯</button>
         <button v-on:click="previousWikipedia" class="button is-uppercase">❮ Previous</button>
@@ -96,7 +99,7 @@
           }).then(response => {
             const query = response.data.query
             query.random.forEach((v) => {
-              this.pages.push('http://ja.wikipedia.org/wiki/' + encodeURIComponent(v.title))
+              this.pages.push('https://ja.wikipedia.org/wiki/' + encodeURIComponent(v.title))
             })
           })
           .catch(error => {
