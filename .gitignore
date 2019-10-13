@@ -1,2 +1,3 @@
 .DS_Store
 backend/vendor
+slack/result.json
