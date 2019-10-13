@@ -26,7 +26,7 @@ for my $emoji (@{$decoded->{emoji}}) {
     push @img_urls, $emoji->{url};
 }
 
-my $src = "https://github.com/Code-Hex/code-hex.github.io/raw/slack/assets";
+my $src = "https://raw.githubusercontent.com/Code-Hex/code-hex.github.io/master/slack/assets";
 
 my $data = +{
     title  => 'codehex',
