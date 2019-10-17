@@ -24,14 +24,13 @@
     </div>
     <p>Join <b>code-hex</b> workspace on Slack.</p>
     <form method="post" action="https://slack-invitation.codehex.now.sh/invite">
-      <input autofocus="true" class="form-item" name="email" placeholder="you@yourdomain.com" type="email">
-      <input autofocus="true" class="form-item" name="fname" placeholder="First name" type="text">
-      <input autofocus="true" class="form-item" name="lname" placeholder="Last name" type="text">
+      <input autofocus="true" class="form-item" name="email" placeholder="you@yourdomain.com" type="email" 
+        required pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?">
       <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
       <input type="hidden" name="action" value="validate_captcha">
       <button class="">Get my Invite</button>
     </form>
-    <p class="signin">or <a href="https://code-hex.slack.com" target="_top">sign in</a>.</p>
+    <p class="signin">or <a href="https://code-hex.slack.com" target="_top">sign in</a> or <a href="https://twitter.com/codehex">feedback</a>.</p>
     <style>
       .splash {
           width: 300px;
