@@ -7,6 +7,20 @@
   <meta name="description" content="codehex homepage">
   <meta name="author" content="codehex">
   <style>
+    html {
+      background-color: #fff;
+      color: #000;
+    }
+
+    a {
+      color: #4aa5f0;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
     .page-list > li {
       padding: 4px 0;
     }
@@ -44,6 +58,13 @@
       80% { transform: translate(-1px, -1px) rotate(1deg); }
       90% { transform: translate(1px, 2px) rotate(0deg); }
       100% { transform: translate(1px, -2px) rotate(-1deg); }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      html {
+        background-color: #282c34;
+        color: #abb2bf;
+      }
     }
   </style>
 </head>
