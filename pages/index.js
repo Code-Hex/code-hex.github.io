@@ -44,7 +44,7 @@ export default function Home() {
       <p>Maps</p>
       <ul className="page-list">
         <li>
-          <Link href="/unknown.html">
+          <Link href="/unknown" as="/unknown">
             <a>My Unknown List</a>
           </Link>
         </li>
@@ -55,7 +55,7 @@ export default function Home() {
           <a href="/slack_invitation.html">Join code-hex workspace on Slack!</a>
         </li>
         <li>
-          <Link href="/stylish.html">
+          <Link href="/stylish" as="/stylish">
             <a>My Stylish Page （工事中）</a>
           </Link>
         </li>
