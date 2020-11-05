@@ -1,4 +1,5 @@
 import HomePageLayout from '../components/HomePageLayout';
+import Link from 'next/Link';
 
 export default function Home() {
   return (
@@ -43,7 +44,9 @@ export default function Home() {
       <p>Maps</p>
       <ul className="page-list">
         <li>
-          <a href="/unknown">My Unknown List</a>
+          <Link href="/unknown.html">
+            <a>My Unknown List</a>
+          </Link>
         </li>
         <li>
           <a href="/wikipedia.html">Random Wikipedia</a>
@@ -52,7 +55,9 @@ export default function Home() {
           <a href="/slack_invitation.html">Join code-hex workspace on Slack!</a>
         </li>
         <li>
-          <a href="/stylish">My Stylish Page （工事中）</a>
+          <Link href="/stylish.html">
+            <a>My Stylish Page （工事中）</a>
+          </Link>
         </li>
         <li>
           <a href="https://docs.google.com/spreadsheets/d/17_8cvRg7YFruqvayDgLY22aFZm_woGt7TkWbPlhopnQ/edit#gid=0">

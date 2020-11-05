@@ -1,5 +1,4 @@
+const nextBuildId = require('next-build-id');
 module.exports = {
-  exportPathMap: () => ({
-    '/': { page: '/' },
-  }),
+  generateBuildId: () => nextBuildId({ dir: __dirname }),
 };
