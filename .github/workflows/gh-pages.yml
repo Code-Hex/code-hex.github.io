@@ -27,8 +27,6 @@ jobs:
     - run: yarn install --frozen-lockfile
     - run: yarn build
     - run: yarn export
-    - name: add nojekyll
-      run: touch ./out/.nojekyll
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3.7.3
       with:
