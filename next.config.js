@@ -4,5 +4,5 @@ module.exports = {
   exportPathMap: () => ({
     '/': { page: '/' },
   }),
-  assetPrefix: isProd ? '' : '',
+  assetPrefix: isProd ? '/code-hex.github.io' : '',
 };
