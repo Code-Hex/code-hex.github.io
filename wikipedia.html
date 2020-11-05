@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>codehex wikipedia</title>
+  <meta name="description" content="codehex homepage">
+  <meta name="author" content="codehex">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.css" />
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios-jsonp/dist/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <style>
+    html {
+      background-color: #ecf0f1;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: #bdc3c7 1px solid;
+    }
+    a.button {
+      margin: 26px 0;
+    }
+    .button {
+      width: 300px;
+      margin: 5px auto;
+    }
+    .container {
+      margin: 50px auto;
+    }
+    .frame {
+      height: 750px;
+    }
+    .centered {
+      margin: 0 auto;
+    }
+    .memo {
+      text-align: left;
+      background-color: #f5f6fa;
+      border: #bdc3c7 1px solid;
+      border-radius: 3px;
+    }
+    #app > div.content.column {
+      text-align: center;
+    }
+    #app > div.content.column > div.control {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <div id="app" class="columns centered">
+      <div class="content column">
+        <h1 class="has-text-grey-dark is-large">Random Wikipedia</h1>
+        <button v-on:click="nextWikipedia" class="button is-info is-medium is-uppercase">Next ❯</button>
+        <button v-on:click="previousWikipedia" class="button is-uppercase">❮ Previous</button>
+        <div class="control">
+          <label class="radio">
+            <input type="radio" value="ja" v-model="lang" v-on:change="langChanged" checked>
+            ja
+          </label>
+          <label class="radio">
+            <input type="radio" value="en" v-model="lang" v-on:change="langChanged">
+            en
+          </label>
+        </div>
+        <a :href="wikipedia" class="button">View on wikipedia</a>
+        <div class="memo">
+          <p>This tool was developed by using <a href="https://ja.wikipedia.org/wiki/%E7%89%B9%E5%88%A5:ApiSandbox">MediaWiki web service API</a>.</p>
+          <p>Please send feedback or suggestions to <a href="https://twitter.com/codehex">@codehex</a></p>
+          <p>My <a href="https://codehex.dev">homepage</a></p>
+        </div>
+      </div>
+      <div class="frame column is-four-fifths">
+        <iframe :src="wikipedia" frameborder="0"></iframe>
+      </div>
+    </div>
+  </main>
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        wikipedia: '',
+        pages: [],
+        history: [],
+        history_index: 0,
+        lang: 'ja',
+      },
+      methods: {
+        nextWikipedia: function() {
+          if (this.history.length > this.history_index + 1) {
+            this.history_index++
+            this.wikipedia = this.history[this.history_index]
+            return
+          }
+          if (this.pages.length == 0) {
+            this.loadMoreWikipedia()
+          }
+          this.wikipedia = this.pages.shift()
+          this.history.push(this.wikipedia)
+          this.history_index++
+        },
+        previousWikipedia: function() {
+          if (this.history_index - 1 < 0) {
+            return
+          }
+          this.history_index--
+          this.wikipedia = this.history[this.history_index]
+        },
+        loadMoreWikipedia: function() {
+          axios.get(`https://${this.lang}.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=10&format=json`, {
+            adapter: axiosJsonpAdapter,
+          }).then(response => {
+            const query = response.data.query
+            query.random.forEach((v) => {
+              this.pages.push(`https://${this.lang}.wikipedia.org/wiki/` + encodeURIComponent(v.title))
+            })
+          })
+          .catch(error => {
+            console.log(error)
+          })
+        },
+        langChanged: function() {
+          this.pages = []
+          this.init()
+          this.history_index++
+        },
+        init: function() {
+          axios.get(`https://${this.lang}.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=10&format=json`, {
+            adapter: axiosJsonpAdapter,
+          }).then(response => {
+            const query = response.data.query
+            this.pages = query.random.map((v) => `https://${this.lang}.wikipedia.org/wiki/` + encodeURIComponent(v.title))
+            this.wikipedia = this.pages.shift()
+            this.history.push(this.wikipedia)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+        }
+      },
+      mounted() {
+        this.init()
+      }
+    })
+  </script>
+</body>
+</html>
