@@ -8,19 +8,6 @@ body {
   color: #000;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-* {
-  box-sizing: border-box;
-}
-
 @media (prefers-color-scheme: dark) {
   html,
   body {

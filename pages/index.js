@@ -52,7 +52,9 @@ export default function Home() {
           <a href="/wikipedia.html">Random Wikipedia</a>
         </li>
         <li>
-          <a href="/slack_invitation.html">Join code-hex workspace on Slack!</a>
+          <Link href="/slack_invitation" as="/slack_invitation">
+            <a>Join code-hex workspace on Slack!</a>
+          </Link>
         </li>
         <li>
           <Link href="/stylish" as="/stylish">
