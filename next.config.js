@@ -6,6 +6,7 @@ module.exports = {
       '/': { page: '/' },
       '/unknown': { page: '/unknown' },
       '/stylish': { page: '/stylish' },
+      '/slack_invitation': { page: '/slack_invitation' },
     };
   },
 };

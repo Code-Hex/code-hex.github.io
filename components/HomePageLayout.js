@@ -39,7 +39,17 @@ const HomePageLayout = (props) => {
       </main>
       <style global jsx>{`
         a {
+          color: inherit;
+          text-decoration: none;
           color: #4aa5f0;
+        }
+
+        a:hover {
+          text-decoration: underline;
+        }
+
+        * {
+          box-sizing: border-box;
         }
       `}</style>
     </div>
