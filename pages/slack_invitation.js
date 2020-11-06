@@ -28,7 +28,7 @@ export default function SlackInvitation() {
           action="https://slack-invitation.codehex.now.sh/invite"
         >
           <input
-            autofocus="true"
+            autoFocus="true"
             className="form-item"
             name="email"
             placeholder="you@yourdomain.com"
