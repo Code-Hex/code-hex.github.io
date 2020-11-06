@@ -9,6 +9,10 @@ const HomePageLayout = (props) => {
         <title>{title ? `${title} | ${siteTitle}` : siteTitle}</title>
         <meta name="author" content="codehex"></meta>
         <meta
+          name="description"
+          content="codehex's homepage. There are links which are codehex has collected that I found interesting. In addition, information on each social networking site account."
+        ></meta>
+        <meta
           name="viewport"
           content="width=device-width,initial-scale=1"
         ></meta>
