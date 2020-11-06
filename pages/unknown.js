@@ -4,7 +4,12 @@ export default function Unknown() {
   return (
     <HomePageLayout>
       <h1>Unknown list</h1>
-      <img alt="unknown codehex" src="/assets/svg/codehex_unknown.svg" />
+      <img
+        width="200px"
+        height="200px"
+        alt="unknown codehex"
+        src="/assets/svg/codehex_unknown.svg"
+      />
       <p>What's this?</p>
       <ul>
         <li>
