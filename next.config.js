@@ -9,4 +9,8 @@ module.exports = {
       '/slack_invitation': { page: '/slack_invitation' },
     };
   },
+  // https://nextjs.org/docs/basic-features/image-optimization
+  images: {
+    domains: ['codehex.dev'],
+  },
 };
