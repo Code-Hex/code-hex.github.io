@@ -1,5 +1,6 @@
 import HomePageLayout from '../components/HomePageLayout';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
   return (
@@ -8,9 +9,9 @@ export default function Home() {
         <h1 className="title">Welcome to codehex's homepage</h1>
       </div>
       <div className="codehex-home">
-        <img
-          width="200px"
-          height="200px"
+        <Image
+          width={200}
+          height={200}
           alt="codehex"
           src="/assets/svg/codehex.svg"
         />

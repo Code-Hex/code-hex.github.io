@@ -1,13 +1,14 @@
 import HomePageLayout from '../components/HomePageLayout';
+import Image from 'next/image';
 
 export default function Unknown() {
   return (
     <HomePageLayout>
       <div className="codehex-unknown">
         <h1>Unknown list</h1>
-        <img
-          width="200px"
-          height="200px"
+        <Image
+          width={200}
+          height={200}
           alt="unknown codehex"
           src="/assets/svg/codehex_unknown.svg"
         />
