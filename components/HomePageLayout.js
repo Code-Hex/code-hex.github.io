@@ -54,6 +54,16 @@ const HomePageLayout = (props) => {
         * {
           box-sizing: border-box;
         }
+
+        li a {
+          line-height: 1.8;
+        }
+
+        @media (min-width: 60em) {
+          li a {
+            line-height: 1.2;
+          }
+        }
       `}</style>
     </div>
   );
