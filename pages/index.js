@@ -1,4 +1,5 @@
 import HomePageLayout from '../components/HomePageLayout';
+import CodeHex from '../components/CodeHex';
 import Link from 'next/link';
 
 export default function Home() {
@@ -8,12 +9,7 @@ export default function Home() {
         <h1 className="title">Welcome to codehex's homepage</h1>
       </div>
       <div className="codehex-home">
-        <img
-          width="200px"
-          height="200px"
-          alt="codehex"
-          src="/assets/svg/codehex.svg"
-        />
+        <CodeHex className="codehex" width="200px" height="200px" />
         <p>My accounts</p>
         <ul>
           <li>
@@ -96,52 +92,12 @@ export default function Home() {
           margin-left: 20px;
         }
 
-        img:hover {
-          animation: shake 0.5s linear 0s infinite;
-        }
-
         @keyframes marquee {
           0% {
             transform: translate(0%);
           }
           100% {
             transform: translate(-100%);
-          }
-        }
-
-        @keyframes shake {
-          0% {
-            transform: translate(1px, 1px) rotate(0deg);
-          }
-          10% {
-            transform: translate(-1px, -2px) rotate(-1deg);
-          }
-          20% {
-            transform: translate(-3px, 0px) rotate(1deg);
-          }
-          30% {
-            transform: translate(3px, 2px) rotate(0deg);
-          }
-          40% {
-            transform: translate(1px, -1px) rotate(1deg);
-          }
-          50% {
-            transform: translate(-1px, 2px) rotate(-1deg);
-          }
-          60% {
-            transform: translate(-3px, 1px) rotate(0deg);
-          }
-          70% {
-            transform: translate(3px, 1px) rotate(-1deg);
-          }
-          80% {
-            transform: translate(-1px, -1px) rotate(1deg);
-          }
-          90% {
-            transform: translate(1px, 2px) rotate(0deg);
-          }
-          100% {
-            transform: translate(1px, -2px) rotate(-1deg);
           }
         }
       `}</style>
