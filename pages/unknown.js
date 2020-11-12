@@ -1,16 +1,12 @@
 import HomePageLayout from '../components/HomePageLayout';
+import CodeHexUnknown from '../components/CodeHexUnknown';
 
 export default function Unknown() {
   return (
     <HomePageLayout>
       <div className="codehex-unknown">
         <h1>Unknown list</h1>
-        <img
-          width="200px"
-          height="200px"
-          alt="unknown codehex"
-          src="/assets/svg/codehex_unknown.svg"
-        />
+        <CodeHexUnknown width="200px" height="200px" />
         <p>What's this?</p>
         <ul>
           <li>
