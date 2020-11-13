@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import RecaptureInputs from '../components/RecapchaInputs';
+import CodeHex from '../components/CodeHex';
 
 export default function SlackInvitation() {
   return (
@@ -17,7 +18,9 @@ export default function SlackInvitation() {
       </Head>
       <div className="splash">
         <div className="logos">
-          <div className="logo org"></div>
+          <div className="logo org">
+            <CodeHex width="48px" height="48px" />
+          </div>
           <div className="logo slack"></div>
         </div>
         <p>
