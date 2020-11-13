@@ -1,7 +1,56 @@
 import React from 'react';
+import css from 'styled-jsx/css';
+
+const shakeCSS = (isShake) => {
+  if (isShake === true) {
+    return css.resolve`
+      svg:hover {
+        animation: shake 0.5s linear 0s infinite;
+      }
+
+      @keyframes shake {
+        0% {
+          transform: translate(1px, 1px) rotate(0deg);
+        }
+        10% {
+          transform: translate(-1px, -2px) rotate(-1deg);
+        }
+        20% {
+          transform: translate(-3px, 0px) rotate(1deg);
+        }
+        30% {
+          transform: translate(3px, 2px) rotate(0deg);
+        }
+        40% {
+          transform: translate(1px, -1px) rotate(1deg);
+        }
+        50% {
+          transform: translate(-1px, 2px) rotate(-1deg);
+        }
+        60% {
+          transform: translate(-3px, 1px) rotate(0deg);
+        }
+        70% {
+          transform: translate(3px, 1px) rotate(-1deg);
+        }
+        80% {
+          transform: translate(-1px, -1px) rotate(1deg);
+        }
+        90% {
+          transform: translate(1px, 2px) rotate(0deg);
+        }
+        100% {
+          transform: translate(1px, -2px) rotate(-1deg);
+        }
+      }
+    `;
+  }
+  return css.resolve``;
+};
 
 export default class CodeHex extends React.Component {
   render() {
+    const { className, styles } = shakeCSS(this.props.isShake);
     return (
       <>
         <svg
@@ -11,6 +60,7 @@ export default class CodeHex extends React.Component {
           height={this.props.height}
           viewBox="0 0 3000 3000"
           preserveAspectRatio="xMidYMid meet"
+          class={className}
         >
           <g id="layer101" fill="#000100" stroke="none">
             <path d="M920 2817 c-18 -9 -28 -25 -34 -54 -6 -29 -16 -44 -33 -52 -17 -8 -22 -8 -18 0 4 6 -6 4 -23 -5 -62 -32 -126 -165 -120 -253 2 -40 -1 -51 -20 -66 -35 -29 -50 -68 -58 -148 -5 -60 -2 -85 13 -132 l20 -57 -23 -47 c-13 -25 -24 -56 -24 -68 0 -13 -7 -39 -15 -58 -18 -44 -19 -84 -1 -116 12 -22 11 -29 -12 -63 -21 -32 -24 -46 -19 -87 4 -37 2 -53 -9 -62 -32 -27 -47 -71 -41 -126 3 -31 2 -53 -4 -53 -20 0 -27 -44 -13 -79 13 -31 13 -34 -11 -53 -29 -23 -34 -80 -10 -115 14 -20 13 -25 -10 -59 -26 -39 -32 -82 -15 -114 8 -14 5 -28 -11 -55 -26 -43 -21 -96 12 -131 18 -19 20 -26 10 -38 -21 -25 -26 -120 -8 -155 13 -27 14 -36 3 -64 -11 -25 -11 -50 -2 -122 l11 -90 38 2 c47 3 117 33 147 63 19 19 26 20 47 11 42 -19 97 -14 122 13 l22 24 24 -23 c47 -48 165 -53 182 -9 4 12 8 11 20 -6 34 -48 109 -64 142 -31 20 20 20 20 45 0 30 -24 126 -69 146 -69 9 0 17 8 18 18 1 9 7 60 13 112 15 136 14 215 -3 242 -14 21 -13 27 3 58 24 44 24 96 0 142 -18 37 -18 37 6 87 23 45 24 53 12 88 -7 21 -25 50 -41 65 l-30 28 21 26 c27 34 27 84 1 117 l-20 25 21 36 c11 20 21 51 22 70 1 31 3 33 26 26 14 -3 43 -3 64 2 28 6 45 4 69 -8 42 -22 140 -15 195 13 37 20 44 20 79 8 47 -17 116 -19 167 -4 32 8 42 8 56 -5 61 -55 197 -74 271 -36 l39 20 33 -20 c45 -28 126 -27 162 1 20 16 26 29 26 61 0 36 -6 47 -43 83 -43 41 -43 41 -29 75 19 48 10 106 -23 140 -26 27 -26 29 -11 58 40 78 33 197 -19 289 -23 42 -23 42 -3 60 58 52 75 160 38 233 -11 21 -24 41 -30 45 -5 3 -10 16 -10 28 0 37 -45 121 -81 151 -19 16 -33 35 -31 41 1 7 -11 27 -28 44 -22 24 -36 32 -57 29 -24 -3 -28 -8 -31 -38 -3 -34 -5 -36 -63 -51 -74 -20 -94 -10 -94 48 0 36 -2 39 -37 47 -31 8 -41 6 -58 -9 -11 -10 -20 -31 -20 -46 0 -18 -6 -30 -19 -34 -34 -11 -102 -65 -111 -90 -14 -36 -48 -39 -121 -14 -91 32 -227 32 -286 1 -23 -12 -45 -27 -48 -33 -4 -6 -15 7 -26 30 -30 68 -65 105 -148 160 -77 50 -80 53 -70 79 12 32 -8 52 -52 52 -50 0 -57 -8 -51 -52 4 -36 3 -41 -12 -35 -10 4 -21 7 -26 7 -5 0 -10 14 -12 31 -4 43 -34 63 -68 46z" />
@@ -45,47 +95,7 @@ export default class CodeHex extends React.Component {
             <path d="M1046 875 c4 -8 10 -12 15 -9 11 6 2 24 -11 24 -5 0 -7 -7 -4 -15z" />
           </g>
         </svg>
-        <style jsx>{`
-          svg:hover {
-            animation: shake 0.5s linear 0s infinite;
-          }
-
-          @keyframes shake {
-            0% {
-              transform: translate(1px, 1px) rotate(0deg);
-            }
-            10% {
-              transform: translate(-1px, -2px) rotate(-1deg);
-            }
-            20% {
-              transform: translate(-3px, 0px) rotate(1deg);
-            }
-            30% {
-              transform: translate(3px, 2px) rotate(0deg);
-            }
-            40% {
-              transform: translate(1px, -1px) rotate(1deg);
-            }
-            50% {
-              transform: translate(-1px, 2px) rotate(-1deg);
-            }
-            60% {
-              transform: translate(-3px, 1px) rotate(0deg);
-            }
-            70% {
-              transform: translate(3px, 1px) rotate(-1deg);
-            }
-            80% {
-              transform: translate(-1px, -1px) rotate(1deg);
-            }
-            90% {
-              transform: translate(1px, 2px) rotate(0deg);
-            }
-            100% {
-              transform: translate(1px, -2px) rotate(-1deg);
-            }
-          }
-        `}</style>
+        {styles}
       </>
     );
   }

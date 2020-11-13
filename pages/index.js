@@ -9,7 +9,12 @@ export default function Home() {
         <h1 className="title">Welcome to codehex's homepage</h1>
       </div>
       <div className="codehex-home">
-        <CodeHex className="codehex" width="200px" height="200px" />
+        <CodeHex
+          className="codehex"
+          width="200px"
+          height="200px"
+          isShake={true}
+        />
         <p>My accounts</p>
         <ul>
           <li>
