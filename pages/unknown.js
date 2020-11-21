@@ -1,4 +1,4 @@
-import HomePageLayout from '../components/HomePageLayout';
+import HomePageLayout from '../layouts/HomePageLayout';
 import CodeHexUnknown from '../components/CodeHexUnknown';
 
 export default function Unknown() {

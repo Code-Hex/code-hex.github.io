@@ -1,4 +1,4 @@
-import HomePageLayout from '../components/HomePageLayout';
+import HomePageLayout from '../layouts/HomePageLayout';
 import CodeHex from '../components/CodeHex';
 import Link from 'next/link';
 
