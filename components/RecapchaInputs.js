@@ -15,11 +15,16 @@ const RecapchaInputs = (props) => {
       window.grecaptcha.render(widgetID, {
         sitekey: siteKey,
         size: 'invisible',
-        callback: () => {
+        callback: (token) => {
           const form = document.getElementById(props.formID);
           if (form.reportValidity() === false) {
             return;
           }
+          const hiddenInput = document.createElement('input');
+          hiddenInput.hidden = true;
+          hiddenInput.name = 'g-recaptcha-response';
+          hiddenInput.value = token;
+          form.appendChild(hiddenInput);
           form.submit();
         },
       });
