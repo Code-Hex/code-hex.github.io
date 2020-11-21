@@ -15,6 +15,10 @@ const RecapchaInputs = (props) => {
       window.grecaptcha.render(widgetID, {
         sitekey: siteKey,
         size: 'invisible',
+        callback: () => {
+          const form = document.getElementById(props.formID);
+          form.submit();
+        },
       });
       window.grecaptcha.ready(() => setReady(true));
     };
