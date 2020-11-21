@@ -216,10 +216,6 @@ export default function SlackInvitation() {
           background-color: #e01563;
           color: #fff;
         }
-
-        .logo.org {
-          background-image: url(assets/svg/codehex.svg);
-        }
       `}</style>
     </div>
   );
