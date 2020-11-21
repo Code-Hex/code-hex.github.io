@@ -17,6 +17,9 @@ const RecapchaInputs = (props) => {
         size: 'invisible',
         callback: () => {
           const form = document.getElementById(props.formID);
+          if (form.reportValidity() === false) {
+            return;
+          }
           form.submit();
         },
       });
