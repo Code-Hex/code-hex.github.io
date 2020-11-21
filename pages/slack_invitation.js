@@ -31,7 +31,6 @@ export default function SlackInvitation() {
           action="https://slack-invitation.codehex.now.sh/invite"
         >
           <input
-            autoFocus="true"
             className="form-item"
             name="email"
             placeholder="you@yourdomain.com"
@@ -39,8 +38,19 @@ export default function SlackInvitation() {
             required
             pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
           />
-          <RecaptureInputs />
-          <button className="">Get my Invite</button>
+          <RecaptureInputs>
+            {(captcha) => (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  captcha.execute();
+                }}
+                disabled={!captcha.isReady}
+              >
+                Get my Invite
+              </button>
+            )}
+          </RecaptureInputs>
         </form>
         <p className="btm">
           or{' '}
