@@ -27,6 +27,7 @@ export default function SlackInvitation() {
           Join <b>code-hex</b> workspace on Slack.
         </p>
         <form
+          id="invite-form"
           method="post"
           action="https://slack-invitation.codehex.now.sh/invite"
         >
@@ -38,7 +39,7 @@ export default function SlackInvitation() {
             required
             pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
           />
-          <RecaptureInputs>
+          <RecaptureInputs formID="invite-form">
             {(captcha) => (
               <button
                 onClick={(e) => {
