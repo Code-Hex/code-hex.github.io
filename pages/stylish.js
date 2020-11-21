@@ -1,4 +1,4 @@
-import HomePageLayout from '../components/HomePageLayout';
+import HomePageLayout from '../layouts/HomePageLayout';
 
 export default function Stylish() {
   return (
