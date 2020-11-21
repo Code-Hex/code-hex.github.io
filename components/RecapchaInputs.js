@@ -1,34 +1,45 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 
-export default class RecapchaInputs extends React.Component {
-  componentDidMount() {
-    const siteKey = '6Le-vr0UAAAAALh9uIQyL3xL2fAEzKpo4_DPgepD';
-    const script = document.createElement('script');
-    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
-    script.addEventListener('load', () => {
-      window.grecaptcha.ready(() => {
-        window.grecaptcha
-          .execute(siteKey, {
-            action: 'validate_captcha',
-          })
-          .then((token) => {
-            document.getElementById('g-recaptcha-response').value = token;
-          });
+const RecapchaInputs = (props) => {
+  const [isReady, setReady] = useState(false);
+  const siteKey = '6Le-vr0UAAAAALh9uIQyL3xL2fAEzKpo4_DPgepD';
+
+  useEffect(() => {
+    const widget = document.createElement('div');
+    const widgetID = 'g-recaptcha';
+    widget.id = widgetID;
+    document.body.appendChild(widget);
+
+    // register onload function for recaptcha.
+    window.captchaOnLoad = () => {
+      window.grecaptcha.render(widgetID, {
+        sitekey: siteKey,
+        size: 'invisible',
       });
-    });
-    document.body.appendChild(script);
-  }
+      window.grecaptcha.ready(() => setReady(true));
+    };
 
-  render() {
-    return (
-      <>
-        <input
-          type="hidden"
-          id="g-recaptcha-response"
-          name="g-recaptcha-response"
-        />
-        <input type="hidden" name="action" value="validate_captcha" />
-      </>
-    );
-  }
-}
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?onload=captchaOnLoad&render=explicit`;
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+      document.body.removeChild(widget);
+    };
+  }, []);
+
+  return props.children({
+    isReady: isReady,
+    execute: () => {
+      if (isReady === false) {
+        throw new Error("captcha can be executed only when it's ready.");
+      }
+      return window.grecaptcha.execute();
+    },
+  });
+};
+
+export default RecapchaInputs;
