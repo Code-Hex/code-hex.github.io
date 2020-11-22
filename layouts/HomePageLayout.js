@@ -42,6 +42,13 @@ const HomePageLayout = (props) => {
         <div className="page-main">{children}</div>
       </main>
       <style global jsx>{`
+        html,
+        body {
+          background-color: #fff;
+          color: #000;
+          font-size: 18px;
+        }
+
         a {
           text-decoration: none;
           color: #0652dd;
@@ -62,6 +69,14 @@ const HomePageLayout = (props) => {
         @media (min-width: 60em) {
           li a {
             line-height: 1.2;
+          }
+        }
+
+        @media (prefers-color-scheme: dark) {
+          html,
+          body {
+            background-color: #282c34;
+            color: #abb2bf;
           }
         }
       `}</style>
