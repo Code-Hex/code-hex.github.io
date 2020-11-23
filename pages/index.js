@@ -51,6 +51,11 @@ export default function Home() {
         <p>Maps</p>
         <ul className="page-list">
           <li>
+            <Link href="/note" as="/note">
+              <a>アルパカの徒然文</a>
+            </Link>
+          </li>
+          <li>
             <Link href="/unknown" as="/unknown">
               <a>My Unknown List</a>
             </Link>
