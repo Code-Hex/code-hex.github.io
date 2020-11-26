@@ -22,7 +22,8 @@ The postexport command runs the script post-export.js in my repo, which calls th
 const fs = require('fs');
 
 // Read from the static map that's provided by next
-const { exportPathMap } = require('../next.config');
+const { nextConfig } = require('../next.config');
+const { exportPathMap } = nextConfig;
 
 // Format to the right date
 const formatDate = (date) => `${date.toISOString().split('.')[0]}+0:00`;
