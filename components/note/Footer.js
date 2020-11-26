@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Box, Flex, Center, Link as ChakraLink } from '@chakra-ui/react';
+import { Box, Flex, Center } from '@chakra-ui/react';
 
 const Footer = ({ title }) => {
   return (

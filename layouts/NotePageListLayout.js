@@ -2,15 +2,6 @@ import Link from 'next/link';
 import NoteLayout from './NoteLayout';
 import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 
-// [
-//     {
-//         title: 'こんにちは mdx!!',
-//         date: '2020-11-23T00:00:00.000Z',
-//         tags: [ 'blog', 'tag1', 'tag2', 'perl' ],
-//         __resourcePath: 'blog/mdx-ftw.mdx'
-//     }
-// ]
-
 /**
  *
  * @param {string} p
@@ -27,6 +18,15 @@ const formatDate = (d) => {
   return d.slice(0, 10);
 };
 
+// pages variable:
+// [
+//     {
+//         title: 'こんにちは mdx!!',
+//         date: '2020-11-23T00:00:00.000Z',
+//         tags: [ 'blog', 'tag1', 'tag2', 'perl' ],
+//         __resourcePath: 'blog/mdx-ftw.mdx'
+//     }
+// ]
 const NotePageListLayout = ({ title, pages }) => {
   return (
     <NoteLayout minH="100%" title="Posts">
