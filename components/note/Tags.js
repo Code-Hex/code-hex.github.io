@@ -5,7 +5,7 @@ const Tags = ({ tags }) => {
   return (
     <Flex flexDirection="row">
       {tags.map((tag) => (
-        <Link href={`/note/tag/${tag}`}>
+        <Link key={tag} href={`/note/tag/${tag}`}>
           <Box
             as="a"
             mr={2}
