@@ -2,16 +2,30 @@ const nextBuildId = require('next-build-id');
 const withPlugins = require('next-compose-plugins');
 const withMdxEnhanced = require('next-mdx-enhanced');
 
+const fs = require('fs');
+const { join } = require('path');
+
+const getNotes = () => {
+  const noteDirectory = join(__dirname, 'pages/note');
+  return fs.readdirSync(noteDirectory).filter((v) => /\.mdx$/.test(v));
+};
+
 const nextConfig = {
   generateBuildId: () => nextBuildId({ dir: __dirname }),
   exportPathMap: async function () {
-    return {
+    const notes = getNotes();
+    const notePaths = notes.map((v) => '/note/' + v.replace(/\.mdx$/, ''));
+    let pages = {
       '/': { page: '/' },
       '/unknown': { page: '/unknown' },
-      '/stylish': { page: '/stylish' },
-      '/slack_invitation': { page: '/slack_invitation' },
       '/note': { page: '/note' },
     };
+    notePaths.forEach((v) => {
+      pages[v] = {
+        page: v,
+      };
+    });
+    return pages;
   },
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx', 'md'],
   // https://nextjs.org/docs/basic-features/image-optimization
