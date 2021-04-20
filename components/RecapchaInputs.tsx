@@ -1,6 +1,35 @@
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
-const RecapchaInputs = (props) => {
+declare global {
+  interface Window {
+    grecaptcha: ReCaptchaInstance;
+    captchaOnLoad: () => void;
+  }
+}
+
+interface ReCaptchaInstance {
+  ready: (cb: () => any) => void;
+  execute: () => Promise<string>;
+  render: (id: string, options: ReCaptchaRenderOptions) => any;
+}
+
+interface ReCaptchaRenderOptions {
+  sitekey: string;
+  size: 'invisible';
+  callback: (token: string) => void;
+}
+
+interface Props {
+  formID: string;
+  children: (props: CaptchaProps) => any;
+}
+
+export interface CaptchaProps {
+  isReady: boolean;
+  execute: () => Promise<string>;
+}
+
+const RecapchaInputs: FC<Props> = (props: Props) => {
   const [isReady, setReady] = useState(false);
   const siteKey = '6Le-vr0UAAAAALh9uIQyL3xL2fAEzKpo4_DPgepD';
 
@@ -16,7 +45,7 @@ const RecapchaInputs = (props) => {
         sitekey: siteKey,
         size: 'invisible',
         callback: (token) => {
-          const form = document.getElementById(props.formID);
+          const form = document.getElementById(props.formID) as HTMLFormElement;
           if (form.reportValidity() === false) {
             return;
           }
