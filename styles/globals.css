@@ -14,10 +14,3 @@ div#__next > div,
 div#__next > div > div {
   min-height: 100vh;
 }
-
-@tailwind base;
-@tailwind components;
-.footnotes {
-  @apply mt-4;
-}
-@tailwind utilities;
