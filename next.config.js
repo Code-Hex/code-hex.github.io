@@ -38,7 +38,7 @@ const nextConfig = {
 };
 
 const emoji = require('remark-emoji');
-const rehypePrism = require('@mapbox/rehype-prism');
+const { withSyntaxHighlighting } = require('./remark/withSyntaxHighlighting');
 const visit = require('unist-util-visit');
 const footnotes = require('remark-footnotes');
 
@@ -66,20 +66,12 @@ const _exports = withPlugins(
       layoutPath: 'layouts/mdx',
       defaultLayout: true,
       fileExtensions: ['mdx', 'md'],
-      remarkPlugins: [replacer, footnotes, [emoji, { padSpaceAfter: true }]],
-      rehypePlugins: [
-        rehypePrism,
-        () => {
-          // ref: https://github.com/tailwindlabs/blog.tailwindcss.com/blob/master/next.config.js
-          return (tree) => {
-            visit(tree, 'element', (node, index, parent) => {
-              let [token, type] = node.properties.className || [];
-              if (token === 'token') {
-                node.properties.className = [tokenClassNames[type]];
-              }
-            });
-          };
-        },
+      rehypePlugins: [],
+      remarkPlugins: [
+        withSyntaxHighlighting,
+        replacer,
+        footnotes,
+        [emoji, { padSpaceAfter: true }],
       ],
       reExportDataFetching: false,
     }),
