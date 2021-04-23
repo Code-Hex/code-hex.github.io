@@ -40,6 +40,22 @@ const nextConfig = {
 const emoji = require('remark-emoji');
 const rehypePrism = require('@mapbox/rehype-prism');
 const visit = require('unist-util-visit');
+const footnotes = require('remark-footnotes');
+
+const tokenClassNames = {
+  tag: 'text-code-red',
+  'attr-name': 'text-code-yellow',
+  'attr-value': 'text-code-green',
+  deleted: 'text-code-red',
+  inserted: 'text-code-green',
+  punctuation: 'text-code-white',
+  keyword: 'text-code-purple',
+  string: 'text-code-green',
+  function: 'text-code-blue',
+  boolean: 'text-code-red',
+  comment: 'text-gray-400 italic',
+  highlight: 'rgba(134, 239, 172, 0.25)',
+};
 
 // NOTE(codehex): ./scripts/post-export.js で nextConfig を読み込みたいので
 // _exports という変数を作成し export できるようにしてる。
@@ -50,8 +66,21 @@ const _exports = withPlugins(
       layoutPath: 'layouts/mdx',
       defaultLayout: true,
       fileExtensions: ['mdx', 'md'],
-      remarkPlugins: [replacer, [emoji, { padSpaceAfter: true }]],
-      rehypePlugins: [rehypePrism],
+      remarkPlugins: [replacer, footnotes, [emoji, { padSpaceAfter: true }]],
+      rehypePlugins: [
+        rehypePrism,
+        () => {
+          // ref: https://github.com/tailwindlabs/blog.tailwindcss.com/blob/master/next.config.js
+          return (tree) => {
+            visit(tree, 'element', (node, index, parent) => {
+              let [token, type] = node.properties.className || [];
+              if (token === 'token') {
+                node.properties.className = [tokenClassNames[type]];
+              }
+            });
+          };
+        },
+      ],
       reExportDataFetching: false,
     }),
   ],
