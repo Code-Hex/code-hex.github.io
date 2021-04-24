@@ -41,21 +41,8 @@ const emoji = require('remark-emoji');
 const { withSyntaxHighlighting } = require('./remark/withSyntaxHighlighting');
 const visit = require('unist-util-visit');
 const footnotes = require('remark-footnotes');
-
-const tokenClassNames = {
-  tag: 'text-code-red',
-  'attr-name': 'text-code-yellow',
-  'attr-value': 'text-code-green',
-  deleted: 'text-code-red',
-  inserted: 'text-code-green',
-  punctuation: 'text-code-white',
-  keyword: 'text-code-purple',
-  string: 'text-code-green',
-  function: 'text-code-blue',
-  boolean: 'text-code-red',
-  comment: 'text-gray-400 italic',
-  highlight: 'rgba(134, 239, 172, 0.25)',
-};
+const slug = require('remark-slug');
+const autoLinkHeadings = require('remark-autolink-headings');
 
 // NOTE(codehex): ./scripts/post-export.js で nextConfig を読み込みたいので
 // _exports という変数を作成し export できるようにしてる。
@@ -71,6 +58,17 @@ const _exports = withPlugins(
         withSyntaxHighlighting,
         replacer,
         footnotes,
+        slug,
+        [
+          autoLinkHeadings,
+          {
+            linkProperties: {
+              type: 'element',
+              tagName: 'span',
+              properties: { className: ['icon', 'icon-link'] },
+            },
+          },
+        ],
         [emoji, { padSpaceAfter: true }],
       ],
       reExportDataFetching: false,
