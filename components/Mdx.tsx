@@ -1,7 +1,4 @@
 import { MDXProviderComponents } from '@mdx-js/react';
-import GitHubSlugger from 'github-slugger';
-
-const slugger = new GitHubSlugger();
 
 const classNames = (...classes: string[]): string => {
   return classes.filter(Boolean).join(' ');
@@ -11,40 +8,36 @@ export const MDXComponents: MDXProviderComponents = {
   h1: ({ className, ...props }) => (
     <h1
       {...props}
-      id={slugger.slug(props.children)}
       className={classNames(
         className,
-        `mt-2 block text-3xl leading-8 font-extrabold tracking-tight sm:text-4xl`
+        `my-4 text-3xl leading-8 font-extrabold tracking-tight sm:text-4xl`
       )}
     />
   ),
   h2: ({ className, ...props }) => (
     <h2
       {...props}
-      id={slugger.slug(props.children)}
       className={classNames(
         className,
-        `mt-2 block text-2xl leading-8 font-bold tracking-tight`
+        `my-4 text-2xl leading-8 font-bold tracking-tight`
       )}
     />
   ),
   h3: ({ className, ...props }) => (
     <h3
       {...props}
-      id={slugger.slug(props.children)}
       className={classNames(
         className,
-        `mt-2 block text-xl leading-8 font-semibold tracking-tight`
+        `my-2 text-xl leading-8 font-semibold tracking-tight`
       )}
     />
   ),
   h4: ({ className, ...props }) => (
     <h4
       {...props}
-      id={slugger.slug(props.children)}
       className={classNames(
         className,
-        `mt-1 block text-lg leading-8 font-medium tracking-tight`
+        `my-2 text-lg leading-8 font-medium tracking-tight`
       )}
     />
   ),

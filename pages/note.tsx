@@ -50,27 +50,28 @@ export default function DocsPage({ pages }: DocsPageProps) {
     };
   });
   return (
-    <div className="relative bg-gray-50 pt-16 pb-20 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
-      <div className="absolute inset-0">
-        <div className="bg-white h-1/3 sm:h-2/3" />
-      </div>
-      <div className="relative max-w-7xl mx-auto">
-        <div className="text-left">
-          <h2 className="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl">
-            {title}
-          </h2>
-          <p className="mt-3 max-w-2xl text-xl text-gray-500 sm:mt-4">
-            This is{' '}
-            <Link href="/">
-              <a className="text-blue-400">@codehex</a>
-            </Link>
-            's personal note. Candid thoughts any technical stacks and other
-            interesting things.
-          </p>
-        </div>
-        <div className="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
-          <TimelineComponent timeline={timelines} />
-        </div>
+    <div className="antialiased">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 xl:max-w-5xl xl:px-0 py-10">
+        <main className="divide-y divide-gray-200">
+          <div className="text-left py-4">
+            <h2 className="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl">
+              {title}
+            </h2>
+            <p className="mt-3 max-w-2xl text-xl text-gray-500 sm:mt-4">
+              This is{' '}
+              <Link href="/">
+                <a className="text-blue-400 hover:text-blue-600 hover:underline">
+                  @codehex
+                </a>
+              </Link>
+              's personal note. Candid thoughts any technical stacks and other
+              interesting things.
+            </p>
+          </div>
+          <div className="max-w-lg mx-auto lg:grid-cols-3 lg:max-w-none">
+            <TimelineComponent timeline={timelines} />
+          </div>
+        </main>
       </div>
     </div>
   );
@@ -120,7 +121,7 @@ const TimelineComponent = ({ timeline }: TimelineComponentProps) => {
     <ul className="divide-y divide-gray-200">
       {timeline.map((event) => (
         <li key={event.key}>
-          <div className="mb-4 pt-2">
+          <div className="mb-4 pt-4">
             <div className="flex flex-col space-y-1">
               <div className="min-w-0 flex-1 pt-1.5 flex justify-between items-center">
                 <Link href={event.href}>
