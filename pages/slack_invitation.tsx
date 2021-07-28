@@ -1,6 +1,7 @@
 import Head from 'next/head';
-import RecaptureInputs from '../components/RecapchaInputs';
-import CodeHex from '../components/CodeHex';
+import RecaptureInputs, { CaptchaProps } from '~/components/RecapchaInputs';
+import CodeHex from '~/components/CodeHex';
+import { ReactNode } from 'react';
 
 export default function SlackInvitation() {
   return (
@@ -40,7 +41,7 @@ export default function SlackInvitation() {
             pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
           />
           <RecaptureInputs formID="invite-form">
-            {(captcha) => (
+            {(captcha: CaptchaProps): ReactNode => (
               <button
                 onClick={(e) => {
                   e.preventDefault();
