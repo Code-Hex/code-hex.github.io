@@ -10,24 +10,40 @@
     "postexport": "node scripts/post-export.js"
   },
   "dependencies": {
-    "@chakra-ui/react": "^1.0.1",
-    "@emotion/react": "^11.1.1",
-    "@emotion/styled": "^11.0.0",
+    "@heroicons/react": "^1.0.1",
     "@mapbox/rehype-prism": "^0.5.0",
-    "@mdx-js/loader": "^1.6.21",
     "babel-plugin-import-glob-array": "^0.2.0",
     "framer-motion": "^2.9.4",
     "github-slugger": "^1.3.0",
+    "hast-util-heading": "^1.0.5",
     "next": "10.0.1",
     "next-build-id": "^3.0.0",
     "next-compose-plugins": "^2.2.1",
     "next-mdx-enhanced": "^5.0.0",
+    "postcss-nesting": "^7.0.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "refractor": "^3.3.1",
+    "remark-autolink-headings": "^6.0.1",
     "remark-emoji": "^2.1.0",
+    "remark-footnotes": "^2.0.0",
+    "remark-slug": "^6.0.0",
     "unified": "^9.2.0"
   },
   "devDependencies": {
-    "prettier": "2.1.2"
+    "@mdx-js/loader": "^1.6.22",
+    "@mdx-js/mdx": "^1.6.22",
+    "@mdx-js/react": "^1.6.22",
+    "@next/mdx": "^10.1.3",
+    "@types/github-slugger": "^1.3.0",
+    "@types/mdx-js__react": "^1.5.3",
+    "@types/node": "^14.14.41",
+    "@types/react": "^17.0.3",
+    "@types/styled-jsx": "^2.2.8",
+    "autoprefixer": "^10.2.5",
+    "postcss": "^8.2.10",
+    "prettier": "2.1.2",
+    "tailwindcss": "^2.1.1",
+    "typescript": "^4.2.4"
   }
 }

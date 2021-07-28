@@ -6,17 +6,14 @@ export default function Home() {
   return (
     <HomePageLayout>
       <div className="marquee">
-        <h1 className="title">Welcome to codehex's homepage</h1>
+        <h1 className="title py-4 text-3xl font-bold">
+          Welcome to codehex's homepage
+        </h1>
       </div>
       <div className="codehex-home">
-        <CodeHex
-          className="codehex"
-          width="200px"
-          height="200px"
-          isShake={true}
-        />
-        <p>My accounts</p>
-        <ul>
+        <CodeHex width="200px" height="200px" isShake={true} />
+        <p className="py-2">My accounts</p>
+        <ul className="list-disc pl-8">
           <li>
             <span>
               <a href="https://okinawa.pm.org/">Okinawa.pm</a>
@@ -48,8 +45,8 @@ export default function Home() {
             </span>
           </li>
         </ul>
-        <p>Maps</p>
-        <ul className="page-list">
+        <p className="py-2">Maps</p>
+        <ul className="page-list list-disc pl-8">
           <li>
             <Link href="/note" as="/note">
               <a>アルパカの徒然文</a>

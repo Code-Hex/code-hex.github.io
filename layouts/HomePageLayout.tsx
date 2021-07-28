@@ -1,7 +1,12 @@
 import Head from 'next/head';
+import { ReactNode } from 'react';
 
-const HomePageLayout = (props) => {
-  const { title, children } = props;
+interface HomePageLayoutProps {
+  title?: string;
+  children?: ReactNode;
+}
+
+const HomePageLayout = ({ title, children }: HomePageLayoutProps) => {
   const siteTitle = 'codehex homepage';
   return (
     <div className="page">
