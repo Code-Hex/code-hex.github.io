@@ -10,7 +10,7 @@ export const MDXComponents: MDXProviderComponents = {
       {...props}
       className={classNames(
         className,
-        `my-4 text-3xl leading-8 font-extrabold tracking-tight sm:text-4xl`
+        `flex items-center my-4 text-3xl leading-8 font-extrabold tracking-tight sm:text-4xl`
       )}
     />
   ),
@@ -19,7 +19,7 @@ export const MDXComponents: MDXProviderComponents = {
       {...props}
       className={classNames(
         className,
-        `my-4 text-2xl leading-8 font-bold tracking-tight`
+        `flex items-center my-4 text-2xl leading-8 font-bold tracking-tight`
       )}
     />
   ),
@@ -28,7 +28,7 @@ export const MDXComponents: MDXProviderComponents = {
       {...props}
       className={classNames(
         className,
-        `my-2 text-xl leading-8 font-semibold tracking-tight`
+        `flex items-center my-2 text-xl leading-8 font-semibold tracking-tight`
       )}
     />
   ),
@@ -37,7 +37,7 @@ export const MDXComponents: MDXProviderComponents = {
       {...props}
       className={classNames(
         className,
-        `my-2 text-lg leading-8 font-medium tracking-tight`
+        `flex items-center my-2 text-lg leading-8 font-medium tracking-tight`
       )}
     />
   ),

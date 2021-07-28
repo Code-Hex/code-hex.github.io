@@ -49,7 +49,7 @@ const Index = ({ children, frontMatter }: IndexProps) => {
             />
           </Head>
           <div className={`w-full flex bg-white antialiased`}>
-            <div className="min-w-0 flex-auto px-4 sm:px-6 xl:px-8 pt-10 pb-24 lg:pb-16">
+            <div className="min-w-0 flex-auto px-8 sm:px-10 xl:px-12 pt-10 pb-24 lg:pb-16">
               <div className="pb-10 border-b border-gray-200 mb-10">
                 <div>
                   <h1 className="inline-block text-3xl font-extrabold text-gray-900 tracking-tight">
