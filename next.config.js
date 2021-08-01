@@ -13,7 +13,7 @@ const autoLinkHeadings = require('remark-autolink-headings');
 const nextConfig = {
   generateBuildId: () => nextBuildId({ dir: __dirname }),
   exportPathMap: async function () {
-    const notes = [];
+    const notes = []; // TODO(codehex): fix
     const notePaths = notes.map((v) => '/note/' + v.replace(/\.mdx$/, ''));
     let pages = {
       '/': { page: '/' },
