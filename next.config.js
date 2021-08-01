@@ -13,7 +13,7 @@ const autoLinkHeadings = require('remark-autolink-headings');
 const nextConfig = {
   generateBuildId: () => nextBuildId({ dir: __dirname }),
   exportPathMap: async function () {
-    const notes = []; // TODO(codehex): fix
+    const notes = ['hello.mdx', 'hello2.mdx']; // TODO(codehex): fix
     const notePaths = notes.map((v) => '/note/' + v.replace(/\.mdx$/, ''));
     let pages = {
       '/': { page: '/' },
@@ -27,6 +27,7 @@ const nextConfig = {
     });
     return pages;
   },
+  trailingSlash: true,
   pageExtensions: ['ts', 'tsx', 'mdx'],
   // https://nextjs.org/docs/basic-features/image-optimization
   images: {
