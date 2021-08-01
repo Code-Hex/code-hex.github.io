@@ -7,7 +7,7 @@ export default function Home() {
     <HomePageLayout>
       <div className="marquee">
         <h1 className="title py-4 text-3xl font-bold">
-          Welcome to codehex's homepage
+          Welcome to codehex&apos;s homepage
         </h1>
       </div>
       <div className="codehex-home">
