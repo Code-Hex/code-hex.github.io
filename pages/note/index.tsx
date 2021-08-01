@@ -1,28 +1,14 @@
-import { frontMatter as blogPages } from './note/*.mdx';
 import Link from 'next/link';
 import 'tailwindcss/tailwind.css';
-
-/**
- *
- * @param {string} p
- */
-const formatPath = (p: string): string => {
-  return p.replace(/\.mdx?$/, '');
-};
-
-/**
- *
- * @param {string} d
- */
-const formatDate = (d: string): string => {
-  return d.slice(0, 10);
-};
+import { GetStaticProps } from 'next';
+import { getAllNotes } from 'mdx/utils';
+import dayjs from 'dayjs';
 
 interface Page {
   title: string;
   date: string;
   tags: string[];
-  __resourcePath: string;
+  filename: string;
 }
 // pages variable:
 // [
@@ -30,22 +16,20 @@ interface Page {
 //         title: 'こんにちは mdx!!',
 //         date: '2020-11-23T00:00:00.000Z',
 //         tags: [ 'blog', 'tag1', 'tag2', 'perl' ],
-//         __resourcePath: 'blog/mdx-ftw.mdx'
+//         filename: 'mdx-ftw'
 //     }
 // ]
-interface DocsPageProps {
-  pages: Page[];
-}
+const notes = getAllNotes();
 
-export default function DocsPage({ pages }: DocsPageProps) {
+export default function Index() {
   const title = 'Notes';
-  const timelines: Timeline[] = pages.map((v) => {
+  const timelines: Timeline[] = notes.map((note: any) => {
     return {
-      key: '/' + v.__resourcePath,
-      title: v.title,
-      tags: v.tags,
-      href: '/' + formatPath(v.__resourcePath),
-      datetime: formatDate(v.date),
+      key: '/' + note.link,
+      title: note.module.meta.title,
+      tags: note.module.meta.tags,
+      href: `/note/${note.link}`,
+      datetime: dayjs(note.module.meta.date).format('YYYY-MM-DD'),
       iconBackground: 'bg-green-400',
     };
   });
@@ -64,8 +48,8 @@ export default function DocsPage({ pages }: DocsPageProps) {
                   @codehex
                 </a>
               </Link>
-              's personal note. Candid thoughts any technical stacks and other
-              interesting things.
+              &apos;s personal note. Candid thoughts any technical stacks and
+              other interesting things.
             </p>
           </div>
           <div className="max-w-lg mx-auto lg:grid-cols-3 lg:max-w-none">
@@ -77,32 +61,26 @@ export default function DocsPage({ pages }: DocsPageProps) {
   );
 }
 
-export async function getStaticProps() {
-  const pages = (blogPages as Page[]).sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+export const getStaticProps: GetStaticProps = async ({}) => {
   return {
     props: {
-      pages,
+      pages: notes.map(
+        (p: any): Page => {
+          return {
+            title: p.module.meta.title,
+            date: dayjs(p.module.meta.date).format('YYYY-MM-DD'),
+            tags: p.module.meta.tags,
+            filename: p.link,
+          };
+        }
+      ),
     },
   };
-}
+};
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
-
-/*
-  {
-    key: "uniq"
-    title: 'Applied to',
-    href: '#',
-    tags: [ 'blog', 'tag1', 'tag2', 'perl' ],
-    datetime: '2020-09-20',
-    icon: UserIcon,
-    iconBackground: 'bg-gray-400',
-  }
-*/
 
 interface Timeline {
   key: string;
@@ -157,7 +135,7 @@ const TagComponent = ({ tag }: TagComponentProps) => {
   return (
     <div>
       <a
-        href={`/tags/${tag}`}
+        href={`/note/tags/${tag}`}
         className="inline-flex items-center rounded border border-gray-300 px-2 py-0.5 text-xs"
       >
         <span className="absolute flex-shrink-0 flex items-center justify-center">
