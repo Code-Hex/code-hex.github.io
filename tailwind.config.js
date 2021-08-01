@@ -1,10 +1,17 @@
 const colors = require('tailwindcss/colors');
+const mdx = require('@mdx-js/mdx');
 
 module.exports = {
-  purge: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-  ],
+  purge: {
+    content: [
+      './pages/**/*.{ts,tsx,mdx}',
+      './components/**/*.{ts,tsx}',
+      './next.config.js',
+    ],
+    transform: {
+      mdx: mdx.sync,
+    },
+  },
   darkMode: false, // or 'media' or 'class'
   theme: {
     colors: {
@@ -22,7 +29,7 @@ module.exports = {
       gray: colors.coolGray,
       green: colors.green,
       indigo: colors.indigo,
-      'light-blue': colors.lightBlue,
+      sky: colors.sky,
       lime: colors.lime,
       orange: {
         ...colors.orange,
