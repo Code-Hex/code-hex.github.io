@@ -22,7 +22,6 @@ export default function TagPage({ pages }: TagPageProps) {
   return (
     <div className="flex flex-row">
       {pages.map((page, i) => {
-        console.log(pages);
         return (
           <div key={i}>
             <div>
