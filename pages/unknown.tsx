@@ -7,7 +7,7 @@ export default function Unknown() {
       <div className="codehex-unknown">
         <h1>Unknown list</h1>
         <CodeHexUnknown width="200px" height="200px" />
-        <p>What's this?</p>
+        <p>What&apos;s this?</p>
         <ul>
           <li>
             <a href="https://ja.uncyclopedia.info/wiki/Uncyclopedia:%E7%A7%80%E9%80%B8%E3%81%AA%E8%A8%98%E4%BA%8B">
@@ -36,7 +36,8 @@ export default function Unknown() {
               </li>
               <li>
                 <a href="https://commons.wikimedia.org/wiki/File:I%27m_calling_you,_Mr._Amadeus!.jpg">
-                  File:I'm calling you, Mr. Amadeus!.jpg - Wikimedia Commons
+                  File:I&apos;m calling you, Mr. Amadeus!.jpg - Wikimedia
+                  Commons
                 </a>
               </li>
               <li>
