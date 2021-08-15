@@ -10,16 +10,21 @@
     "postexport": "node scripts/post-export.js"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.2.2",
     "dayjs": "^1.10.6",
-    "next": "^11.0.1",
+    "monaco-editor": "^0.26.1",
+    "next": "^11.1.0",
     "next-build-id": "^3.0.0",
     "next-compose-plugins": "^2.2.1",
+    "next-transpile-modules": "^8.0.0",
     "prismjs": "^1.24.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "remark-emoji": "^2.1.0",
     "remark-footnotes": "^2.0.0",
-    "simple-functional-loader": "^1.2.1"
+    "simple-functional-loader": "^1.2.1",
+    "vscode-oniguruma": "^1.5.1",
+    "vscode-textmate": "^5.4.0"
   },
   "devDependencies": {
     "@mdx-js/loader": "^1.6.22",
