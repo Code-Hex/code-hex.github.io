@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "export": "next export",
-    "postexport": "node scripts/post-export.js"
+    "postexport": "node scripts/post-export.js",
+    "postinstall": "cp node_modules/vscode-oniguruma/release/onig.wasm public/wasm"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.2.2",
