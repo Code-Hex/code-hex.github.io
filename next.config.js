@@ -126,8 +126,15 @@ const nextConfig = {
   },
 };
 
+// https://dev.to/swyx/how-to-add-monaco-editor-to-a-next-js-app-ha3
+const withTM = require('next-transpile-modules')([
+  // `monaco-editor` isn't published to npm correctly: it includes both CSS
+  // imports and non-Node friendly syntax, so it needs to be compiled.
+  'monaco-editor',
+]);
+
 // NOTE(codehex): ./scripts/post-export.js で nextConfig を読み込みたいので
 // _exports という変数を作成し export できるようにしてる。
-const _exports = withPlugins([], nextConfig);
+const _exports = withPlugins([withTM], nextConfig);
 _exports.nextConfig = nextConfig;
 module.exports = _exports;

@@ -37,3 +37,6 @@ yarn-error.log*
 
 # next-mdx-enhanced
 .mdx-data
+
+# wasm
+public/wasm/onig.wasm
