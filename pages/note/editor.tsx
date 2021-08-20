@@ -1,169 +1,168 @@
 import React, { useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
-import { useMonaco } from '@monaco-editor/react';
-import {
-  createOnigScanner,
-  createOnigString,
-  loadWASM,
-} from 'vscode-oniguruma';
+import Editor, { useMonaco } from '@monaco-editor/react';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import {
-  ScopeName,
-  SimpleLanguageInfoProvider,
-  ScopeNameInfo,
-  TextMateGrammar,
-} from 'monaco/providers';
-import { LanguageId, registerLanguages } from 'monaco/register';
-import { rehydrateRegexps } from 'monaco/configuration';
-import VsCodeDarkTheme from 'monaco/vs-dark-plus-theme';
-import { IOnigLib } from 'vscode-textmate';
 
 const EditorPage = () => {
-  const monaco = useMonaco();
-  const onigLib = useLoadWASM();
-  const containerRef = useRef<HTMLDivElement>(null);
+  const m = useMonaco();
+  const markdown = useLanguageLoader('markdown');
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    if (!monaco || !onigLib || !containerRef.current) {
+    if (!m || markdown.loading) {
       return;
     }
+    if (markdown.error) throw markdown.error;
 
-    const language = 'python';
-    const element = containerRef.current;
-
-    const provider = new SimpleLanguageInfoProvider({
-      grammars,
-      fetchGrammar,
-      configurations: languages.map((language) => language.id),
-      fetchConfiguration,
-      theme: VsCodeDarkTheme,
-      onigLib,
-      monaco,
+    m.languages.typescript.typescriptDefaults.setCompilerOptions({
+      target: m.languages.typescript.ScriptTarget.ES2016,
+      allowNonTsExtensions: true,
+      moduleResolution: m.languages.typescript.ModuleResolutionKind.NodeJs,
+      module: m.languages.typescript.ModuleKind.CommonJS,
+      noEmit: true,
+      typeRoots: ['node_modules/@types'],
+      jsx: m.languages.typescript.JsxEmit.React,
+      jsxFactory: 'JSXAlone.createElement',
     });
 
-    registerLanguages(
-      languages,
-      (language: LanguageId) => provider.fetchLanguageInfo(language),
-      monaco
+    const mdxLanguage = Object.assign({}, markdown.loaded?.language);
+    const mdxConf = Object.assign({}, markdown.loaded?.conf);
+
+    // setup
+    mdxLanguage.tokenizer.linecontent.push(
+      { include: 'jsxModule' },
+      { include: 'jsxTag' }
     );
 
-    const value = getSampleCodeForLanguage(language);
+    // jsx-module
+    mdxLanguage.tokenizer.jsxModule = [
+      [
+        /^(import|export)\b/,
+        {
+          token: 'keyword.javascript',
+          next: '@embeddedJsxModule',
+          nextEmbedded: 'javascript',
+        },
+      ],
+    ];
+    mdxLanguage.tokenizer.embeddedJsxModule = [
+      [/^\s*$/, { token: '', next: '@pop', nextEmbedded: '@pop' }],
+    ];
 
-    monaco.editor.create(element, {
-      value,
-      language,
-      theme: 'vs-dark',
-      minimap: {
-        enabled: true,
-      },
+    // jsx-tag
+    mdxLanguage.tokenizer.jsxTag = [
+      [
+        /^(?=< *([a-zA-Z]\w*))/,
+        {
+          token: 'keyword.javascript',
+          next: '@embeddedJsxTag',
+          nextEmbedded: 'javascript',
+        },
+      ],
+    ];
+    mdxLanguage.tokenizer.embeddedJsxTag = [
+      [/(?<=>)/, { token: '', next: '@pop', nextEmbedded: '@pop' }],
+    ];
+
+    m.languages.register({
+      id: 'mdx',
+      extensions: ['.mdx'],
+      aliases: ['Markdown React'],
     });
-    provider.injectCSS();
-  }, [monaco, onigLib, containerRef]);
+    m.languages.setMonarchTokensProvider('mdx', mdxLanguage);
+    m.languages.setLanguageConfiguration('mdx', mdxConf);
 
-  return <div ref={containerRef} />;
+    setLoading(false);
+  }, [m, markdown]);
+
+  if (loading) {
+    return <div>loading...</div>;
+  }
+
+  return (
+    <Editor
+      height="100vh"
+      defaultValue={getSampleCodeForLanguage()}
+      defaultLanguage="mdx"
+      theme="vs-dark"
+      options={{
+        minimap: {
+          enabled: true,
+        },
+      }}
+    />
+  );
+};
+
+interface MonacoLanguageLoaderResult {
+  language: monaco.languages.IMonarchLanguage;
+  conf: monaco.languages.LanguageConfiguration;
+}
+
+interface LanguageLoaderState {
+  loaded?: MonacoLanguageLoaderResult;
+  loading: boolean;
+  error?: Error;
+}
+
+const useLanguageLoader = (languageId: string): LanguageLoaderState => {
+  const m = useMonaco();
+  const [result, setResult] = useState<MonacoLanguageLoaderResult | undefined>(
+    undefined
+  );
+
+  if (!m) {
+    return {
+      loading: true,
+    };
+  }
+
+  const language = m.languages
+    .getLanguages()
+    .find((lang) => lang.id === languageId);
+
+  if (!language) {
+    return {
+      loading: false,
+      error: new Error(`unexpected language: ${languageId}`),
+    };
+  }
+
+  (async () => {
+    const loaded = await (language as any).loader();
+    setResult(loaded as MonacoLanguageLoaderResult);
+  })();
+
+  return {
+    loaded: result,
+    loading: !result,
+  };
 };
 
 export default dynamic(() => Promise.resolve(EditorPage), { ssr: false });
 
-interface DemoScopeNameInfo extends ScopeNameInfo {
-  path: string;
-}
-
-const useLoadWASM = (): Promise<IOnigLib> | undefined => {
-  const [lib, setLib] = useState<Promise<IOnigLib> | undefined>();
-
-  useEffect(() => {
-    loadVSCodeOnigurumWASM().then((data) => loadWASM(data));
-    const onigLib = Promise.resolve({
-      createOnigScanner,
-      createOnigString,
-    });
-    setLib(onigLib);
-  }, []);
-
-  return lib;
-};
-
-const languages: monaco.languages.ILanguageExtensionPoint[] = [
-  {
-    id: 'python',
-    extensions: [
-      '.py',
-      '.rpy',
-      '.pyw',
-      '.cpy',
-      '.gyp',
-      '.gypi',
-      '.pyi',
-      '.ipy',
-      '.bzl',
-      '.cconf',
-      '.cinc',
-      '.mcconf',
-      '.sky',
-      '.td',
-      '.tw',
-    ],
-    aliases: ['Python', 'py'],
-    filenames: ['Snakefile', 'BUILD', 'BUCK', 'TARGETS'],
-    firstLine: '^#!\\s*/?.*\\bpython[0-9.-]*\\b',
-  },
-];
-
-const grammars: { [scopeName: string]: DemoScopeNameInfo } = {
-  'source.python': {
-    language: 'python',
-    path: 'MagicPython.tmLanguage.json',
-  },
-};
-
-const fetchGrammar = async (scopeName: ScopeName): Promise<TextMateGrammar> => {
-  const { path } = grammars[scopeName];
-  const uri = `/grammars/${path}`;
-  const response = await fetch(uri);
-  const grammar = await response.text();
-  const type = path.endsWith('.json') ? 'json' : 'plist';
-  return { type, grammar };
-};
-
-const fetchConfiguration = async (
-  language: LanguageId
-): Promise<monaco.languages.LanguageConfiguration> => {
-  const uri = `/configurations/${language}.json`;
-  const response = await fetch(uri);
-  const rawConfiguration = await response.text();
-  return rehydrateRegexps(rawConfiguration);
-};
-
-// Taken from https://github.com/microsoft/vscode/blob/829230a5a83768a3494ebbc61144e7cde9105c73/src/vs/workbench/services/textMate/browser/textMateService.ts#L33-L40
-export async function loadVSCodeOnigurumWASM(): Promise<
-  Response | ArrayBuffer
-> {
-  const response = await fetch('/wasm/onig.wasm');
-  const contentType = response.headers.get('content-type');
-  if (contentType === 'application/wasm') {
-    return response;
-  }
-
-  // Using the response directly only works if the server sets the MIME type 'application/wasm'.
-  // Otherwise, a TypeError is thrown when using the streaming compiler.
-  // We therefore use the non-streaming compiler :(.
-  return await response.arrayBuffer();
-}
-
-function getSampleCodeForLanguage(language: LanguageId): string {
+function getSampleCodeForLanguage(): string {
   const now = dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ssZ[Z]');
-  if (language === 'python') {
-    return `\
-# ${now}
-import foo
-async def bar(): string:
-  f = await foo()
-  f_string = f"Hooray {f}! format strings are not supported in current Monarch grammar"
-  return foo_string
-`;
-  }
+  return `\
+import Component from './component'
 
-  throw Error(`unsupported language: ${language}`);
+export const meta = {
+  title: '',
+  date: '${now}',
+  tags: []
+}
+
+<Component>{/* comment */}</Component>
+
+
+# Hello, *world*!
+
+Below is an example of JSX embedded in Markdown. <br /> **Try and change
+the background color!**
+
+<div style={{ padding: '20px', backgroundColor: 'tomato' }}>
+  <h3>This is JSX</h3>
+</div>
+`;
 }
