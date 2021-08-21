@@ -23,11 +23,11 @@
       "~/layouts/*": ["layouts/*"],
       "~/hooks/*": ["hooks/*"],
       "~/remark/*": ["remark/*"],
+      "~/esbuild/*": ["esbuild/*"],
     }
   },
   "include": [
     "next-env.d.ts",
-    "additional.d.ts",
     "mdx.d.ts",
     "**/*.ts",
     "**/*.tsx",
