@@ -1,55 +1,33 @@
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
 import Editor, { useMonaco } from '@monaco-editor/react';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as MDX from '@mdx-js/react';
+import mdx from '@mdx-js/mdx';
 import { remove } from 'unist-util-remove';
 import Note from '~/components/Note';
-import { Plugin, Pluggable, Compiler } from 'unified';
-import mdx from '@mdx-js/mdx';
-
-const esbuild = require('esbuild-wasm');
-
-const useESBuild = (): boolean => {
-  const [loading, setLoading] = useState(true);
-
-  const initialize = useCallback(async () => {
-    await esbuild.initialize({
-      wasmURL: '/wasm/esbuild.wasm',
-    });
-    setLoading(false);
-  }, []);
-
-  useMemo(() => initialize(), []); // run once
-
-  return loading;
-};
+import { Plugin, Pluggable } from 'unified';
+import esbuild from '~/esbuild/esbuild';
 
 const EditorPage = () => {
   const m = useMonaco();
-  const esbuildLoading = useESBuild();
   const [value, setValue] = useState<string | undefined>();
   const markdown = useLanguageLoader('markdown');
   const [loading, setLoading] = useState<boolean>(true);
   const [compiledSrc, setCompiledSrc] = useState<string | undefined>();
 
   useEffect(() => {
-    if (!value || esbuildLoading) {
-      return;
-    }
-    (async () => {
-      setCompiledSrc(await CompileMdx(value, {}));
-    })();
-  }, [value, esbuildLoading]);
+    if (!value) return;
 
-  useEffect(() => console.log('es', esbuildLoading), [esbuildLoading]);
+    (async () => {
+      try {
+        setCompiledSrc(await CompileMdx(value, {}));
+      } catch (err) {
+        console.error('mdx error:', err.message);
+      }
+    })();
+  }, [value]);
 
   useEffect(() => {
     if (!m || markdown.loading) {
@@ -155,9 +133,7 @@ const EditorPage = () => {
         />
       </div>
       <div className="w-1/2 h-full overflow-y-scroll">
-        <div className="">
-          {esbuildLoading ? <div>loading...</div> : <Preview />}
-        </div>
+        <div className="">{<Preview />}</div>
       </div>
     </div>
   );
@@ -240,13 +216,7 @@ const removeImportsExportsPlugin: Plugin = () => (tree: any) =>
   remove(tree, ['import', 'export']);
 
 interface CompileMDXOptions {
-  mdxOptions?: {
-    remarkPlugins?: Pluggable[];
-    rehypePlugins?: Pluggable[];
-    hastPlugins?: Pluggable[];
-    compilers?: Compiler[];
-    filepath?: string;
-  };
+  mdxOptions?: mdx.Options;
 }
 
 // TODO(codehex): fix prism highlight for running on browser
@@ -257,7 +227,7 @@ const CompileMdx = async (
   { mdxOptions = {} }: CompileMDXOptions
 ): Promise<string> => {
   mdxOptions.remarkPlugins = [
-    ...(mdxOptions.remarkPlugins || remarkPlugins),
+    ...(mdxOptions.remarkPlugins || (remarkPlugins as Pluggable[])),
     removeImportsExportsPlugin,
   ];
 
@@ -265,13 +235,12 @@ const CompileMdx = async (
   console.log('start compile...');
   const compiledMdx = await mdx(src, { ...mdxOptions, skipExport: true });
   console.log(compiledMdx);
-  const transformResult = await esbuild.transform(compiledMdx, {
+  const { code } = await esbuild.transform(compiledMdx, {
     loader: 'jsx',
     jsxFactory: 'mdx',
     minify: true,
     target: ['es2020', 'node12'],
   });
-  console.log(transformResult);
 
-  return transformResult.code;
+  return code;
 };
