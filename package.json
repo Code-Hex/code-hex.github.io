@@ -7,11 +7,14 @@
     "build": "next build",
     "start": "next start",
     "export": "next export",
-    "postexport": "node scripts/post-export.js"
+    "postexport": "node scripts/post-export.js",
+    "postinstall": "cp ./node_modules/esbuild-wasm/esbuild.wasm public/wasm"
   },
   "dependencies": {
+    "@babel/standalone": "^7.15.3",
     "@monaco-editor/react": "^4.2.2",
     "dayjs": "^1.10.6",
+    "esbuild-wasm": "^0.12.21",
     "monaco-editor": "^0.26.1",
     "next": "^11.1.0",
     "next-build-id": "^3.0.0",
@@ -23,9 +26,11 @@
     "remark-emoji": "^2.1.0",
     "remark-footnotes": "^2.0.0",
     "simple-functional-loader": "^1.2.1",
+    "unist-util-remove": "^3.1.0",
     "vscode-textmate": "^5.4.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.15.0",
     "@mdx-js/loader": "^1.6.22",
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
