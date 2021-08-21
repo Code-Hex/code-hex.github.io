@@ -1,13 +1,55 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
 import Editor, { useMonaco } from '@monaco-editor/react';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import * as MDX from '@mdx-js/react';
+import { remove } from 'unist-util-remove';
+import Note from '~/components/Note';
+import { Plugin, Pluggable, Compiler } from 'unified';
+import mdx from '@mdx-js/mdx';
+
+const esbuild = require('esbuild-wasm');
+
+const useESBuild = (): boolean => {
+  const [loading, setLoading] = useState(true);
+
+  const initialize = useCallback(async () => {
+    await esbuild.initialize({
+      wasmURL: '/wasm/esbuild.wasm',
+    });
+    setLoading(false);
+  }, []);
+
+  useMemo(() => initialize(), []); // run once
+
+  return loading;
+};
 
 const EditorPage = () => {
   const m = useMonaco();
+  const esbuildLoading = useESBuild();
+  const [value, setValue] = useState<string | undefined>();
   const markdown = useLanguageLoader('markdown');
   const [loading, setLoading] = useState<boolean>(true);
+  const [compiledSrc, setCompiledSrc] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (!value || esbuildLoading) {
+      return;
+    }
+    (async () => {
+      setCompiledSrc(await CompileMdx(value, {}));
+    })();
+  }, [value, esbuildLoading]);
+
+  useEffect(() => console.log('es', esbuildLoading), [esbuildLoading]);
 
   useEffect(() => {
     if (!m || markdown.loading) {
@@ -34,6 +76,8 @@ const EditorPage = () => {
       { include: 'jsxModule' },
       { include: 'jsxTag' }
     );
+
+    mdxLanguage.tokenizer.html = [];
 
     // jsx-module
     mdxLanguage.tokenizer.jsxModule = [
@@ -76,22 +120,46 @@ const EditorPage = () => {
     setLoading(false);
   }, [m, markdown]);
 
+  const Preview = useMemo(() => {
+    if (!compiledSrc) return Fragment;
+
+    const fullScope = { mdx: MDX.mdx, React, Note };
+    const keys = Object.keys(fullScope);
+    const values = Object.values(fullScope);
+
+    const hydrateFn = Reflect.construct(
+      Function,
+      keys.concat([compiledSrc, 'return MDXContent'].join('\n'))
+    );
+    return hydrateFn.apply(hydrateFn, values);
+  }, [compiledSrc]);
+
   if (loading) {
     return <div>loading...</div>;
   }
 
   return (
-    <Editor
-      height="100vh"
-      defaultValue={getSampleCodeForLanguage()}
-      defaultLanguage="mdx"
-      theme="vs-dark"
-      options={{
-        minimap: {
-          enabled: true,
-        },
-      }}
-    />
+    <div className="w-full h-full flex flex-row fixed">
+      <div className="w-1/2 items-center overflow-y-hidden">
+        <Editor
+          defaultValue={getSampleCodeForLanguage()}
+          defaultLanguage="mdx"
+          theme="vs-dark"
+          onChange={(value, _) => setValue(value)}
+          onMount={(editor) => setValue(editor.getValue())}
+          options={{
+            minimap: {
+              enabled: true,
+            },
+          }}
+        />
+      </div>
+      <div className="w-1/2 h-full overflow-y-scroll">
+        <div className="">
+          {esbuildLoading ? <div>loading...</div> : <Preview />}
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -145,8 +213,6 @@ export default dynamic(() => Promise.resolve(EditorPage), { ssr: false });
 function getSampleCodeForLanguage(): string {
   const now = dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ssZ[Z]');
   return `\
-import Component from './component'
-
 export const meta = {
   title: '',
   date: '${now}',
@@ -166,3 +232,46 @@ the background color!**
 </div>
 `;
 }
+
+/**
+ * remark plugin which removes all import and export statements
+ */
+const removeImportsExportsPlugin: Plugin = () => (tree: any) =>
+  remove(tree, ['import', 'export']);
+
+interface CompileMDXOptions {
+  mdxOptions?: {
+    remarkPlugins?: Pluggable[];
+    rehypePlugins?: Pluggable[];
+    hastPlugins?: Pluggable[];
+    compilers?: Compiler[];
+    filepath?: string;
+  };
+}
+
+// TODO(codehex): fix prism highlight for running on browser
+const { remarkPlugins } = require('~/remark/remarkPlugins');
+
+const CompileMdx = async (
+  src: string,
+  { mdxOptions = {} }: CompileMDXOptions
+): Promise<string> => {
+  mdxOptions.remarkPlugins = [
+    ...(mdxOptions.remarkPlugins || remarkPlugins),
+    removeImportsExportsPlugin,
+  ];
+
+  // TODO(codehex): error handling. e.g. SyntaxError
+  console.log('start compile...');
+  const compiledMdx = await mdx(src, { ...mdxOptions, skipExport: true });
+  console.log(compiledMdx);
+  const transformResult = await esbuild.transform(compiledMdx, {
+    loader: 'jsx',
+    jsxFactory: 'mdx',
+    minify: true,
+    target: ['es2020', 'node12'],
+  });
+  console.log(transformResult);
+
+  return transformResult.code;
+};

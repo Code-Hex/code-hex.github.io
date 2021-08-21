@@ -20,14 +20,18 @@
     "baseUrl": ".",
     "paths": {
       "~/components/*": ["components/*"],
-      "~/layouts/*": ["layouts/*"]
+      "~/layouts/*": ["layouts/*"],
+      "~/hooks/*": ["hooks/*"],
+      "~/remark/*": ["remark/*"],
     }
   },
   "include": [
     "next-env.d.ts",
+    "additional.d.ts",
     "mdx.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "remark/*.js",
   ],
   "exclude": ["node_modules"]
 }

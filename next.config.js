@@ -37,6 +37,11 @@ const nextConfig = {
     PROJECT_ROOT: __dirname,
   },
   webpack: (config, options) => {
+    if (!options.isServer) {
+      // https://github.com/vercel/next.js/issues/7755#issuecomment-812805708
+      config.resolve.fallback.fs = false;
+    }
+
     const mdx = [
       options.defaultLoaders.babel,
       {
