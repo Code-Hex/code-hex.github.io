@@ -39,4 +39,4 @@ yarn-error.log*
 .mdx-data
 
 # wasm
-public/wasm/onig.wasm
+public/wasm/esbuild.wasm
