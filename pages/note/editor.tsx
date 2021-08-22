@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
 import Editor from '@monaco-editor/react';
@@ -10,15 +10,22 @@ import { Plugin, Pluggable } from 'unified';
 import esbuild from '~/esbuild/esbuild';
 import { useLanguageLoader } from 'monaco/hooks';
 import { SetupEditor } from 'monaco/monaco';
+import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 const EditorPage = () => {
   const [value, setValue] = useState<string | undefined>();
   const markdown = useLanguageLoader('markdown');
   const [compiledSrc, setCompiledSrc] = useState<string | undefined>();
+  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | undefined>();
+
+  useEffect(() => {
+    const editor = editorRef.current;
+    if (!editor) return;
+    // editor.deltaDecorations()
+  }, [editorRef]);
 
   useEffect(() => {
     if (!value) return;
-
     (async () => {
       try {
         setCompiledSrc(await CompileMdx(value, {}));
@@ -61,7 +68,10 @@ const EditorPage = () => {
           theme="vs-dark"
           onChange={(value, _) => setValue(value)}
           beforeMount={(monaco) => SetupEditor(monaco, markdownLanguage)}
-          onMount={(editor) => setValue(editor.getValue())}
+          onMount={(editor) => {
+            editorRef.current = editor;
+            setValue(editor.getValue());
+          }}
           options={{
             minimap: {
               enabled: true,
