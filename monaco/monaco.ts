@@ -79,10 +79,13 @@ export const SetupEditor = (
   const mdxLanguage = Object.assign({}, markdown.language);
 
   // setup
-  mdxLanguage.tokenizer.linecontent.push(
+  const mdTokenizerLineContent = mdxLanguage.tokenizer.linecontent.splice(0, mdxLanguage.tokenizer.linecontent.length - 1) // { include: 'html' }
+  mdTokenizerLineContent.push(
     { include: 'jsxModule' },
-    { include: 'jsxTag' }
+    { include: 'jsxTag' },
+    { include: 'html' }
   );
+  mdxLanguage.tokenizer.linecontent = mdTokenizerLineContent
 
   // mdxLanguage.tokenizer.html = [];
 
@@ -104,7 +107,7 @@ export const SetupEditor = (
   // jsx-tag
   mdxLanguage.tokenizer.jsxTag = [
     [
-      /^< *([a-zA-Z]\\w*)/,
+      /^(?=< *([a-zA-Z]\\w*))/,
       {
         token: 'keyword.javascript',
         next: '@embeddedJsxTag',
@@ -113,7 +116,7 @@ export const SetupEditor = (
     ],
   ];
   mdxLanguage.tokenizer.embeddedJsxTag = [
-    [/>/, { token: '', next: '@pop', nextEmbedded: '@pop' }],
+    [/(?<=>)/, { token: '', next: '@pop', nextEmbedded: '@pop' }],
   ];
 
   m.editor.defineTheme("monokai", monokaiTheme)
