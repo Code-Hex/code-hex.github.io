@@ -1,20 +1,19 @@
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
-import Editor, { useMonaco } from '@monaco-editor/react';
-import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import Editor from '@monaco-editor/react';
 import * as MDX from '@mdx-js/react';
 import mdx from '@mdx-js/mdx';
 import { remove } from 'unist-util-remove';
 import Note from '~/components/Note';
 import { Plugin, Pluggable } from 'unified';
 import esbuild from '~/esbuild/esbuild';
+import { useLanguageLoader } from 'monaco/hooks';
+import { SetupEditor } from 'monaco/monaco';
 
 const EditorPage = () => {
-  const m = useMonaco();
   const [value, setValue] = useState<string | undefined>();
   const markdown = useLanguageLoader('markdown');
-  const [loading, setLoading] = useState<boolean>(true);
   const [compiledSrc, setCompiledSrc] = useState<string | undefined>();
 
   useEffect(() => {
@@ -28,75 +27,6 @@ const EditorPage = () => {
       }
     })();
   }, [value]);
-
-  useEffect(() => {
-    if (!m || markdown.loading) {
-      return;
-    }
-    if (markdown.error) throw markdown.error;
-
-    m.languages.typescript.typescriptDefaults.setCompilerOptions({
-      target: m.languages.typescript.ScriptTarget.ES2016,
-      allowNonTsExtensions: true,
-      moduleResolution: m.languages.typescript.ModuleResolutionKind.NodeJs,
-      module: m.languages.typescript.ModuleKind.CommonJS,
-      noEmit: true,
-      typeRoots: ['node_modules/@types'],
-      jsx: m.languages.typescript.JsxEmit.React,
-      jsxFactory: 'JSXAlone.createElement',
-    });
-
-    const mdxLanguage = Object.assign({}, markdown.loaded?.language);
-    const mdxConf = Object.assign({}, markdown.loaded?.conf);
-
-    // setup
-    mdxLanguage.tokenizer.linecontent.push(
-      { include: 'jsxModule' },
-      { include: 'jsxTag' }
-    );
-
-    mdxLanguage.tokenizer.html = [];
-
-    // jsx-module
-    mdxLanguage.tokenizer.jsxModule = [
-      [
-        /^(import|export)\b/,
-        {
-          token: 'keyword.javascript',
-          next: '@embeddedJsxModule',
-          nextEmbedded: 'javascript',
-        },
-      ],
-    ];
-    mdxLanguage.tokenizer.embeddedJsxModule = [
-      [/^\s*$/, { token: '', next: '@pop', nextEmbedded: '@pop' }],
-    ];
-
-    // jsx-tag
-    mdxLanguage.tokenizer.jsxTag = [
-      [
-        /^(?=< *([a-zA-Z]\w*))/,
-        {
-          token: 'keyword.javascript',
-          next: '@embeddedJsxTag',
-          nextEmbedded: 'javascript',
-        },
-      ],
-    ];
-    mdxLanguage.tokenizer.embeddedJsxTag = [
-      [/(?<=>)/, { token: '', next: '@pop', nextEmbedded: '@pop' }],
-    ];
-
-    m.languages.register({
-      id: 'mdx',
-      extensions: ['.mdx'],
-      aliases: ['Markdown React'],
-    });
-    m.languages.setMonarchTokensProvider('mdx', mdxLanguage);
-    m.languages.setLanguageConfiguration('mdx', mdxConf);
-
-    setLoading(false);
-  }, [m, markdown]);
 
   const Preview = useMemo(() => {
     if (!compiledSrc) return Fragment;
@@ -112,8 +42,14 @@ const EditorPage = () => {
     return hydrateFn.apply(hydrateFn, values);
   }, [compiledSrc]);
 
-  if (loading) {
+  if (markdown.loading) {
     return <div>loading...</div>;
+  }
+
+  const { loaded: markdownLanguage } = markdown;
+  if (!markdownLanguage) {
+    console.error(`error markdown is loading: ${markdown.error}`);
+    return <div>See console</div>;
   }
 
   return (
@@ -124,6 +60,7 @@ const EditorPage = () => {
           defaultLanguage="mdx"
           theme="vs-dark"
           onChange={(value, _) => setValue(value)}
+          beforeMount={(monaco) => SetupEditor(monaco, markdownLanguage)}
           onMount={(editor) => setValue(editor.getValue())}
           options={{
             minimap: {
@@ -137,51 +74,6 @@ const EditorPage = () => {
       </div>
     </div>
   );
-};
-
-interface MonacoLanguageLoaderResult {
-  language: monaco.languages.IMonarchLanguage;
-  conf: monaco.languages.LanguageConfiguration;
-}
-
-interface LanguageLoaderState {
-  loaded?: MonacoLanguageLoaderResult;
-  loading: boolean;
-  error?: Error;
-}
-
-const useLanguageLoader = (languageId: string): LanguageLoaderState => {
-  const m = useMonaco();
-  const [result, setResult] = useState<MonacoLanguageLoaderResult | undefined>(
-    undefined
-  );
-
-  if (!m) {
-    return {
-      loading: true,
-    };
-  }
-
-  const language = m.languages
-    .getLanguages()
-    .find((lang) => lang.id === languageId);
-
-  if (!language) {
-    return {
-      loading: false,
-      error: new Error(`unexpected language: ${languageId}`),
-    };
-  }
-
-  (async () => {
-    const loaded = await (language as any).loader();
-    setResult(loaded as MonacoLanguageLoaderResult);
-  })();
-
-  return {
-    loaded: result,
-    loading: !result,
-  };
 };
 
 export default dynamic(() => Promise.resolve(EditorPage), { ssr: false });
