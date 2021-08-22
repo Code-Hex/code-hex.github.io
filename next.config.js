@@ -40,6 +40,10 @@ const nextConfig = {
     if (!options.isServer) {
       // https://github.com/vercel/next.js/issues/7755#issuecomment-812805708
       config.resolve.fallback.fs = false;
+
+      // for worker
+      // https://nju33.com/notes/nextjs/articles/Web%20Worker%20%E3%82%92%E4%BD%BF%E3%81%86#next.config.js
+      config.output.globalObject = 'self';
     }
 
     const mdx = [
