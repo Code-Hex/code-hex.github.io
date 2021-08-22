@@ -6,7 +6,7 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "lib": ["dom", "es2017"],
+    "lib": ["dom", "es2017", "webworker"],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
@@ -21,9 +21,9 @@
     "paths": {
       "~/components/*": ["components/*"],
       "~/layouts/*": ["layouts/*"],
-      "~/hooks/*": ["hooks/*"],
       "~/remark/*": ["remark/*"],
       "~/esbuild/*": ["esbuild/*"],
+      "~/worker/*": ["worker/*"],
     }
   },
   "include": [
@@ -31,6 +31,7 @@
     "mdx.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "worker/typings.worker.js",
     "remark/*.js",
   ],
   "exclude": ["node_modules"]
