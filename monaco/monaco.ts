@@ -1,3 +1,4 @@
+import { monokaiTheme } from './monokai';
 import { Monaco } from '@monaco-editor/react';
 import { MonacoLanguageLoaderResult } from './types';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
@@ -51,14 +52,17 @@ export const SetupEditor = (
   markdown: MonacoLanguageLoaderResult
 ) => {
   const compilerOptions = {
-    allowJs: true,
-    allowSyntheticDefaultImports: true,
-    alwaysStrict: true,
+    target: m.languages.typescript.ScriptTarget.Latest,
+    allowNonTsExtensions: true,
+    moduleResolution: m.languages.typescript.ModuleResolutionKind.NodeJs,
+    module: m.languages.typescript.ModuleKind.CommonJS,
+    noEmit: true,
+    typeRoots: ['node_modules/@types'],
     jsx: m.languages.typescript.JsxEmit.React,
-    jsxFactory: 'React.createElement',
+    allowJs: true,
+    reactNamespace: 'React',
   };
 
-  m.languages.typescript.typescriptDefaults.setCompilerOptions(compilerOptions);
   m.languages.typescript.javascriptDefaults.setCompilerOptions(compilerOptions);
 
   m.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
@@ -70,7 +74,6 @@ export const SetupEditor = (
    * Sync all the models to the worker eagerly.
    * This enables intelliSense for all files without needing an `addExtraLib` call.
    */
-  m.languages.typescript.typescriptDefaults.setEagerModelSync(true);
   m.languages.typescript.javascriptDefaults.setEagerModelSync(true);
 
   const mdxLanguage = Object.assign({}, markdown.language);
@@ -100,18 +103,20 @@ export const SetupEditor = (
 
   // jsx-tag
   mdxLanguage.tokenizer.jsxTag = [
-    // [
-    //   /^< *([a-zA-Z]\\w*)/,
-    //   {
-    //     token: 'keyword.javascript',
-    //     next: '@embeddedJsxTag',
-    //     nextEmbedded: 'javascript',
-    //   },
-    // ],
+    [
+      /^< *([a-zA-Z]\\w*)/,
+      {
+        token: 'keyword.javascript',
+        next: '@embeddedJsxTag',
+        nextEmbedded: 'javascript',
+      },
+    ],
   ];
   mdxLanguage.tokenizer.embeddedJsxTag = [
     [/>/, { token: '', next: '@pop', nextEmbedded: '@pop' }],
   ];
+
+  m.editor.defineTheme("monokai", monokaiTheme)
 
   m.languages.register({
     id: 'mdx',
