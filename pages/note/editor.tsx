@@ -11,6 +11,7 @@ import esbuild from '~/esbuild/esbuild';
 import { useLanguageLoader } from 'monaco/hooks';
 import { SetupEditor } from 'monaco/monaco';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import { SidebarLayout } from '~/components/Resize';
 
 // Store details about typings we have loaded
 const extraLibs = new Map();
@@ -129,30 +130,32 @@ const EditorPage = () => {
   }
 
   return (
-    <div className="w-full h-full flex flex-row fixed">
-      <div className="w-1/2 items-center overflow-y-hidden">
-        <Editor
-          defaultValue={getSampleCodeForLanguage()}
-          defaultLanguage="mdx"
-          theme="monokai"
-          onChange={(value) => {
-            setValue(value);
-          }}
-          beforeMount={(monaco) => SetupEditor(monaco, markdownLanguage)}
-          onMount={(editor) => {
-            editorRef.current = editor;
-            setValue(editor.getValue());
-          }}
-          options={{
-            minimap: {
-              enabled: true,
-            },
-          }}
-        />
-      </div>
-      <div className="w-1/2 h-full overflow-y-scroll">
-        <div className="">{<Preview />}</div>
-      </div>
+    <div className="w-full h-full fixed">
+      <SidebarLayout defaultSidebarWidth={400}>
+        <div className="items-center overflow-y-hidden">
+          <Editor
+            defaultValue={getSampleCodeForLanguage()}
+            defaultLanguage="mdx"
+            theme="monokai"
+            onChange={(value) => {
+              setValue(value);
+            }}
+            beforeMount={(monaco) => SetupEditor(monaco, markdownLanguage)}
+            onMount={(editor) => {
+              editorRef.current = editor;
+              setValue(editor.getValue());
+            }}
+            options={{
+              minimap: {
+                enabled: true,
+              },
+            }}
+          />
+        </div>
+        <div className="h-full overflow-y-scroll">
+          <div className="">{<Preview />}</div>
+        </div>
+      </SidebarLayout>
     </div>
   );
 };
