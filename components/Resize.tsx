@@ -6,6 +6,9 @@ import {
   useMemo,
   useState,
   useEffect,
+  PointerEventHandler,
+  PointerEvent,
+  SetStateAction,
 } from 'react';
 
 /***
@@ -25,8 +28,8 @@ type ResizerDivProps = {
 
 type ResizerProps = ResizerStyleProps & {
   position: string;
-  initialPos: number;
-  setWidth: (width: number) => void;
+  xPos: number;
+  setWidth: (width: SetStateAction<number>) => void;
 };
 
 const useResizeStyle = ({
@@ -51,11 +54,10 @@ export const Resizer = ({
   transitionDuration,
   width = 6,
   position,
-  initialPos,
+  xPos,
   setWidth,
 }: ResizerProps): JSX.Element => {
   const [dragging, setDragging] = useState(false);
-  const [xPos, setXPos] = useState(initialPos);
 
   const resizeStyle = useResizeStyle({
     width,
@@ -64,41 +66,31 @@ export const Resizer = ({
     transitionDuration,
   });
 
-  const mouseDownHandler = useCallback(() => {
+  const mouseDownHandler = useCallback((e: PointerEvent) => {
     setDragging(true);
+    e.currentTarget.setPointerCapture(e.pointerId);
   }, []);
 
-  const mouseUpHandler = useCallback(() => {
+  const mouseUpHandler = useCallback((e: PointerEvent) => {
     setDragging(false);
+    e.currentTarget.releasePointerCapture(e.pointerId);
   }, []);
 
   const mouseMoveHandler = useCallback(
-    (e: MouseEvent) => {
+    (e: PointerEvent) => {
       if (!dragging) {
         return;
       }
-      let nextXPos = 0;
-      setXPos((prev) => {
-        const movementX = e.movementX * (position === 'right' ? -1 : 1);
-        nextXPos = prev + movementX;
-        return nextXPos;
-      });
-      setWidth(nextXPos);
+      setWidth((prev) => prev + e.movementX);
     },
-    [position, dragging, setWidth]
+    [dragging, setWidth]
   );
-
-  useEffect(() => {
-    document.addEventListener('mousemove', mouseMoveHandler);
-    return () => {
-      document.removeEventListener('mousemove', mouseMoveHandler);
-    };
-  }, [mouseDownHandler, mouseUpHandler, mouseMoveHandler]);
 
   return (
     <div
-      onMouseDown={mouseDownHandler}
-      onMouseUp={mouseUpHandler}
+      onPointerDown={mouseDownHandler}
+      onPointerUp={mouseUpHandler}
+      onPointerMove={mouseMoveHandler}
       className="select-none cursor-col-resize absolute z-20 h-full hover:bg-blue-400"
       style={resizeStyle}
     />
@@ -155,7 +147,7 @@ export const SidebarLayout = ({
       <Resizer
         width={resizerWidth}
         position="left"
-        initialPos={sidebarWidth}
+        xPos={sidebarWidth}
         setWidth={setSidebarWidth}
       />
       {children}
