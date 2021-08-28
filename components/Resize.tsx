@@ -5,8 +5,6 @@ import {
   useCallback,
   useMemo,
   useState,
-  useEffect,
-  PointerEventHandler,
   PointerEvent,
   SetStateAction,
 } from 'react';
