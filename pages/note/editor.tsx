@@ -5,13 +5,14 @@ import Editor, { Monaco, useMonaco } from '@monaco-editor/react';
 import * as MDX from '@mdx-js/react';
 import mdx from '@mdx-js/mdx';
 import { remove } from 'unist-util-remove';
-import Note from '~/components/Note';
+import { NoteContent } from '~/components/Note';
 import { Plugin, Pluggable } from 'unified';
 import esbuild from '~/esbuild/esbuild';
 import { useLanguageLoader } from 'monaco/hooks';
 import { SetupEditor } from 'monaco/monaco';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { SidebarLayout } from '~/components/Resize';
+import Module from 'module';
 
 // Store details about typings we have loaded
 const extraLibs = new Map();
@@ -93,7 +94,7 @@ const EditorPage = () => {
     if (!value) return;
     (async () => {
       try {
-        const src = await CompileMdx(value, {});
+        const src = await compileMdx(value);
         setCompiledSrc(src);
       } catch (err) {
         console.error('mdx error:', err.message);
@@ -102,21 +103,23 @@ const EditorPage = () => {
   }, [value]);
 
   const Preview = useMemo(() => {
-    if (!compiledSrc) return Fragment;
+    if (!value) return Fragment;
 
-    const fullScope = { mdx: MDX.mdx, React, Note };
+    const fullScope = { mdx: MDX.mdx, React };
     const keys = Object.keys(fullScope);
     const values = Object.values(fullScope);
 
-    try {
-      const hydrateFn = Reflect.construct(
-        Function,
-        keys.concat([compiledSrc, 'return MDXContent'].join('\n'))
-      );
-      return hydrateFn.apply(hydrateFn, values);
-    } catch (err) {
-      console.error(`hydrate: ${err.message}`);
-    }
+    const esmRun = Reflect.construct(
+      Function,
+      keys.concat([compiledSrc, `return MDXContent`].join('\n'))
+    );
+    const MDXContent = esmRun.apply(esmRun, values);
+
+    return () => (
+      <NoteContent title={'hello'}>
+        <MDXContent />
+      </NoteContent>
+    );
   }, [compiledSrc]);
 
   if (markdown.loading) {
@@ -137,9 +140,7 @@ const EditorPage = () => {
             defaultValue={getSampleCodeForLanguage()}
             defaultLanguage="mdx"
             theme="monokai"
-            onChange={(value) => {
-              setValue(value);
-            }}
+            onChange={(value) => setValue(value)}
             beforeMount={(monaco) => SetupEditor(monaco, markdownLanguage)}
             onMount={(editor) => {
               editorRef.current = editor;
@@ -152,8 +153,8 @@ const EditorPage = () => {
             }}
           />
         </div>
-        <div className="h-full overflow-y-scroll">
-          <div className="">{<Preview />}</div>
+        <div className="h-screen overflow-y-scroll">
+          <Preview />
         </div>
       </SidebarLayout>
     </div>
@@ -170,9 +171,6 @@ export const meta = {
   date: '${now}',
   tags: []
 }
-
-<Component>{/* comment */}</Component>
-
 
 // # Hello, *world*!
 
@@ -191,33 +189,34 @@ export const meta = {
 const removeImportsExportsPlugin: Plugin = () => (tree: any) =>
   remove(tree, ['import', 'export']);
 
-interface CompileMDXOptions {
-  mdxOptions?: mdx.Options;
-}
-
 // TODO(codehex): fix prism highlight for running on browser
 const { remarkPlugins } = require('~/remark/remarkPlugins');
 
-const CompileMdx = async (
-  src: string,
-  { mdxOptions = {} }: CompileMDXOptions
-): Promise<string> => {
-  mdxOptions.remarkPlugins = [
-    ...(mdxOptions.remarkPlugins || (remarkPlugins as Pluggable[])),
-    removeImportsExportsPlugin,
-  ];
+const compileMdx = async (src: string): Promise<string> => {
+  const options: mdx.Options = {
+    skipExport: true,
+    remarkPlugins: [
+      ...(remarkPlugins as Pluggable[]),
+      removeImportsExportsPlugin,
+    ],
+  };
 
   // TODO(codehex): error handling. e.g. SyntaxError
-  console.log('start compile...');
-  const compiledMdx = await mdx(src, { ...mdxOptions, skipExport: true });
-  console.log(compiledMdx);
+  const transpiled2JSX = await mdx(src, options);
 
-  const { code } = await esbuild.transform(compiledMdx, {
+  const { code } = await esbuild.transform(transpiled2JSX, {
     loader: 'jsx',
-    jsxFactory: 'mdx',
+    jsxFactory: 'React.createElement',
     minify: true,
     target: ['es2020', 'node12'],
   });
+
+  // const esm = `data:text/javascript;base64,${btoa(code)}`;
+  // const c = `return import('${esm}')`;
+
+  // const esmRun = Reflect.construct(Function, [c]);
+  // const MDXContent = esmRun.apply(esmRun, [console]);
+  // console.log(MDXContent);
 
   return code;
 };
