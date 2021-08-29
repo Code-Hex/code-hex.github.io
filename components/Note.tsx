@@ -43,33 +43,39 @@ const Note = (props: NoteProps) => {
             content={`https://codehex.dev/assets/images/twitter-card-small.jpg`}
           />
         </Head>
-        <div className={`w-full flex bg-white antialiased`}>
-          <div className="min-w-0 flex-auto px-8 sm:px-10 xl:px-12 pt-10 pb-24 lg:pb-16">
-            <div className="pb-10 border-b border-gray-200 mb-10">
-              <div>
-                <h1 className="inline-block text-3xl font-extrabold text-gray-900 tracking-tight">
-                  {title}
-                </h1>
-              </div>
-              <p className="mt-1 text-lg text-gray-500">Detail</p>
-            </div>
-
-            <MDXProvider components={{ ...MDXComponents }}>
-              {children}
-            </MDXProvider>
-            <footer className="text-sm font-medium leading-5 divide-y divide-gray-200 xl:col-start-1 xl:row-start-2">
-              <div className="pt-8">
-                <Link href="/note">
-                  <a className="text-teal-500 hover:text-teal-600">
-                    ← Back to the note
-                  </a>
-                </Link>
-              </div>
-            </footer>
-          </div>
-        </div>
+        <NoteContent title={title}>{children}</NoteContent>
       </article>
     </main>
+  );
+};
+
+export interface NoteContentProps {
+  title: string;
+  children: ReactNode;
+}
+
+export const NoteContent = ({ title, children }: NoteContentProps) => {
+  return (
+    <div className={`w-full flex bg-white antialiased`}>
+      <div className="min-w-0 flex-auto px-8 sm:px-10 xl:px-12 pt-10 pb-24 lg:pb-16">
+        <div className="pb-2 border-b border-gray-200 mb-10">
+          <h1 className="inline-block text-3xl font-bold text-gray-900 tracking-tight">
+            {title}
+          </h1>
+        </div>
+
+        <MDXProvider components={{ ...MDXComponents }}>{children}</MDXProvider>
+        <footer className="text-sm font-medium leading-5 divide-y divide-gray-200 xl:col-start-1 xl:row-start-2">
+          <div className="pt-8">
+            <Link href="/note">
+              <a className="text-teal-500 hover:text-teal-600">
+                ← Back to the note
+              </a>
+            </Link>
+          </div>
+        </footer>
+      </div>
+    </div>
   );
 };
 
