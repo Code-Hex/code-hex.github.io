@@ -1,8 +1,5 @@
 // https://github.com/tailwindlabs/tailwindcss.com/blob/master/remark/utils.js
-const Prism = require('prismjs');
-const loadLanguages = require('prismjs/components/');
-loadLanguages();
-require('./prism-diff-highlight')(Prism);
+import Prism from 'prismjs';
 
 const HTML_TAG = /<\/?(?!\d)[^\s>\/=$<%]+(?:\s(?:\s*[^\s>\/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+(?=[\s>]))|(?=[\s/>])))+)?\s*\/?>/gi;
 const PSEUDO_CLASSES = [
@@ -83,30 +80,8 @@ Prism.hooks.add('wrap', (env) => {
   }
 });
 
-module.exports.addImport = function addImport(tree, mod, name) {
-  tree.children.unshift({
-    type: 'import',
-    value: `import { ${name} as _${name} } from '${mod}'`,
-  });
-  return `_${name}`;
-};
 
-module.exports.addDefaultImport = function addImport(tree, mod, name) {
-  tree.children.unshift({
-    type: 'import',
-    value: `import _${name} from '${mod}'`,
-  });
-  return `_${name}`;
-};
-
-module.exports.addExport = function addExport(tree, name, value) {
-  tree.children.push({
-    type: 'export',
-    value: `export const ${name} = ${JSON.stringify(value)}`,
-  });
-};
-
-module.exports.highlightCode = function highlightCode(code, prismLanguage) {
+export const highlightCode = (code: string, prismLanguage: string): Prism.TokenStream => {
   const isDiff = prismLanguage.startsWith('diff-');
   const language = isDiff ? prismLanguage.substr(5) : prismLanguage;
   const grammar = Prism.languages[isDiff ? 'diff' : language];
