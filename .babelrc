@@ -5,7 +5,7 @@
       "prismjs",
       {
         "languages": "all",
-        "plugins": ["diff-highlight", "show-language"],
+        "plugins": ["diff-highlight"],
         "css": false
       }
     ]
