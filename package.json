@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start",
     "export": "next export",
-    "build:remark": "npx tsc remark/remarkPlugins.ts --module commonjs --target es6 --moduleResolution node --resolveJsonModule --esModuleInterop --skipLibCheck --outDir remark-webpack",
     "postexport": "node scripts/post-export.js",
     "postinstall": "cp ./node_modules/esbuild-wasm/esbuild.wasm public/wasm"
   },
@@ -29,6 +28,7 @@
     "remark-emoji": "^2.1.0",
     "remark-footnotes": "^2.0.0",
     "simple-functional-loader": "^1.2.1",
+    "ts-node": "^10.2.1",
     "unist-util-remove": "^3.1.0",
     "unist-util-visit": "^2.0.3",
     "vscode-textmate": "^5.4.0"
