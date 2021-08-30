@@ -12,7 +12,7 @@ import { useLanguageLoader } from 'monaco/hooks';
 import { SetupEditor } from 'monaco/monaco';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { SidebarLayout } from '~/components/Resize';
-import Module from 'module';
+import { Metadata } from 'mdx/config';
 
 // Store details about typings we have loaded
 const extraLibs = new Map();
@@ -45,7 +45,7 @@ const EditorPage = () => {
   const m = useMonaco();
   const [value, setValue] = useState<string | undefined>();
   const markdown = useLanguageLoader('markdown');
-  const [compiledSrc, setCompiledSrc] = useState<string | undefined>();
+  const [mdxResult, setMdxResult] = useState<MDXResult | undefined>();
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | undefined>();
   const typingsWorkerRef = useRef<Worker | undefined>();
 
@@ -94,8 +94,8 @@ const EditorPage = () => {
     if (!value) return;
     (async () => {
       try {
-        const src = await compileMdx(value);
-        setCompiledSrc(src);
+        const result = await compileMdx(value);
+        setMdxResult(result);
       } catch (err) {
         console.error('mdx error:', err.message);
       }
@@ -103,7 +103,7 @@ const EditorPage = () => {
   }, [value]);
 
   const Preview = useMemo(() => {
-    if (!value) return Fragment;
+    if (!mdxResult) return Fragment;
 
     const fullScope = { mdx: MDX.mdx, React };
     const keys = Object.keys(fullScope);
@@ -111,16 +111,17 @@ const EditorPage = () => {
 
     const esmRun = Reflect.construct(
       Function,
-      keys.concat([compiledSrc, `return MDXContent`].join('\n'))
+      keys.concat([mdxResult.code, `return MDXContent`].join('\n'))
     );
     const MDXContent = esmRun.apply(esmRun, values);
 
+    // eslint-disable-next-line react/display-name
     return () => (
-      <NoteContent title={'hello'}>
+      <NoteContent title={mdxResult.meta.title}>
         <MDXContent />
       </NoteContent>
     );
-  }, [compiledSrc]);
+  }, [mdxResult]);
 
   if (markdown.loading) {
     return <div>loading...</div>;
@@ -167,7 +168,7 @@ function getSampleCodeForLanguage(): string {
   const now = dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ssZ[Z]');
   return `\
 export const meta = {
-  title: '',
+  title: 'Title',
   date: '${now}',
   tags: []
 }
@@ -189,14 +190,32 @@ export const meta = {
 const removeImportsExportsPlugin: Plugin = () => (tree: any) =>
   remove(tree, ['import', 'export']);
 
+const visit = require('unist-util-visit');
+
+const filterOnlyExportPlugin = (exports: string[]): Plugin => () => {
+  return (tree: any) => {
+    visit(tree, 'export', (node: any) => {
+      exports.push(node.value);
+    });
+    return tree;
+  };
+};
+
 // TODO(codehex): fix prism highlight for running on browser
 const { remarkPlugins } = require('~/remark/remarkPlugins');
 
-const compileMdx = async (src: string): Promise<string> => {
+interface MDXResult {
+  code: string;
+  meta: Metadata;
+}
+
+const compileMdx = async (src: string): Promise<MDXResult> => {
+  const exportNodes: string[] = [];
   const options: mdx.Options = {
     skipExport: true,
     remarkPlugins: [
       ...(remarkPlugins as Pluggable[]),
+      filterOnlyExportPlugin(exportNodes),
       removeImportsExportsPlugin,
     ],
   };
@@ -211,12 +230,16 @@ const compileMdx = async (src: string): Promise<string> => {
     target: ['es2020', 'node12'],
   });
 
-  // const esm = `data:text/javascript;base64,${btoa(code)}`;
-  // const c = `return import('${esm}')`;
+  const exportsCode = exportNodes.join('\n');
 
-  // const esmRun = Reflect.construct(Function, [c]);
-  // const MDXContent = esmRun.apply(esmRun, [console]);
-  // console.log(MDXContent);
+  const esm = `data:text/javascript;base64,${btoa(exportsCode)}`;
+  const c = `return import('${esm}')`;
 
-  return code;
+  const esmRun = Reflect.construct(Function, [c]);
+  const exports = await esmRun.apply(esmRun, [console]);
+
+  return {
+    code,
+    meta: exports.meta,
+  };
 };

@@ -3,8 +3,15 @@ import { Metadata } from 'mdx/config';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { MDXComponents } from './Mdx';
+import Prism from 'prismjs';
+
+const usePrismHighlightAll = () => {
+  useEffect(() => {
+    Prism.highlightAll();
+  }, []);
+};
 
 interface NoteProps {
   meta: Metadata;
@@ -55,6 +62,7 @@ export interface NoteContentProps {
 }
 
 export const NoteContent = ({ title, children }: NoteContentProps) => {
+  usePrismHighlightAll();
   return (
     <div className={`w-full flex bg-white antialiased`}>
       <div className="min-w-0 flex-auto px-8 sm:px-10 xl:px-12 pt-10 pb-24 lg:pb-16">
@@ -63,8 +71,11 @@ export const NoteContent = ({ title, children }: NoteContentProps) => {
             {title}
           </h1>
         </div>
-
-        <MDXProvider components={{ ...MDXComponents }}>{children}</MDXProvider>
+        <article>
+          <MDXProvider components={{ ...MDXComponents }}>
+            {children}
+          </MDXProvider>
+        </article>
         <footer className="text-sm font-medium leading-5 divide-y divide-gray-200 xl:col-start-1 xl:row-start-2">
           <div className="pt-8">
             <Link href="/note">
