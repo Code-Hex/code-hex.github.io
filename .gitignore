@@ -40,3 +40,6 @@ yarn-error.log*
 
 # wasm
 public/wasm/esbuild.wasm
+
+# webpack modules
+remark-webpack/*.js

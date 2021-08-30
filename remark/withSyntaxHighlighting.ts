@@ -1,7 +1,7 @@
+import { highlightCode } from './utils';
 const visit = require('unist-util-visit');
-const { highlightCode } = require('./utils');
 
-const colors = {
+const colors: { [key: string]: string } = {
   amber: 'bg-amber-500',
   emerald: 'bg-emerald-500',
   fuchsia: 'bg-fuchsia-400',
@@ -11,9 +11,16 @@ const colors = {
   rose: 'bg-rose-400',
 };
 
-module.exports.withSyntaxHighlighting = () => {
-  return (tree) => {
-    visit(tree, 'code', (node) => {
+interface SyntaxNode {
+  type: string;
+  lang: string | null;
+  value: string;
+  meta: string;
+}
+
+export const withSyntaxHighlighting = () => {
+  return async (tree: Node) => {
+    visit(tree, 'code', (node: SyntaxNode) => {
       if (node.lang !== null) {
         node.type = 'html';
         node.value = [

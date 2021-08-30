@@ -32,7 +32,6 @@
     "**/*.ts",
     "**/*.tsx",
     "worker/typings.worker.js",
-    "remark/*.js",
   ],
   "exclude": ["node_modules"]
 }

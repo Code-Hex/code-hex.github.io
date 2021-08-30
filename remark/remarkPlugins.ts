@@ -1,12 +1,12 @@
-const emoji = require('remark-emoji');
+import emoji from 'remark-emoji';
 // TOOD: fix https://github.com/PrismJS/prism/issues/1403
-// const { withSyntaxHighlighting } = require('./withSyntaxHighlighting');
-const footnotes = require('remark-footnotes');
-const slug = require('remark-slug');
-const autoLinkHeadings = require('remark-autolink-headings');
+import { withSyntaxHighlighting } from './withSyntaxHighlighting';
+import footnotes from 'remark-footnotes';
+import slug from 'remark-slug';
+import autoLinkHeadings from 'remark-autolink-headings';
 
-module.exports.remarkPlugins = [
-  // withSyntaxHighlighting,
+export const remarkPlugins = [
+  withSyntaxHighlighting,
   footnotes,
   slug,
   [
