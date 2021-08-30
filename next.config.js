@@ -1,4 +1,11 @@
-const { remarkPlugins } = require('./remark-webpack/remarkPlugins');
+require('ts-node').register({
+  compilerOptions: {
+    module: 'commonjs',
+    baseUrl: '.',
+    strict: true,
+  },
+}); // for remarkPlugins
+const { remarkPlugins } = require('./remark/remarkPlugins');
 const nextBuildId = require('next-build-id');
 const withPlugins = require('next-compose-plugins');
 const { createLoader } = require('simple-functional-loader');
