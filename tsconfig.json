@@ -23,7 +23,7 @@
       "~/layouts/*": ["layouts/*"],
       "~/remark/*": ["remark/*"],
       "~/esbuild/*": ["esbuild/*"],
-      "~/worker/*": ["worker/*"],
+      "~/worker/*": ["worker/*"]
     }
   },
   "include": [
@@ -31,7 +31,7 @@
     "mdx.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "worker/typings.worker.js",
+    "worker/typings.worker.js"
   ],
   "exclude": ["node_modules"]
 }
