@@ -13,6 +13,7 @@ import { SetupEditor } from 'monaco/monaco';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { SidebarLayout } from '~/components/Resize';
 import { Metadata } from 'mdx/config';
+import { remarkPlugins } from '~/remark/remarkPlugins';
 
 // Store details about typings we have loaded
 const extraLibs = new Map();
@@ -200,9 +201,6 @@ const filterOnlyExportPlugin = (exports: string[]): Plugin => () => {
     return tree;
   };
 };
-
-// TODO(codehex): fix prism highlight for running on browser
-const { remarkPlugins } = require('~/remark/remarkPlugins');
 
 interface MDXResult {
   code: string;
