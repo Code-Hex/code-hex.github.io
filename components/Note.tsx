@@ -9,7 +9,7 @@ import Prism from 'prismjs';
 
 const usePrismHighlightAll = () => {
   useEffect(() => {
-    Prism.highlightAll();
+    Prism.highlightAll(true);
   }, []);
 };
 
