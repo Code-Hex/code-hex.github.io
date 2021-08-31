@@ -111,6 +111,8 @@ const withTM = require('next-transpile-modules')([
   // `monaco-editor` isn't published to npm correctly: it includes both CSS
   // imports and non-Node friendly syntax, so it needs to be compiled.
   'monaco-editor',
+  'unist-util-visit',
+  'unist-util-remove',
 ]);
 
 // NOTE(codehex): ./scripts/post-export.js で nextConfig を読み込みたいので

@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import Editor, { Monaco, useMonaco } from '@monaco-editor/react';
 import * as MDX from '@mdx-js/react';
 import mdx from '@mdx-js/mdx';
+import { visit } from 'unist-util-visit';
 import { remove } from 'unist-util-remove';
 import { NoteContent } from '~/components/Note';
 import { Plugin, Pluggable } from 'unified';
@@ -93,14 +94,17 @@ const EditorPage = () => {
 
   useEffect(() => {
     if (!value) return;
-    (async () => {
-      try {
-        const result = await compileMdx(value);
-        setMdxResult(result);
-      } catch (err) {
-        console.error('mdx error:', err.message);
-      }
-    })();
+    const compileWithDelay = setTimeout(() => {
+      (async () => {
+        try {
+          const result = await compileMdx(value);
+          setMdxResult(result);
+        } catch (err) {
+          console.error('mdx error:', err.message);
+        }
+      })();
+    }, 1000);
+    return () => clearTimeout(compileWithDelay);
   }, [value]);
 
   const Preview = useMemo(() => {
@@ -190,8 +194,6 @@ export const meta = {
  */
 const removeImportsExportsPlugin: Plugin = () => (tree: any) =>
   remove(tree, ['import', 'export']);
-
-const visit = require('unist-util-visit');
 
 const filterOnlyExportPlugin = (exports: string[]): Plugin => () => {
   return (tree: any) => {
