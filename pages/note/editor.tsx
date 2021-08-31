@@ -140,7 +140,7 @@ const EditorPage = () => {
 
   return (
     <div className="w-full h-full fixed">
-      <SidebarLayout defaultSidebarWidth={400}>
+      <SidebarLayout defaultSidebarWidth={window.innerWidth / 2}>
         <div className="items-center overflow-y-hidden">
           <Editor
             defaultValue={getSampleCodeForLanguage()}
