@@ -14,6 +14,9 @@ module.exports = {
   },
   darkMode: false, // or 'media' or 'class'
   theme: {
+    cursor: {
+      'col-resize': 'col-resize',
+    },
     colors: {
       transparent: 'transparent',
       current: 'currentColor',

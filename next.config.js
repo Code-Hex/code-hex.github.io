@@ -1,15 +1,18 @@
+require('ts-node').register({
+  compilerOptions: {
+    module: 'commonjs',
+    baseUrl: '.',
+    strict: true,
+  },
+}); // for remarkPlugins
+const { remarkPlugins } = require('./remark/remarkPlugins');
 const nextBuildId = require('next-build-id');
 const withPlugins = require('next-compose-plugins');
 const { createLoader } = require('simple-functional-loader');
 
-// remark plugins
-const emoji = require('remark-emoji');
-const { withSyntaxHighlighting } = require('./remark/withSyntaxHighlighting');
-const visit = require('unist-util-visit');
-const footnotes = require('remark-footnotes');
-const slug = require('remark-slug');
-const autoLinkHeadings = require('remark-autolink-headings');
-
+/**
+ * @type {import("next").NextConfig}
+ */
 const nextConfig = {
   generateBuildId: () => nextBuildId({ dir: __dirname }),
   exportPathMap: async function () {
@@ -37,47 +40,21 @@ const nextConfig = {
     PROJECT_ROOT: __dirname,
   },
   webpack: (config, options) => {
+    if (!options.isServer) {
+      // https://github.com/vercel/next.js/issues/7755#issuecomment-812805708
+      config.resolve.fallback.fs = false;
+
+      // for worker
+      // https://nju33.com/notes/nextjs/articles/Web%20Worker%20%E3%82%92%E4%BD%BF%E3%81%86#next.config.js
+      config.output.globalObject = 'self';
+    }
+
     const mdx = [
       options.defaultLoaders.babel,
       {
         loader: '@mdx-js/loader',
         options: {
-          remarkPlugins: [
-            withSyntaxHighlighting,
-            footnotes,
-            slug,
-            [
-              autoLinkHeadings,
-              {
-                content: {
-                  // https://heroicons.com/ Outline link
-                  type: 'element',
-                  tagName: 'svg',
-                  properties: {
-                    xmlns: 'http://www.w3.org/2000/svg',
-                    viewBox: '0 0 24 24',
-                    class: '-ml-6 h-5 w-5 hover:text-gray-500 text-transparent',
-                    fill: 'none',
-                    stroke: 'currentColor',
-                  },
-                  children: [
-                    {
-                      type: 'element',
-                      tagName: 'path',
-                      properties: {
-                        strokeLinecap: 'round',
-                        strokeLinejoin: 'round',
-                        strokeWidth: '2',
-                        d:
-                          'M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1',
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            [emoji, { padSpaceAfter: true }],
-          ],
+          remarkPlugins: remarkPlugins,
         },
       },
     ];
@@ -92,8 +69,10 @@ const nextConfig = {
             createLoader(function (src) {
               if (src.includes('<!--more-->')) {
                 const [preview] = src.split('<!--more-->');
+                // @ts-ignore
                 return this.callback(null, preview);
               }
+              // @ts-ignore
               return this.callback(null, src);
             }),
           ],
@@ -110,12 +89,13 @@ const nextConfig = {
               ].join('\n');
 
               if (content.includes('<!--more-->')) {
+                // @ts-ignore
                 return this.callback(
                   null,
                   content.split('<!--more-->').join('\n')
                 );
               }
-
+              // @ts-ignore
               return this.callback(null, content);
             }),
           ],
@@ -126,8 +106,17 @@ const nextConfig = {
   },
 };
 
+// https://dev.to/swyx/how-to-add-monaco-editor-to-a-next-js-app-ha3
+const withTM = require('next-transpile-modules')([
+  // `monaco-editor` isn't published to npm correctly: it includes both CSS
+  // imports and non-Node friendly syntax, so it needs to be compiled.
+  'monaco-editor',
+  'unist-util-visit',
+  'unist-util-remove',
+]);
+
 // NOTE(codehex): ./scripts/post-export.js で nextConfig を読み込みたいので
 // _exports という変数を作成し export できるようにしてる。
-const _exports = withPlugins([], nextConfig);
+const _exports = withPlugins([withTM], nextConfig);
 _exports.nextConfig = nextConfig;
 module.exports = _exports;

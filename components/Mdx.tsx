@@ -72,7 +72,7 @@ export const MDXComponents: MDXProviderComponents = {
       {...props}
       className={classNames(
         className,
-        `text-gray-200 inline-block p-4 scrolling-touch subpixel-antialiased`
+        `w-full text-gray-200 inline-block p-4 scrolling-touch subpixel-antialiased`
       )}
     />
   ),
