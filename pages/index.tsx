@@ -53,7 +53,7 @@ export default function Home() {
             </Link>
           </li>
           <li>
-            <Link href="/editor" as="/note">
+            <Link href="/editor" as="/editor">
               <a>アルパカの徒然文エディタ</a>
             </Link>
           </li>
