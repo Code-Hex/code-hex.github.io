@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
-import Editor, { Monaco, useMonaco } from '@monaco-editor/react';
+import Editor from '@monaco-editor/react';
 import * as MDX from '@mdx-js/react';
 import mdx from '@mdx-js/mdx';
 import { visit } from 'unist-util-visit';
@@ -16,81 +16,17 @@ import { SidebarLayout } from '~/components/Resize';
 import { Metadata } from 'mdx/config';
 import { remarkPlugins } from '~/remark/remarkPlugins';
 
-// Store details about typings we have loaded
-const extraLibs = new Map();
-
-interface Typings {
-  [key: string]: string;
-}
-
-interface WorkerResponse {
-  name: string;
-  version: string;
-  typings: Typings;
-}
-
-const addTypings = (m: Monaco, { typings }: WorkerResponse) => {
-  Object.keys(typings).forEach((path) => {
-    let extraLib = extraLibs.get(path);
-
-    extraLib && extraLib.dispose();
-    extraLib = m.languages.typescript.javascriptDefaults.addExtraLib(
-      typings[path],
-      path
-    );
-
-    extraLibs.set(path, extraLib);
-  });
-};
-
 const EditorPage = () => {
-  const m = useMonaco();
   const [value, setValue] = useState<string | undefined>();
   const markdown = useLanguageLoader('markdown');
   const [mdxResult, setMdxResult] = useState<MDXResult | undefined>();
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | undefined>();
-  const typingsWorkerRef = useRef<Worker | undefined>();
 
   useEffect(() => {
     const editor = editorRef.current;
     if (!editor) return;
     // editor.deltaDecorations()
   }, [editorRef]);
-
-  useEffect(() => {
-    if (!m) return;
-
-    (async () => {
-      const worker = new Worker(
-        new URL('~/worker/typings.worker.js', import.meta.url)
-      );
-      worker.addEventListener(
-        'message',
-        ({ data }: { data: WorkerResponse }) => {
-          addTypings(m, data);
-        }
-      );
-
-      const dependencies: { [key: string]: string } = {
-        react: '17.0.2',
-        'react-dom': '17.0.2',
-      };
-
-      Object.keys(dependencies).forEach((name) =>
-        worker.postMessage({
-          name,
-          version: dependencies[name],
-        })
-      );
-
-      typingsWorkerRef.current = worker;
-    })();
-
-    // cleanup
-    return () => {
-      typingsWorkerRef.current?.terminate();
-    };
-  }, [m]);
 
   useEffect(() => {
     if (!value) return;
@@ -232,6 +168,8 @@ const compileMdx = async (src: string): Promise<MDXResult> => {
 
   const exportsCode = exportNodes.join('\n');
 
+  // Nextjs cannot use import as data:text format.
+  // To treat export variables, we have to call it in reflection.
   const esm = `data:text/javascript;base64,${btoa(exportsCode)}`;
   const c = `return import('${esm}')`;
 
