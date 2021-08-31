@@ -38,7 +38,7 @@ export const SetupEditor = (
   const mdTokenizerLineContent = mdxLanguage.tokenizer.linecontent.splice(0, mdxLanguage.tokenizer.linecontent.length - 1) // { include: 'html' }
   mdTokenizerLineContent.push(
     { include: 'jsxModule' },
-    { include: 'jsxTag' },
+    // { include: 'jsxTag' },
     { include: 'html' }
   );
   mdxLanguage.tokenizer.linecontent = mdTokenizerLineContent
@@ -61,19 +61,19 @@ export const SetupEditor = (
   ];
 
   // jsx-tag
-  mdxLanguage.tokenizer.jsxTag = [
-    [
-      /^(?=< *([a-zA-Z]\\w*))/,
-      {
-        token: 'keyword.javascript',
-        next: '@embeddedJsxTag',
-        nextEmbedded: 'javascript',
-      },
-    ],
-  ];
-  mdxLanguage.tokenizer.embeddedJsxTag = [
-    [/(?<=>)/, { token: '', next: '@pop', nextEmbedded: '@pop' }],
-  ];
+  // mdxLanguage.tokenizer.jsxTag = [
+  //   [
+  //     /^(?=< *([a-zA-Z]\\w*))/,
+  //     {
+  //       token: 'keyword.javascript',
+  //       next: '@embeddedJsxTag',
+  //       nextEmbedded: 'javascript',
+  //     },
+  //   ],
+  // ];
+  // mdxLanguage.tokenizer.embeddedJsxTag = [
+  //   [/(?<=>)/, { token: '', next: '@pop', nextEmbedded: '@pop' }],
+  // ];
 
   m.editor.defineTheme("monokai", monokaiTheme)
 
