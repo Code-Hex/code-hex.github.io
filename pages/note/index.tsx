@@ -3,6 +3,8 @@ import 'tailwindcss/tailwind.css';
 import { GetStaticProps } from 'next';
 import { getAllNotes } from 'mdx/utils';
 import dayjs from 'dayjs';
+import { ComponentType, useEffect } from 'react';
+import Prism from 'prismjs';
 
 interface Page {
   title: string;
@@ -31,8 +33,14 @@ export default function Index() {
       href: `/note/${note.link}`,
       datetime: dayjs(note.module.meta.date).format('YYYY-MM-DD'),
       iconBackground: 'bg-green-400',
+      Preview: note.module.default,
     };
   });
+
+  useEffect(() => {
+    Prism.highlightAll();
+  }, []);
+
   return (
     <div className="antialiased">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 xl:max-w-5xl xl:px-0 py-10">
@@ -52,7 +60,7 @@ export default function Index() {
               other interesting things.
             </p>
           </div>
-          <div className="max-w-lg mx-auto lg:grid-cols-3 lg:max-w-none">
+          <div className="mx-auto">
             <TimelineComponent timeline={timelines} />
           </div>
         </main>
@@ -89,6 +97,7 @@ interface Timeline {
   tags: string[];
   datetime: string;
   iconBackground: string;
+  Preview: ComponentType<any>;
 }
 
 interface TimelineComponentProps {
@@ -100,7 +109,7 @@ const TimelineComponent = ({ timeline }: TimelineComponentProps) => {
       {timeline.map((event) => (
         <li key={event.key}>
           <div className="mb-4 pt-4">
-            <div className="flex flex-col space-y-1">
+            <div className="flex flex-col space-y-2">
               <div className="min-w-0 flex-1 pt-1.5 flex justify-between items-center">
                 <Link href={event.href}>
                   <a>
@@ -118,6 +127,19 @@ const TimelineComponent = ({ timeline }: TimelineComponentProps) => {
                 {event.tags.map((tag) => (
                   <TagComponent tag={tag} key={tag} />
                 ))}
+              </div>
+              <div className="py-4 prose lg:prose-xl">
+                <event.Preview />
+              </div>
+              <div className="flex text-base font-medium">
+                <Link href={event.href}>
+                  <a
+                    className="text-teal-600 hover:text-teal-700"
+                    aria-label={event.title}
+                  >
+                    Read more →
+                  </a>
+                </Link>
               </div>
             </div>
           </div>

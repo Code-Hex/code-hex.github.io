@@ -1,7 +1,11 @@
 const colors = require('tailwindcss/colors');
 const mdx = require('@mdx-js/mdx');
 
+// ref:
+// https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/defaultConfig.stub.js
+// https://github.com/sindresorhus/github-markdown-css/blob/main/github-markdown.css
 module.exports = {
+  mode: 'jit',
   purge: {
     content: [
       './pages/**/*.{ts,tsx,mdx}',
@@ -57,20 +61,139 @@ module.exports = {
         highlight: 'rgba(134, 239, 172, 0.25)',
       },
     },
-    extend: {
-      spacing: {
-        '9/16': '56.25%',
+    typography: (theme) => ({
+      DEFAULT: {
+        css: {
+          color: theme('colors.gray.700'),
+          h1: {
+            display: 'flex',
+            fontWeight: '700',
+            letterSpacing: theme('letterSpacing.tight'),
+            color: theme('colors.gray.900'),
+            fontSize: theme('fontSize.4xl'),
+            marginTop: theme('margin.3'),
+            marginBottom: theme('margin.2'),
+          },
+          h2: {
+            display: 'flex',
+            fontWeight: '700',
+            letterSpacing: theme('letterSpacing.tight'),
+            color: theme('colors.gray.900'),
+            fontSize: theme('fontSize.3xl'),
+            marginTop: theme('margin.3'),
+            marginBottom: theme('margin.2'),
+          },
+          h3: {
+            display: 'flex',
+            fontWeight: '600',
+            color: theme('colors.gray.900'),
+            fontSize: theme('fontSize.2xl'),
+            marginTop: theme('margin.3'),
+            marginBottom: theme('margin.2'),
+          },
+          h4: {
+            display: 'flex',
+            fontWeight: '600',
+            color: theme('colors.gray.900'),
+            fontSize: theme('fontSize.xl'),
+            marginTop: theme('margin.3'),
+            marginBottom: theme('margin.2'),
+          },
+          p: {
+            color: theme('colors.gray.700'),
+            marginBottom: theme('margin.2'),
+          },
+          li: {},
+          ul: {
+            listStyleType: 'disc',
+            paddingLeft: theme('padding.4'),
+            marginBottom: theme('margin.2'),
+          },
+          ol: {
+            listStyleType: 'decimal',
+            paddingLeft: theme('padding.4'),
+            marginBottom: theme('margin.2'),
+          },
+          a: {
+            color: theme('colors.blue.700'),
+            fontWeight: 400,
+            'text-decoration': 'underline',
+            '&:hover': {
+              color: theme('colors.blue.500'),
+            },
+            '&:visited': {
+              color: theme('colors.purple.500'),
+            },
+          },
+          pre: {
+            color: theme('colors.white'),
+            backgroundColor: theme('colors.gray.800'),
+            'border-radius': theme('borderRadius.md'),
+            padding: theme('padding.4'),
+            marginBottom: theme('margin.2'),
+            overflow: 'auto',
+          },
+          code: {
+            color: theme('colors.pink.600'),
+            quotes: "'`' '`'",
+            '&:before': {
+              content: 'open-quote',
+            },
+            '&:after': {
+              content: 'close-quote',
+            },
+          },
+          blockquote: {
+            marginBottom: theme('margin.2'),
+            paddingLeft: theme('padding.4'),
+            color: theme('colors.gray.900'),
+            borderLeftColor: theme('colors.gray.300'),
+            borderLeftWidth: theme('borderWidth.4'),
+            'font-style': 'italic',
+          },
+          // inlineCode in mdx
+          'pre > code': {
+            '&:before': {
+              content: 'none',
+            },
+            '&:after': {
+              content: 'none',
+            },
+            color: theme('colors.white'),
+            fontFamily: theme('fontFamily.mono'),
+            fontSize: theme('fontSize.sm'),
+          },
+          table: {
+            marginBottom: theme('margin.2'),
+            width: theme('w.full'),
+            overflow: 'auto',
+            fontWeight: '600',
+          },
+          'table th': {
+            fontWeight: '600',
+          },
+          td: {
+            padding: theme('padding.2'),
+            borderTop: theme('border.2'),
+            fontSize: theme('fontSize.sm'),
+            'white-space': 'normal',
+          },
+          em: {
+            'font-style': 'italic',
+          },
+          details: {
+            cursor: 'pointer',
+            marginBottom: theme('margin.2'),
+          },
+          summary: {
+            display: 'list-item',
+          },
+        },
       },
-      lineHeight: {
-        11: '2.75rem',
-        12: '3rem',
-        13: '3.25rem',
-        14: '3.5rem',
-      },
-    },
+    }),
   },
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 };

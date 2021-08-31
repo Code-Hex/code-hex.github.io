@@ -4,14 +4,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ReactNode, useEffect } from 'react';
-import { MDXComponents } from './Mdx';
 import Prism from 'prismjs';
-
-const usePrismHighlightAll = () => {
-  useEffect(() => {
-    Prism.highlightAll();
-  }, []);
-};
 
 interface NoteProps {
   meta: Metadata;
@@ -48,6 +41,7 @@ const Note = (props: NoteProps) => {
           property="og:image"
           content={`https://codehex.dev/assets/images/twitter-card-small.jpg`}
         />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main>
         <NoteContent title={title}>{children}</NoteContent>
@@ -73,7 +67,9 @@ export interface NoteContentProps {
 }
 
 export const NoteContent = ({ title, children }: NoteContentProps) => {
-  usePrismHighlightAll();
+  useEffect(() => {
+    Prism.highlightAll();
+  }, []);
   return (
     <div className={`w-full flex bg-white antialiased`}>
       <div className="flex-auto px-8 sm:px-10 xl:px-12 pt-10 pb-24 lg:pb-16">
@@ -82,10 +78,8 @@ export const NoteContent = ({ title, children }: NoteContentProps) => {
             {title}
           </h1>
         </div>
-        <article>
-          <MDXProvider components={{ ...MDXComponents }}>
-            {children}
-          </MDXProvider>
+        <article className="prose lg:prose-xl">
+          <MDXProvider components={{}}>{children}</MDXProvider>
         </article>
       </div>
     </div>
