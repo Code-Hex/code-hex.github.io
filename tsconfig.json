@@ -22,16 +22,14 @@
       "~/components/*": ["components/*"],
       "~/layouts/*": ["layouts/*"],
       "~/remark/*": ["remark/*"],
-      "~/esbuild/*": ["esbuild/*"],
-      "~/worker/*": ["worker/*"]
+      "~/esbuild/*": ["esbuild/*"]
     }
   },
   "include": [
     "next-env.d.ts",
     "mdx.d.ts",
     "**/*.ts",
-    "**/*.tsx",
-    "worker/typings.worker.js"
+    "**/*.tsx"
   ],
   "exclude": ["node_modules"]
 }
