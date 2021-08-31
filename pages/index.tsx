@@ -53,6 +53,11 @@ export default function Home() {
             </Link>
           </li>
           <li>
+            <Link href="/editor" as="/note">
+              <a>アルパカの徒然文エディタ</a>
+            </Link>
+          </li>
+          <li>
             <Link href="/unknown" as="/unknown">
               <a>My Unknown List</a>
             </Link>

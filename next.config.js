@@ -22,6 +22,7 @@ const nextConfig = {
       '/': { page: '/' },
       '/unknown': { page: '/unknown' },
       '/note': { page: '/note' },
+      '/editor': { page: '/editor' },
     };
     notePaths.forEach((v) => {
       pages[v] = {
