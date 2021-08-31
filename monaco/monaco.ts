@@ -1,51 +1,6 @@
 import { monokaiTheme } from './monokai';
 import { Monaco } from '@monaco-editor/react';
 import { MonacoLanguageLoaderResult } from './types';
-import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-
-// https://github.com/mdx-js/vscode-mdx/blob/master/language-configuration.json
-const mdxConf: monaco.languages.LanguageConfiguration = {
-  comments: {
-    blockComment: ['<!--', '-->'],
-  },
-  // symbols used as brackets
-  brackets: [
-    ['{', '}'],
-    ['[', ']'],
-    ['(', ')'],
-  ],
-  // symbols that are auto closed when typing
-  autoClosingPairs: [
-    { open: '{', close: '}' },
-    { open: '[', close: ']' },
-    { open: '(', close: ')' },
-    { open: '`', close: '`' },
-    { open: '"', close: '"', notIn: ['string'] },
-    { open: "'", close: "'", notIn: ['string'] },
-    { open: '/**', close: ' */', notIn: ['string'] },
-    { open: '<!--', close: '-->', notIn: ['string', 'comment'] },
-    { open: '<', close: '>', notIn: ['string'] },
-  ],
-  // symbols that that can be used to surround a selection
-  surroundingPairs: [
-    { open: '{', close: '}' },
-    { open: '"', close: '"' },
-    { open: "'", close: "'" },
-    { open: '<', close: '>' },
-    { open: '_', close: '_' },
-    { open: '*', close: '*' },
-    { open: '(', close: ')' },
-    { open: '[', close: ']' },
-    { open: '`', close: '`' },
-  ],
-  folding: {
-    offSide: true,
-    markers: {
-      start: new RegExp('^\\s*<!--\\s*#?region\\b.*-->'),
-      end: new RegExp('^\\s*<!--\\s*#?endregion\\b.*-->'),
-    },
-  },
-};
 
 export const SetupEditor = (
   m: Monaco,
@@ -77,6 +32,7 @@ export const SetupEditor = (
   m.languages.typescript.javascriptDefaults.setEagerModelSync(true);
 
   const mdxLanguage = Object.assign({}, markdown.language);
+  const mdxConf = Object.assign({}, markdown.conf);
 
   // setup
   const mdTokenizerLineContent = mdxLanguage.tokenizer.linecontent.splice(0, mdxLanguage.tokenizer.linecontent.length - 1) // { include: 'html' }
