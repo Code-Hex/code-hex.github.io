@@ -14,7 +14,6 @@ export const remarkPlugins = [
         properties: {
           xmlns: 'http://www.w3.org/2000/svg',
           viewBox: '0 0 24 24',
-          class: '-ml-6 h-5 w-5 hover:text-gray-500 text-transparent',
           fill: 'none',
           stroke: 'currentColor',
         },
