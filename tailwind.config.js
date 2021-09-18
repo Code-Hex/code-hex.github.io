@@ -136,10 +136,11 @@ module.exports = {
           pre: {
             color: theme('colors.white'),
             backgroundColor: theme('colors.gray.800'),
-            'border-radius': theme('borderRadius.md'),
             padding: theme('padding.4'),
-            marginBottom: theme('margin.2'),
+            marginBottom: theme('margin.4'),
             overflow: 'auto',
+            marginLeft: '-' + theme('margin.8'),
+            marginRight: '-' + theme('margin.8'),
           },
           code: {
             color: theme('colors.pink.600'),
@@ -168,7 +169,6 @@ module.exports = {
               content: 'none',
             },
             color: theme('colors.white'),
-            fontFamily: theme('fontFamily.mono'),
             fontSize: theme('fontSize.sm'),
           },
           table: {
@@ -199,6 +199,23 @@ module.exports = {
           },
           summary: {
             display: 'list-item',
+          },
+        },
+      },
+      sm: {
+        css: {
+          pre: {
+            marginLeft: '-' + theme('margin.10'),
+            marginRight: '-' + theme('margin.10'),
+          },
+        },
+      },
+      xl: {
+        css: {
+          pre: {
+            borderRadius: theme('borderRadius.md'),
+            marginLeft: 0,
+            marginRight: 0,
           },
         },
       },

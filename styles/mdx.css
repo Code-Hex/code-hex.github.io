@@ -53,6 +53,10 @@
   @apply text-gray-400;
 }
 
+.token.deleted, .token.inserted {
+  min-width: 100vh;
+}
+
 .token.deleted:not(.prefix) {
   @apply relative block -mx-4 px-4;
 }
