@@ -72,13 +72,13 @@ export const NoteContent = ({ title, children }: NoteContentProps) => {
   }, []);
   return (
     <div className="w-full bg-white antialiased">
-      <div className="mx-8 sm:mx-10 xl:mx-12 pt-10 pb-24 lg:pb-16">
+      <div className="mx-8 sm:mx-10 md:mx-12 pt-10 pb-24 lg:pb-16">
         <div className="pb-2 border-b border-gray-200 mb-10">
           <h1 className="inline-block text-3xl font-bold text-gray-900 tracking-tight">
             {title}
           </h1>
         </div>
-        <article className="prose sm:prose-sm xl:prose-xl">
+        <article className="prose sm:prose-sm md:prose-md">
           <MDXProvider components={{}}>{children}</MDXProvider>
         </article>
       </div>
