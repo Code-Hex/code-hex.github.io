@@ -66,8 +66,6 @@ module.exports = {
         css: {
           color: theme('colors.gray.800'),
           h1: {
-            display: 'flex',
-            alignItems: 'center',
             fontWeight: '700',
             letterSpacing: theme('letterSpacing.tight'),
             color: theme('colors.gray.900'),
@@ -76,8 +74,6 @@ module.exports = {
             marginBottom: theme('margin.3'),
           },
           h2: {
-            display: 'flex',
-            alignItems: 'center',
             fontWeight: '700',
             letterSpacing: theme('letterSpacing.tight'),
             color: theme('colors.gray.900'),
@@ -86,8 +82,6 @@ module.exports = {
             marginBottom: theme('margin.7'),
           },
           h3: {
-            display: 'flex',
-            alignItems: 'center',
             fontWeight: '600',
             color: theme('colors.gray.900'),
             fontSize: theme('fontSize.xl'),
@@ -95,13 +89,18 @@ module.exports = {
             marginBottom: theme('margin.5'),
           },
           h4: {
-            display: 'flex',
-            alignItems: 'center',
             fontWeight: '600',
             color: theme('colors.gray.900'),
             fontSize: theme('fontSize.lg'),
             marginTop: theme('margin.4'),
             marginBottom: theme('margin.3'),
+          },
+          'h1, h2, h3, h4': {
+            display: 'flex',
+            alignItems: 'center',
+            '&:hover > a > svg': {
+              color: theme('colors.gray.500'),
+            },
           },
           'a > svg': {
             marginLeft: '-' + theme('margin.5'),
