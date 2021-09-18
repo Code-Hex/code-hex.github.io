@@ -212,7 +212,7 @@ module.exports = {
           },
         },
       },
-      xl: {
+      md: {
         css: {
           pre: {
             borderRadius: theme('borderRadius.md'),

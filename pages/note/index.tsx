@@ -42,8 +42,8 @@ export default function Index() {
   }, []);
 
   return (
-    <div className="antialiased">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 xl:max-w-5xl xl:px-0 py-10">
+    <div className="w-full mx-auto antialiased">
+      <div className="mx-8 sm:mx-10 md:mx-12 py-10">
         <main className="divide-y divide-gray-200">
           <div className="text-left py-4">
             <h2 className="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl">
@@ -110,7 +110,7 @@ const TimelineComponent = ({ timeline }: TimelineComponentProps) => {
         <li key={event.key}>
           <div className="mb-4 pt-4">
             <div className="flex flex-col space-y-2">
-              <div className="min-w-0 flex-1 pt-1.5 flex justify-between items-center">
+              <div className="pt-1.5 flex justify-between items-center">
                 <Link href={event.href}>
                   <a>
                     <p className="text-xl font-semibold text-gray-900">
@@ -128,7 +128,7 @@ const TimelineComponent = ({ timeline }: TimelineComponentProps) => {
                   <TagComponent tag={tag} key={tag} />
                 ))}
               </div>
-              <div className="py-4 prose lg:prose-xl">
+              <div className="py-4 prose sm:prose-sm md:prose-md">
                 <event.Preview />
               </div>
               <div className="flex text-base font-medium">
