@@ -67,6 +67,7 @@ module.exports = {
           color: theme('colors.gray.800'),
           h1: {
             display: 'flex',
+            alignItems: 'center',
             fontWeight: '700',
             letterSpacing: theme('letterSpacing.tight'),
             color: theme('colors.gray.900'),
@@ -76,6 +77,7 @@ module.exports = {
           },
           h2: {
             display: 'flex',
+            alignItems: 'center',
             fontWeight: '700',
             letterSpacing: theme('letterSpacing.tight'),
             color: theme('colors.gray.900'),
@@ -85,6 +87,7 @@ module.exports = {
           },
           h3: {
             display: 'flex',
+            alignItems: 'center',
             fontWeight: '600',
             color: theme('colors.gray.900'),
             fontSize: theme('fontSize.xl'),
@@ -93,6 +96,7 @@ module.exports = {
           },
           h4: {
             display: 'flex',
+            alignItems: 'center',
             fontWeight: '600',
             color: theme('colors.gray.900'),
             fontSize: theme('fontSize.lg'),
@@ -100,9 +104,8 @@ module.exports = {
             marginBottom: theme('margin.3'),
           },
           'a > svg': {
-            marginTop: theme('margin.2'),
             marginLeft: '-' + theme('margin.5'),
-            width: theme('margin.5'),
+            width: theme('spacing.4'),
             color: theme('colors.transparent'),
             '&:hover': {
               color: theme('colors.gray.500'),
