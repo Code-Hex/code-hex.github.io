@@ -3,7 +3,7 @@ import Head from 'next/head';
 import CodeHex from '~/components/CodeHex';
 
 // Ref: https://phiilu.com/generate-open-graph-images-for-your-static-next-js-site
-// Example URL: http://localhost:3000/ogp/?title=%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF%20mdx!!&url=https%3A%2F%2Fphiilu.com%2Fhello-world&date=2021-10-10
+// Example URL: http://localhost:3000/ogp/?title=%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF%20mdx!!&url=https%3A%2F%2Fcodehex.dev%2Fhello-world&date=2021-10-10
 const NoteOGP = () => {
   const router = useRouter();
 
@@ -20,7 +20,7 @@ const NoteOGP = () => {
     <>
       <Head>
         <link
-          href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP"
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP"
           rel="stylesheet"
         />
       </Head>
@@ -31,30 +31,26 @@ const NoteOGP = () => {
           className="flex flex-col justify-between text-gray-100 bg-gray-900"
           style={{ padding: '40pt' }}
         >
-          <div className="max-w-screen-lg space-y-2">
+          <div className="space-y-2 overflow-hidden multiline-truncate">
             {date && (
               <p className="text-3xl font-semibold text-gray-600">
                 <span>{date}</span>
               </p>
             )}
-            <h1 className="text-7xl font-bold text-gray-100">{title}</h1>
+            <h1 className="text-7xl font-bold text-gray-100 font-noto-sans-jp leading-normal">
+              {title}
+            </h1>
           </div>
-          <div className="flex items-center space-x-6">
-            <CodeHex width="120px" height="120px" isShake={false} />
-            <div className="flex flex-col gap">
-              <p className="mb-1 text-3xl font-semibold text-gray-200">
+          <div className="flex justify-between items-center space-x-6">
+            <div className="flex flex-col">
+              <p className="mb-1 text-3xl font-semibold text-gray-200 font-noto-sans-jp">
                 アルパカの徒然文
               </p>
               <p className="text-2xl font-semibold tracking-wide text-indigo-400">
-                codehex.dev<span className="path">{linkURL.pathname}</span>
-              </p>
-              <p
-                className="text-2xl font-semibold tracking-wide"
-                style={{ color: '#1D9BF0' }}
-              >
-                twitter.com/codehex
+                <span className="path">{linkURL.toString()}</span>
               </p>
             </div>
+            <CodeHex width="120px" height="120px" isShake={false} />
           </div>
         </div>
       </div>

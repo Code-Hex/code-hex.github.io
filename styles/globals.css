@@ -14,3 +14,10 @@ div#__next > div,
 div#__next > div > div {
   min-height: 100vh;
 }
+
+.multiline-truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
