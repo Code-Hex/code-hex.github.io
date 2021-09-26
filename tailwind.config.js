@@ -21,6 +21,9 @@ module.exports = {
     cursor: {
       'col-resize': 'col-resize',
     },
+    fontFamily: {
+      'noto-sans-jp': ['Noto Sans JP'],
+    },
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
