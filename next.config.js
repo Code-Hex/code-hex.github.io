@@ -82,11 +82,13 @@ const nextConfig = {
           use: [
             ...mdx,
             createLoader(function (src) {
+              const path = this.context.replace(/^.*(\/note\/.*)$/, '$1');
               const content = [
                 'import Note from "~/components/Note"',
-                // 'export { getStaticProps } from "@/getStaticProps"',
+                'import { makeGetStaticProps } from "~/mdx/getStaticProps"',
                 src,
-                'export default Note',
+                `export const getStaticProps = makeGetStaticProps(meta, "${path}")`,
+                'export default (props) => <Note meta={meta} {...props} />',
               ].join('\n');
 
               if (content.includes('<!--more-->')) {

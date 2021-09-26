@@ -9,10 +9,13 @@ import Prism from 'prismjs';
 interface NoteProps {
   meta: Metadata;
   children: ReactNode;
+
+  // getStaticProps
+  ogpPath: string;
 }
 
 const Note = (props: NoteProps) => {
-  const { meta, children } = props;
+  const { meta, children, ogpPath } = props;
   const router = useRouter();
   const title = meta.title;
   return (
@@ -26,10 +29,7 @@ const Note = (props: NoteProps) => {
         <meta name="twitter:title" content={`${title} – codehex note`} />
         {/* <meta name="twitter:description" content={description} /> */}
         <meta name="twitter:card" content="summary" />
-        <meta
-          name="twitter:image"
-          content={`https://codehex.dev/assets/images/twitter-card-small.jpg`}
-        />
+        <meta name="twitter:image" content={`https://codehex.dev${ogpPath}`} />
         <meta
           property="og:url"
           content={`https://codehex.dev${router.pathname}`}
@@ -37,10 +37,7 @@ const Note = (props: NoteProps) => {
         <meta property="og:type" content="article" />
         <meta property="og:title" content={`${title} – codehex note`} />
         {/* <meta property="og:description" content={description} /> */}
-        <meta
-          property="og:image"
-          content={`https://codehex.dev/assets/images/twitter-card-small.jpg`}
-        />
+        <meta property="og:image" content={`https://codehex.dev${ogpPath}`} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main>
