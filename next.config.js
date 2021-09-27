@@ -5,7 +5,7 @@ require('ts-node').register({
     strict: true,
   },
 }); // for remarkPlugins
-const { remarkPlugins } = require('./src/remark/remarkPlugins');
+const { remarkPlugins } = require('./src/lib/remarkPlugins');
 const nextBuildId = require('next-build-id');
 const withPlugins = require('next-compose-plugins');
 const { createLoader } = require('simple-functional-loader');
