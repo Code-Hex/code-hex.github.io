@@ -28,7 +28,6 @@ const Note = (props: NoteProps) => {
         <meta name="twitter:creator" content="@codehex" />
         <meta name="twitter:title" content={`${title} – codehex note`} />
         {/* <meta name="twitter:description" content={description} /> */}
-        <meta name="twitter:card" content="summary" />
         <meta
           name="twitter:image:src"
           content={`https://codehex.dev${ogpPath}`}
