@@ -19,11 +19,12 @@
     "target": "esnext",
     "baseUrl": ".",
     "paths": {
-      "~/components/*": ["components/*"],
-      "~/layouts/*": ["layouts/*"],
-      "~/remark/*": ["remark/*"],
-      "~/esbuild/*": ["esbuild/*"],
-      "~/mdx/*": ["mdx/*"]
+      "~/components/*": ["src/components/*"],
+      "~/layouts/*": ["src/layouts/*"],
+      "~/remark/*": ["src/remark/*"],
+      "~/monaco/*": ["src/monaco/*"],
+      "~/esbuild/*": ["src/esbuild/*"],
+      "~/mdx/*": ["src/mdx/*"]
     }
   },
   "include": [

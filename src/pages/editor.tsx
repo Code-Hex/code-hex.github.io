@@ -9,11 +9,11 @@ import { remove } from 'unist-util-remove';
 import { NoteContent } from '~/components/Note';
 import { Plugin, Pluggable } from 'unified';
 import esbuild from '~/esbuild/esbuild';
-import { useLanguageLoader } from 'monaco/hooks';
-import { SetupEditor } from 'monaco/monaco';
+import { useLanguageLoader } from '~/monaco/hooks';
+import { SetupEditor } from '~/monaco/monaco';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { SidebarLayout } from '~/components/Resize';
-import { Metadata } from 'mdx/config';
+import { Metadata } from '~/mdx/config';
 import { remarkPlugins } from '~/remark/remarkPlugins';
 
 const EditorPage = () => {
@@ -36,7 +36,7 @@ const EditorPage = () => {
           const result = await compileMdx(value);
           setMdxResult(result);
         } catch (err) {
-          console.error('mdx error:', err.message);
+          console.error('mdx error:', err);
         }
       })();
     }, 1000);

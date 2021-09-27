@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import 'tailwindcss/tailwind.css';
 import { GetStaticProps } from 'next';
-import { getAllNotes } from 'mdx/utils';
+import { getAllNotes } from '~/mdx/utils';
 import dayjs from 'dayjs';
 import { ComponentType, useEffect } from 'react';
 import Prism from 'prismjs';

@@ -1,5 +1,5 @@
 // import NotePageListLayout from '../../../layouts/NotePageListLayout';
-import { getAllNotes } from 'mdx/utils';
+import { getAllNotes } from '~/mdx/utils';
 import { GetStaticProps } from 'next';
 import dayjs from 'dayjs';
 import Link from 'next/link';
