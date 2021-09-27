@@ -1,4 +1,4 @@
-import HomePageLayout from '~/layouts/HomePageLayout';
+import HomePageLayout from 'src/layouts/HomePageLayout';
 
 export default function Stylish() {
   return (

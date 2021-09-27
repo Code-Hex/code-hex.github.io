@@ -1,5 +1,5 @@
-import HomePageLayout from '../layouts/HomePageLayout';
-import CodeHexUnknown from '../components/CodeHexUnknown';
+import HomePageLayout from '~/layouts/HomePageLayout';
+import CodeHexUnknown from '~/components/CodeHexUnknown';
 
 export default function Unknown() {
   return (

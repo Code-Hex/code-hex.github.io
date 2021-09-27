@@ -1,5 +1,5 @@
-import HomePageLayout from '../layouts/HomePageLayout';
-import CodeHex from '../components/CodeHex';
+import HomePageLayout from '~/layouts/HomePageLayout';
+import CodeHex from '~/components/CodeHex';
 import Link from 'next/link';
 
 export default function Home() {

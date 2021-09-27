@@ -8,8 +8,8 @@ module.exports = {
   mode: 'jit',
   purge: {
     content: [
-      './pages/**/*.{ts,tsx,mdx}',
-      './components/**/*.{ts,tsx}',
+      './src/pages/**/*.{ts,tsx,mdx}',
+      './src/components/**/*.{ts,tsx}',
       './next.config.js',
     ],
     transform: {
