@@ -8,13 +8,13 @@ import { visit } from 'unist-util-visit';
 import { remove } from 'unist-util-remove';
 import { NoteContent } from '~/components/Note';
 import { Plugin, Pluggable } from 'unified';
-import esbuild from '~/esbuild/esbuild';
+import esbuild from '~/lib/esbuild';
 import { useLanguageLoader } from '~/monaco/hooks';
 import { SetupEditor } from '~/monaco/monaco';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { SidebarLayout } from '~/components/Resize';
 import { Metadata } from '~/mdx/config';
-import { remarkPlugins } from '~/remark/remarkPlugins';
+import { remarkPlugins } from '~/lib/remarkPlugins';
 
 const EditorPage = () => {
   const [value, setValue] = useState<string | undefined>();

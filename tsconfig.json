@@ -21,10 +21,9 @@
     "paths": {
       "~/components/*": ["src/components/*"],
       "~/layouts/*": ["src/layouts/*"],
-      "~/remark/*": ["src/remark/*"],
       "~/monaco/*": ["src/monaco/*"],
-      "~/esbuild/*": ["src/esbuild/*"],
-      "~/mdx/*": ["src/mdx/*"]
+      "~/mdx/*": ["src/mdx/*"],
+      "~/lib/*": ["src/lib/*"]
     }
   },
   "include": [
