@@ -1,6 +1,8 @@
 import emoji from 'remark-emoji';
 import slug from 'remark-slug';
 import autoLinkHeadings from 'remark-autolink-headings';
+import remarkFootnotes from 'remark-footnotes'
+import remarkGfm from 'remark-gfm'
 
 export const remarkPlugins = [
   slug,
@@ -35,4 +37,6 @@ export const remarkPlugins = [
     },
   ],
   [emoji, { padSpaceAfter: true }],
+  remarkFootnotes,
+  remarkGfm,
 ];
