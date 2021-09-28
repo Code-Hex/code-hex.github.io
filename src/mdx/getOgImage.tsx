@@ -37,10 +37,10 @@ const OgpComponent = ({ date, title, path }: OgpComponentProps) => {
         {/* GitHub recommends leaving a 40pt padding around important details of our social card to make sure nothing gets cropped */}
         <div
           className="h-full flex flex-col justify-between text-gray-100 bg-gray-900"
-          style={{ padding: '40pt 80pt' }}
+          style={{ padding: '60pt 80pt 40pt 80pt' }}
         >
           <div className="space-y-2 overflow-hidden multiline-truncate">
-            <p className="text-3xl font-semibold text-gray-400 font-source-sans-pro">
+            <p className="text-4xl font-semibold text-gray-400 font-source-sans-pro">
               <span>{date}</span>
             </p>
             <h1 className="text-7xl font-bold text-gray-100 leading-normal">
@@ -49,14 +49,14 @@ const OgpComponent = ({ date, title, path }: OgpComponentProps) => {
           </div>
           <div className="flex justify-between items-center space-x-6">
             <div className="flex flex-col">
-              <p className="mb-1 text-3xl font-semibold text-gray-200">
+              <p className="mb-1 text-5xl font-semibold text-gray-200">
                 アルパカの徒然文
               </p>
               <p className="text-3xl font-semibold tracking-wide text-indigo-400">
                 <span className="path">https://codehex.dev{path}</span>
               </p>
             </div>
-            <CodeHex width="140px" height="140px" isShake={false} />
+            <CodeHex width="150px" height="150px" isShake={false} />
           </div>
         </div>
       </body>
