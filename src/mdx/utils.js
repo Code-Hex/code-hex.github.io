@@ -6,7 +6,7 @@ const dateSortDesc = (a, b) => {
   return 0;
 };
 
-const importAll = (r) => {
+export const importAll = (r) => {
   return r
     .keys()
     .filter((fileName) => !fileName.includes('pages'))
@@ -15,8 +15,4 @@ const importAll = (r) => {
       module: r(fileName),
     }))
     .sort((a, b) => dateSortDesc(a.module.meta.date, b.module.meta.date));
-};
-
-export const getAllNotes = () => {
-  return importAll(require.context('../pages/note/?preview', true, /\.mdx$/));
 };
