@@ -58,7 +58,7 @@ const EditorPage = () => {
 
     // eslint-disable-next-line react/display-name
     return () => (
-      <NoteContent title={mdxResult.meta.title}>
+      <NoteContent meta={mdxResult.meta}>
         <MDXContent />
       </NoteContent>
     );
@@ -106,10 +106,11 @@ const EditorPage = () => {
 export default dynamic(() => Promise.resolve(EditorPage), { ssr: false });
 
 function getSampleCodeForLanguage(): string {
-  const now = dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ssZ[Z]');
+  const now = dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ssZ');
   return `\
 export const meta = {
   title: 'Title',
+  description: 'description is here',
   date: '${now}',
   tags: []
 }

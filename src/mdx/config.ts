@@ -6,20 +6,10 @@ import footnotes from 'remark-footnotes';
 
 export interface Metadata {
   title: string;
-  date: Date;
+  description: string;
+  date: string;
   tags: string[];
 }
-
-export const isMetadata = (v: any): v is Metadata => {
-  return (
-    v &&
-    typeof v.title === 'string' &&
-    v.date instanceof Date &&
-    Array.isArray(v.tags) &&
-    v.tags.every((e: any) => typeof e === 'string')
-  );
-};
-
 
 export const mdxConfig = {
   remarkPlugins: [
