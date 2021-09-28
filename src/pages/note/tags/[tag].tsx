@@ -1,76 +1,44 @@
-// import NotePageListLayout from '../../../layouts/NotePageListLayout';
-import { getAllNotes } from '~/mdx/utils';
-import { GetStaticProps } from 'next';
+import { getAllNotes } from '~/mdx/notes';
 import dayjs from 'dayjs';
-import Link from 'next/link';
-
-interface Page {
-  title: string;
-  date: string;
-  tags: string[];
-  href: string;
-}
-
-interface TagPageProps {
-  pages: Page[];
-}
+import { PreviewItem, PreviewNote } from '~/components/PreviewNote';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
+import { invariant } from 'ts-invariant';
+import Prism from 'prismjs';
+import { useEffect } from 'react';
+import { NoteItems } from '~/layouts/NoteItems';
 
 const notes = getAllNotes();
 
-export default function TagPage({ pages }: TagPageProps) {
-  // return <NotePageListLayout title={'# ' + tag} pages={pages} />;
-  return (
-    <div className="flex flex-row">
-      {pages.map((page, i) => {
-        return (
-          <div key={i}>
-            <div>
-              <Link href={page.href}>
-                <a className="text-blue-400 hover:text-blue-600 hover:underline">
-                  {page.title}
-                </a>
-              </Link>
-            </div>
-            <div>date: {page.date}</div>
-            <div>tags: {page.tags.join(', ')}</div>
-          </div>
-        );
-      })}
-    </div>
-  );
+interface TagPageProps {
+  itemLinks: string[];
+  tag: string;
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const tag = params?.tag;
-  const pages = notes
-    .filter((note: any) => note.module.meta.tags.includes(tag))
-    .map(
-      (note: any): Page => {
-        return {
-          title: note.module.meta.title,
-          tags: note.module.meta.tags,
-          href: `/note/${note.link}`,
-          date: dayjs(note.module.meta.date).format('YYYY-MM-DD'),
-        };
-      }
-    );
+export const getStaticProps: GetStaticProps<TagPageProps> = async ({
+  params,
+}) => {
+  invariant(
+    params?.tag && typeof params?.tag === 'string',
+    `unexpected tag value: ${params?.tag}`
+  );
+
+  const wantTag = params.tag;
+  const itemLinks = notes
+    .filter((note) => note.meta.tags.find((tag) => tag === wantTag))
+    .map((note) => note.href);
 
   return {
     props: {
-      pages,
+      itemLinks,
+      tag: wantTag,
     },
   };
 };
 
 export async function getStaticPaths() {
-  const tags = notes
-    .map((note: any) => note.module.meta.tags)
-    .flat(1)
-    .filter(
-      (value: string, index: number, self: string[]) =>
-        self.indexOf(value) === index
-    ); // uniq
-  const paths = tags.map((tag: string) => {
+  const tags = notes.map((note) => note.meta.tags).flat(1);
+  // remove uniq items: https://stackoverflow.com/a/33121880
+  const paths = [...new Set(tags)].map((tag: string) => {
     return {
       params: {
         tag,
@@ -82,4 +50,37 @@ export async function getStaticPaths() {
     paths,
     fallback: false,
   };
+}
+
+export default function TagPage({
+  itemLinks,
+  tag,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
+  const items = notes
+    .filter((note) => itemLinks.indexOf(note.href) >= 0)
+    .map(
+      (note): PreviewItem => {
+        return {
+          title: note.meta.title,
+          tags: note.meta.tags,
+          href: note.href,
+          datetime: dayjs(note.meta.date).format('YYYY-MM-DD'),
+          iconBackground: 'bg-green-400',
+          Preview: note.default,
+        };
+      }
+    );
+
+  useEffect(() => {
+    Prism.highlightAll();
+  }, []);
+
+  return (
+    <NoteItems title={`# ${tag}`} items={items} Preview={PreviewNote}>
+      <p className="mt-3 text-xl text-gray-500 sm:mt-4">
+        <span className="text-pink-600">{items.length}</span> posts in{' '}
+        <span className="font-bold text-black"># {tag}</span>
+      </p>
+    </NoteItems>
+  );
 }

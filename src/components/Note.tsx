@@ -42,12 +42,12 @@ const Note = (props: NoteProps) => {
         <meta property="og:image" content={`https://codehex.dev${ogpPath}`} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <main>
+      <main className="w-full mx-auto max-w-3xl xl:max-w-5xl">
         <NoteContent title={title}>{children}</NoteContent>
       </main>
-      <footer className="min-w-0 flex-auto px-8 sm:px-10 xl:px-12 pt-10 pb-24 lg:pb-16">
-        <div className="text-sm font-medium leading-5 divide-y divide-gray-200 xl:col-start-1 xl:row-start-2">
-          <div className="pt-8">
+      <footer className="w-full mx-auto max-w-3xl xl:max-w-5xl">
+        <div className="text-md font-medium leading-5 divide-y divide-gray-200">
+          <div className="mx-8 sm:mx-10 md:mx-12 pb-24 lg:pb-16">
             <Link href="/note">
               <a className="text-teal-500 hover:text-teal-600">
                 ← Back to the note
@@ -71,7 +71,7 @@ export const NoteContent = ({ title, children }: NoteContentProps) => {
   }, []);
   return (
     <div className="w-full bg-white antialiased">
-      <div className="mx-8 sm:mx-10 md:mx-12 pt-10 pb-24 lg:pb-16">
+      <div className="mx-8 sm:mx-10 md:mx-12 pt-10 pb-16">
         <div className="pb-2 border-b border-gray-200 mb-10">
           <h1 className="inline-block text-3xl font-bold text-gray-900 tracking-tight">
             {title}
