@@ -9,7 +9,8 @@ module.exports = {
   purge: {
     content: [
       './src/pages/**/*.{ts,tsx,mdx}',
-      './src/components/**/*.{ts,tsx}',
+      './src/components/**/*.tsx',
+      './src/layouts/**/*.tsx',
       './next.config.js',
     ],
     transform: {
