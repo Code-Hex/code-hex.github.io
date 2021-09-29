@@ -13,6 +13,7 @@ dayjs.extend(relativeTime);
 
 interface NoteProps {
   meta: Metadata;
+  components?: Record<string, React.ReactNode>;
   children: ReactNode;
 
   // getStaticProps
@@ -20,7 +21,7 @@ interface NoteProps {
 }
 
 const Note = (props: NoteProps) => {
-  const { meta, children, ogpPath } = props;
+  const { meta, components, children, ogpPath } = props;
   const router = useRouter();
   const title = meta.title;
   const description = meta.description;
@@ -49,7 +50,9 @@ const Note = (props: NoteProps) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className="w-full mx-auto max-w-3xl xl:max-w-5xl">
-        <NoteContent meta={meta}>{children}</NoteContent>
+        <NoteContent meta={meta} components={components}>
+          {children}
+        </NoteContent>
       </main>
       <footer className="w-full mx-auto max-w-3xl xl:max-w-5xl">
         <div className="text-md font-medium leading-5 divide-y divide-gray-200">
@@ -69,9 +72,14 @@ const Note = (props: NoteProps) => {
 export interface NoteContentProps {
   meta: Metadata;
   children: ReactNode;
+  components?: Record<string, React.ReactNode>;
 }
 
-export const NoteContent = ({ meta, children }: NoteContentProps) => {
+export const NoteContent = ({
+  meta,
+  components = {},
+  children,
+}: NoteContentProps) => {
   useEffect(() => {
     Prism.highlightAll();
   }, []);
@@ -96,7 +104,7 @@ export const NoteContent = ({ meta, children }: NoteContentProps) => {
           </div>
         </div>
         <article className="prose sm:prose-sm md:prose-md">
-          <MDXProvider components={{}}>{children}</MDXProvider>
+          <MDXProvider components={components}>{children}</MDXProvider>
         </article>
       </div>
     </div>
