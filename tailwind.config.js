@@ -68,11 +68,10 @@ module.exports = {
     typography: (theme) => ({
       DEFAULT: {
         css: {
-          color: theme('colors.gray.800'),
+          color: theme('colors.black'),
           h1: {
             fontWeight: '700',
             letterSpacing: theme('letterSpacing.tight'),
-            color: theme('colors.gray.900'),
             fontSize: theme('fontSize.3xl'),
             marginTop: theme('margin.4'),
             marginBottom: theme('margin.3'),
@@ -80,21 +79,18 @@ module.exports = {
           h2: {
             fontWeight: '700',
             letterSpacing: theme('letterSpacing.tight'),
-            color: theme('colors.gray.900'),
             fontSize: theme('fontSize.2xl'),
             marginTop: theme('margin.8'),
             marginBottom: theme('margin.7'),
           },
           h3: {
             fontWeight: '600',
-            color: theme('colors.gray.900'),
             fontSize: theme('fontSize.xl'),
             marginTop: theme('margin.6'),
             marginBottom: theme('margin.5'),
           },
           h4: {
             fontWeight: '600',
-            color: theme('colors.gray.900'),
             fontSize: theme('fontSize.lg'),
             marginTop: theme('margin.4'),
             marginBottom: theme('margin.3'),
@@ -114,19 +110,21 @@ module.exports = {
               color: theme('colors.gray.500'),
             },
           },
+          hr: {
+            margin: `${theme('margin.4')} 0`,
+          },
           p: {
-            color: theme('colors.gray.700'),
-            marginBottom: theme('margin.2'),
+            marginBottom: theme('margin.4'),
           },
           ul: {
             listStyleType: 'disc',
             paddingLeft: theme('padding.4'),
-            marginBottom: theme('margin.2'),
+            marginBottom: theme('margin.4'),
           },
           ol: {
             listStyleType: 'decimal',
             paddingLeft: theme('padding.4'),
-            marginBottom: theme('margin.2'),
+            marginBottom: theme('margin.4'),
           },
           a: {
             color: theme('colors.blue.700'),
