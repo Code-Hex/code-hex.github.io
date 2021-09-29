@@ -16,6 +16,7 @@ import { SidebarLayout } from '~/components/Resize';
 import { Metadata } from '~/mdx/config';
 import { remarkPlugins } from '~/lib/remarkPlugins';
 import { LoopVideo } from '~/components/MDXVideo';
+import { Base64 } from 'js-base64';
 
 const EditorPage = () => {
   const [value, setValue] = useState<string | undefined>();
@@ -172,7 +173,7 @@ const compileMdx = async (src: string): Promise<MDXResult> => {
 
   // Nextjs cannot use import as data:text format.
   // To treat export variables, we have to call it in reflection.
-  const esm = `data:text/javascript;base64,${btoa(exportsCode)}`;
+  const esm = `data:text/javascript;base64,${Base64.encodeURI(exportsCode)}`;
   const c = `return import('${esm}')`;
 
   const esmRun = Reflect.construct(Function, [c]);
