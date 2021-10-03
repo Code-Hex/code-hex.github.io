@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@babel/standalone": "^7.15.3",
+    "@heroicons/react": "^1.0.4",
     "@monaco-editor/react": "^4.2.2",
     "@tailwindcss/typography": "^0.4.1",
     "babel-plugin-prismjs": "^2.1.0",
