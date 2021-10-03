@@ -16,6 +16,7 @@ import { SidebarLayout } from '~/components/Resize';
 import { Metadata } from '~/mdx/config';
 import { remarkPlugins } from '~/lib/remarkPlugins';
 import { LoopVideo } from '~/components/MDXVideo';
+import { Information } from '~/components/Feedback';
 import { Base64 } from 'js-base64';
 
 const EditorPage = () => {
@@ -60,7 +61,10 @@ const EditorPage = () => {
 
     // eslint-disable-next-line react/display-name
     return () => (
-      <NoteContent meta={mdxResult.meta} components={{ LoopVideo }}>
+      <NoteContent
+        meta={mdxResult.meta}
+        components={{ LoopVideo, Information }}
+      >
         <MDXContent />
       </NoteContent>
     );
