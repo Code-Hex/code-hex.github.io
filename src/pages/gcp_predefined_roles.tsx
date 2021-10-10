@@ -135,7 +135,9 @@ const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
               href="https://cloud.google.com/iam/docs/understanding-roles#predefined_roles"
             >
               <span className="flex flex-row space-x-2 items-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
+                  alt="GCP Logo"
                   className="h-6"
                   src="https://lh3.googleusercontent.com/VEnnK2SyklusfxZ3dIYjlQH3xSwK2BFSJ69TFQ9g8HjM6m3CouRlTia5FW3z3GS0x83WC9TylZCaA9Jf_2kmr7mXxI9_HYLZTFy_bg"
                 />
@@ -216,6 +218,7 @@ const GCPRoles = ({ result, loading, locale }: GCPRolesProps): JSX.Element => {
   );
 };
 
+// eslint-disable-next-line react/display-name
 const GCPRoleRow = memo(
   ({ role, locale }: { role: GCPRole; locale: locale }): JSX.Element => {
     const { permissions, ...localeItems } = role;
@@ -237,6 +240,7 @@ const GCPRoleRow = memo(
   }
 );
 
+// eslint-disable-next-line react/display-name
 const GCPRolePermissions = memo(
   ({ permissions }: { permissions: string[] }): JSX.Element => {
     return (
