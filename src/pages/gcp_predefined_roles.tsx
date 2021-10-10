@@ -202,9 +202,9 @@ const GCPRoles = ({ result, loading, locale }: GCPRolesProps): JSX.Element => {
   return (
     <table className="w-full table-auto">
       <thead className="bg-gray-100">
-        <tr className="text-left text-gray-700">
-          <th className="px-4 py-4">ロール</th>
-          <th className="px-4 py-4">権限</th>
+        <tr className="text-left text-gray-500">
+          <th className="px-4 py-4">Role</th>
+          <th className="px-4 py-4">Permissions</th>
         </tr>
       </thead>
       <tbody>
