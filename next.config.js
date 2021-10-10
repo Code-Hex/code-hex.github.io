@@ -23,6 +23,7 @@ const nextConfig = {
       '/unknown': { page: '/unknown' },
       '/note': { page: '/note' },
       '/editor': { page: '/editor' },
+      '/gcp_predefined_roles': { page: '/gcp_predefined_roles' },
     };
     notePaths.forEach((v) => {
       pages[v] = {
