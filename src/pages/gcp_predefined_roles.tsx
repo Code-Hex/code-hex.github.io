@@ -1,6 +1,7 @@
 import { InferGetStaticPropsType, GetStaticPropsContext, NextPage } from 'next';
 import {
   Dispatch,
+  memo,
   SetStateAction,
   useCallback,
   useEffect,
@@ -126,45 +127,45 @@ const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
 
   return (
     <div className="w-full h-full bg-gray-300">
-      <div className="py-4 sm:px-8">
-        <div className="sticky top-0">
-          <div className="w-full bg-white flex flex-col items-center sm:flex-row">
-            <div className="flex">
-              <a
-                className="pl-4 py-4 hover:underline"
-                href="https://cloud.google.com/iam/docs/understanding-roles#predefined_roles"
-              >
-                <span className="flex flex-row space-x-2 items-center">
-                  <img
-                    className="h-6"
-                    src="https://lh3.googleusercontent.com/VEnnK2SyklusfxZ3dIYjlQH3xSwK2BFSJ69TFQ9g8HjM6m3CouRlTia5FW3z3GS0x83WC9TylZCaA9Jf_2kmr7mXxI9_HYLZTFy_bg"
-                  />
-                  <span className="flex-shrink-0 text-blue-600 font-bold w-40">
-                    Predifined Roles
-                  </span>
+      <div className="pb-4 sm:px-8">
+        <div className="sticky top-0 shadow-xl">
+          <div className="w-full bg-white flex flex-col sm:flex-row">
+            <a
+              className="pl-4 py-4 hover:underline col-span-3 sm:col-span-1"
+              href="https://cloud.google.com/iam/docs/understanding-roles#predefined_roles"
+            >
+              <span className="flex flex-row space-x-2 items-center">
+                <img
+                  className="h-6"
+                  src="https://lh3.googleusercontent.com/VEnnK2SyklusfxZ3dIYjlQH3xSwK2BFSJ69TFQ9g8HjM6m3CouRlTia5FW3z3GS0x83WC9TylZCaA9Jf_2kmr7mXxI9_HYLZTFy_bg"
+                />
+                <span className="flex-shrink-0 text-blue-600 font-bold w-60">
+                  Predifined Roles Finder
                 </span>
-              </a>
+              </span>
+            </a>
+            <div className="w-full flex flex-row">
               <select
-                className="pr-2 focus:outline-none"
+                className="px-2 bg-white focus:outline-none"
                 onChange={(e) =>
                   setCurrentLocale(e.currentTarget.value as locale)
                 }
               >
-                {Object.keys(locales).map((lang) => (
-                  <option key={lang} value={locales[lang]}>
+                {Object.keys(locales).map((lang, i) => (
+                  <option key={i} value={locales[lang]}>
                     {lang}
                   </option>
                 ))}
               </select>
+              <input
+                className="py-4 px-4 text-gray-700 leading-tight focus:outline-none"
+                id="search"
+                type="text"
+                placeholder="Search"
+                role="search"
+                onChange={(e) => setQuery(e.target.value)}
+              />
             </div>
-            <input
-              className="w-full py-4 px-4 text-gray-700 leading-tight focus:outline-none"
-              id="search"
-              type="text"
-              placeholder="Search"
-              role="search"
-              onChange={(e) => setQuery(e.target.value)}
-            />
           </div>
         </div>
         <div className="py-4">
@@ -207,30 +208,43 @@ const GCPRoles = ({ result, loading, locale }: GCPRolesProps): JSX.Element => {
         </tr>
       </thead>
       <tbody>
-        {result.map((role, i) => {
-          const { permissions, ...localeItems } = role;
-          const localeItem = localeItems[locale];
-          // To prevent null exception. for example there is in English but not in Japanese.
-          if (!localeItem) return <></>;
-
-          return (
-            <tr key={i} className="border-b border-gray-300">
-              <td className="px-4 py-4 align-top">
-                <p className="font-bold">{localeItem.roleTitle}</p>
-                <p className="text-pink-600 font-mono">{localeItem.roleName}</p>
-                <p className="py-2">{localeItem.roleDescription}</p>
-              </td>
-              <td className="px-4 py-4">
-                <ul>
-                  {permissions.map((permission, j) => {
-                    return <li key={j}>{permission}</li>;
-                  })}
-                </ul>
-              </td>
-            </tr>
-          );
-        })}
+        {result.map((role, i) => (
+          <GCPRoleRow key={i} role={role} locale={locale} />
+        ))}
       </tbody>
     </table>
   );
 };
+
+const GCPRoleRow = memo(
+  ({ role, locale }: { role: GCPRole; locale: locale }): JSX.Element => {
+    const { permissions, ...localeItems } = role;
+    const localeItem = localeItems[locale];
+    // To prevent null exception. for example there is in English but not in Japanese.
+    if (!localeItem) return <></>;
+    return (
+      <tr className="border-b border-gray-300">
+        <td className="px-4 py-4 align-top">
+          <p className="font-bold">{localeItem.roleTitle}</p>
+          <p className="text-pink-600 font-mono">{localeItem.roleName}</p>
+          <p className="py-2">{localeItem.roleDescription}</p>
+        </td>
+        <td className="px-4 py-4">
+          <GCPRolePermissions permissions={permissions} />
+        </td>
+      </tr>
+    );
+  }
+);
+
+const GCPRolePermissions = memo(
+  ({ permissions }: { permissions: string[] }): JSX.Element => {
+    return (
+      <ul>
+        {permissions.map((permission, i) => {
+          return <li key={i}>{permission}</li>;
+        })}
+      </ul>
+    );
+  }
+);
