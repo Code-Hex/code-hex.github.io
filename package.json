@@ -37,7 +37,6 @@
     "ts-node": "^10.2.1",
     "unist-util-remove": "^3.1.0",
     "unist-util-visit": "^4.0.0",
-    "use-debounce": "^7.0.0",
     "vscode-textmate": "^5.4.0"
   },
   "devDependencies": {
