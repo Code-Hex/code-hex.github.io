@@ -63,6 +63,11 @@ export default function Home() {
             </Link>
           </li>
           <li>
+            <Link href="/gcp_predefined_roles" as="/gcp_predefined_roles">
+              <a>GCP Predefined Roles Finder</a>
+            </Link>
+          </li>
+          <li>
             <a href="/wikipedia.html">Random Wikipedia</a>
           </li>
           <li>
