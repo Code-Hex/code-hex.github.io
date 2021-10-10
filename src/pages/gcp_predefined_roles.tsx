@@ -126,7 +126,7 @@ const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
 
   return (
     <div className="w-full h-full bg-gray-300">
-      <div className="py-4 px-8">
+      <div className="py-4 sm:px-8">
         <div className="sticky top-0">
           <div className="w-full bg-white flex flex-col items-center sm:flex-row">
             <div className="flex">
@@ -145,7 +145,7 @@ const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
                 </span>
               </a>
               <select
-                className="px-2 focus:outline-none"
+                className="pr-2 focus:outline-none"
                 onChange={(e) =>
                   setCurrentLocale(e.currentTarget.value as locale)
                 }
