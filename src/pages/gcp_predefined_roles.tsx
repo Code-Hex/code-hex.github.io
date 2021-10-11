@@ -1,3 +1,4 @@
+import { SelectorIcon } from '@heroicons/react/solid';
 import { InferGetStaticPropsType, GetStaticPropsContext, NextPage } from 'next';
 import {
   Dispatch,
@@ -146,21 +147,25 @@ const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
                 </span>
               </span>
             </a>
-            <div className="w-full flex flex-row">
-              <select
-                className="px-2 bg-white focus:outline-none"
-                onChange={(e) =>
-                  setCurrentLocale(e.currentTarget.value as locale)
-                }
-              >
-                {Object.keys(locales).map((lang, i) => (
-                  <option key={i} value={locales[lang]}>
-                    {lang}
-                  </option>
-                ))}
-              </select>
+            <div className="w-full flex flex-row items-center">
+              <div className="relative bg-transparent">
+                <select
+                  className="appearance-none pl-4 pr-8 block text-gray-500 focus:outline-none"
+                  onChange={(e) =>
+                    setCurrentLocale(e.currentTarget.value as locale)
+                  }
+                  defaultValue={currentLocale}
+                >
+                  {Object.keys(locales).map((lang, i) => (
+                    <option key={i} value={locales[lang]}>
+                      {lang}
+                    </option>
+                  ))}
+                </select>
+                <SelectorIcon className="w-5 h-5 text-gray-400 absolute top-1/2 right-0 -mt-2.5 pointer-events-none" />
+              </div>
               <input
-                className="py-4 px-4 text-gray-700 leading-tight focus:outline-none"
+                className="w-full py-4 px-4 text-gray-700 leading-tight focus:outline-none"
                 id="search"
                 type="text"
                 placeholder="Search"
