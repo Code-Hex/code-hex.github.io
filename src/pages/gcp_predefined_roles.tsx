@@ -1,5 +1,6 @@
 import { SelectorIcon } from '@heroicons/react/solid';
 import { InferGetStaticPropsType, GetStaticPropsContext, NextPage } from 'next';
+import Head from 'next/head';
 import {
   Dispatch,
   memo,
@@ -105,6 +106,10 @@ const locales: { [lang: string]: locale } = {
   日本語: 'ja',
 };
 
+const title = 'Predifined Roles Finder - codehex.dev';
+const description =
+  'You can look for Predefined Roles in GCP. Search in any language you enter - Predifined Roles Finder - codehex.dev';
+
 const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
   const [currentLocale, setCurrentLocale] = useState<locale>('en');
   const predicate = useCallback((item: GCPRole, query: string): boolean => {
@@ -127,65 +132,81 @@ const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
   const [result, loading, setQuery] = useSearch(roles, predicate);
 
   return (
-    <div className="w-full h-full bg-gray-300">
-      <div className="pb-4 sm:px-8">
-        <div className="sticky top-0 shadow-xl">
-          <div className="w-full bg-white flex flex-col sm:flex-row">
-            <a
-              className="pl-4 py-4 hover:underline col-span-3 sm:col-span-1"
-              href="https://cloud.google.com/iam/docs/understanding-roles#predefined_roles"
-            >
-              <span className="flex flex-row space-x-2 items-center">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt="GCP Logo"
-                  className="h-6"
-                  src="https://lh3.googleusercontent.com/VEnnK2SyklusfxZ3dIYjlQH3xSwK2BFSJ69TFQ9g8HjM6m3CouRlTia5FW3z3GS0x83WC9TylZCaA9Jf_2kmr7mXxI9_HYLZTFy_bg"
-                />
-                <span className="flex-shrink-0 text-blue-600 font-bold w-60">
-                  Predifined Roles Finder
+    <>
+      <Head>
+        <meta charSet="utf-8" />
+        <link rel="dns-prefetch" href="https://cloud.google.com" />
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta property="og:site_name" content="codehex.dev" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta
+          property="og:url"
+          content="https://codehex.dev/gcp_predefined_roles/"
+        />
+        <meta property="og:description" content={description} />
+      </Head>
+      <div className="w-full h-full bg-gray-300">
+        <div className="pb-4 sm:px-8">
+          <div className="sticky top-0 shadow-xl">
+            <div className="w-full bg-white flex flex-col sm:flex-row">
+              <a
+                className="pl-4 py-4 hover:underline col-span-3 sm:col-span-1"
+                href="https://cloud.google.com/iam/docs/understanding-roles#predefined_roles"
+              >
+                <span className="flex flex-row space-x-2 items-center">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    alt="GCP Logo"
+                    className="h-6"
+                    src="https://lh3.googleusercontent.com/VEnnK2SyklusfxZ3dIYjlQH3xSwK2BFSJ69TFQ9g8HjM6m3CouRlTia5FW3z3GS0x83WC9TylZCaA9Jf_2kmr7mXxI9_HYLZTFy_bg"
+                  />
+                  <h1 className="flex-shrink-0 text-blue-600 font-bold w-60">
+                    Predifined Roles Finder
+                  </h1>
                 </span>
-              </span>
-            </a>
-            <div className="w-full flex flex-row items-center">
-              <div className="relative bg-transparent">
-                <select
-                  className="appearance-none pl-4 pr-8 block text-gray-500 focus:outline-none"
-                  onChange={(e) =>
-                    setCurrentLocale(e.currentTarget.value as locale)
-                  }
-                  defaultValue={currentLocale}
-                >
-                  {Object.keys(locales).map((lang, i) => (
-                    <option key={i} value={locales[lang]}>
-                      {lang}
-                    </option>
-                  ))}
-                </select>
-                <SelectorIcon className="w-5 h-5 text-gray-400 absolute top-1/2 right-0 -mt-2.5 pointer-events-none" />
+              </a>
+              <div className="w-full flex flex-row items-center">
+                <div className="relative bg-transparent">
+                  <select
+                    className="appearance-none pl-4 pr-8 block text-gray-500 focus:outline-none"
+                    onChange={(e) =>
+                      setCurrentLocale(e.currentTarget.value as locale)
+                    }
+                    defaultValue={currentLocale}
+                  >
+                    {Object.keys(locales).map((lang, i) => (
+                      <option key={i} value={locales[lang]}>
+                        {lang}
+                      </option>
+                    ))}
+                  </select>
+                  <SelectorIcon className="w-5 h-5 text-gray-400 absolute top-1/2 right-0 -mt-2.5 pointer-events-none" />
+                </div>
+                <input
+                  className="w-full py-4 px-4 text-gray-700 leading-tight focus:outline-none"
+                  id="search"
+                  type="text"
+                  placeholder="Search"
+                  role="search"
+                  onChange={(e) => setQuery(e.target.value)}
+                />
               </div>
-              <input
-                className="w-full py-4 px-4 text-gray-700 leading-tight focus:outline-none"
-                id="search"
-                type="text"
-                placeholder="Search"
-                role="search"
-                onChange={(e) => setQuery(e.target.value)}
+            </div>
+          </div>
+          <div className="py-4">
+            <div className="w-full bg-white overflow-x-scroll">
+              <GCPRoles
+                result={result}
+                loading={loading}
+                locale={currentLocale}
               />
             </div>
           </div>
         </div>
-        <div className="py-4">
-          <div className="w-full bg-white overflow-x-scroll">
-            <GCPRoles
-              result={result}
-              loading={loading}
-              locale={currentLocale}
-            />
-          </div>
-        </div>
       </div>
-    </div>
+    </>
   );
 };
 
