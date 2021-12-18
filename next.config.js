@@ -14,6 +14,7 @@ const { createLoader } = require('simple-functional-loader');
  * @type {import("next").NextConfig}
  */
 const nextConfig = {
+  swcMinify: true,
   generateBuildId: () => nextBuildId({ dir: __dirname }),
   exportPathMap: async function () {
     const notes = ['hello.mdx', 'hello2.mdx']; // TODO(codehex): fix
