@@ -25,7 +25,6 @@
     "next-build-id": "^3.0.0",
     "next-compose-plugins": "^2.2.1",
     "next-sitemap": "^1.6.203",
-    "next-transpile-modules": "^8.0.0",
     "prismjs": "^1.25.0",
     "puppeteer": "^10.4.0",
     "react": "^17.0.2",
