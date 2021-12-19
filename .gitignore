@@ -40,3 +40,7 @@ yarn-error.log*
 
 # wasm
 public/wasm/esbuild.wasm
+
+# sitemap
+public/robots.txt
+public/sitemap.xml
