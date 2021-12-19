@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://codehex.dev
+
+# Sitemaps
+Sitemap: https://codehex.dev/sitemap.xml
