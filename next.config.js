@@ -16,23 +16,6 @@ const { createLoader } = require('simple-functional-loader');
 const nextConfig = {
   swcMinify: true,
   generateBuildId: () => nextBuildId({ dir: __dirname }),
-  exportPathMap: async function () {
-    const notes = ['hello.mdx', 'hello2.mdx']; // TODO(codehex): fix
-    const notePaths = notes.map((v) => '/note/' + v.replace(/\.mdx$/, ''));
-    let pages = {
-      '/': { page: '/' },
-      '/unknown': { page: '/unknown' },
-      '/note': { page: '/note' },
-      '/editor': { page: '/editor' },
-      '/gcp_predefined_roles': { page: '/gcp_predefined_roles' },
-    };
-    notePaths.forEach((v) => {
-      pages[v] = {
-        page: v,
-      };
-    });
-    return pages;
-  },
   trailingSlash: true,
   pageExtensions: ['ts', 'tsx', 'mdx'],
   // https://nextjs.org/docs/basic-features/image-optimization
