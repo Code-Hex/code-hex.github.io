@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "next-sitemap",
     "start": "next start",
     "export": "next export",
-    "postexport": "node scripts/post-export.js",
     "postinstall": "cp ./node_modules/esbuild-wasm/esbuild.wasm public/wasm"
   },
   "dependencies": {
@@ -24,6 +24,7 @@
     "next": "^12.0.7",
     "next-build-id": "^3.0.0",
     "next-compose-plugins": "^2.2.1",
+    "next-sitemap": "^1.6.203",
     "next-transpile-modules": "^8.0.0",
     "prismjs": "^1.25.0",
     "puppeteer": "^10.4.0",
