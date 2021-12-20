@@ -1,6 +1,6 @@
 import HomePageLayout from '~/layouts/HomePageLayout';
 import CodeHex from '~/components/CodeHex';
-import Link from 'next/link';
+import Link from '~/components/Link';
 
 export default function Home() {
   return (
@@ -47,38 +47,38 @@ export default function Home() {
         </ul>
         <p className="py-2">Maps</p>
         <ul className="page-list list-disc pl-8">
-          <li>
-            <Link href="/note" as="/note">
-              <a>アルパカの徒然文</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/editor" as="/editor">
-              <a>アルパカの徒然文エディタ</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/unknown" as="/unknown">
-              <a>My Unknown List</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/gcp_predefined_roles" as="/gcp_predefined_roles">
-              <a>GCP Predefined Roles Finder</a>
-            </Link>
-          </li>
+          {[
+            {
+              href: '/note',
+              title: 'アルパカの徒然文',
+            },
+            {
+              href: '/editor',
+              title: 'アルパカの徒然文エディタ',
+            },
+            {
+              href: '/unknown',
+              title: 'My Unknown List',
+            },
+            {
+              href: '/gcp_predefined_roles',
+              title: 'GCP Predefined Roles Finder',
+            },
+            {
+              href: '/slack_invitation',
+              title: 'Join code-hex workspace on Slack!',
+            },
+            {
+              href: '/stylish',
+              title: 'My Stylish Page （工事中）',
+            },
+          ].map((v, i) => (
+            <li key={i}>
+              <Link href={v.href}>{v.title}</Link>
+            </li>
+          ))}
           <li>
             <a href="/wikipedia.html">Random Wikipedia</a>
-          </li>
-          <li>
-            <Link href="/slack_invitation" as="/slack_invitation">
-              <a>Join code-hex workspace on Slack!</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/stylish" as="/stylish">
-              <a>My Stylish Page （工事中）</a>
-            </Link>
           </li>
           <li>
             <a href="https://docs.google.com/spreadsheets/d/17_8cvRg7YFruqvayDgLY22aFZm_woGt7TkWbPlhopnQ/edit#gid=0">

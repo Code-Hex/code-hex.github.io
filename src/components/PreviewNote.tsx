@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import Link from 'next/link';
+import Link from '~/components/Link';
 import { ComponentType } from 'react';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
@@ -28,11 +28,9 @@ export const PreviewNote = ({ items }: PreviewNoteProps) => {
               <div className="flex flex-col space-y-1">
                 <div className="pt-1.5 flex justify-between items-center">
                   <Link href={item.href}>
-                    <a>
-                      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                        {item.title}
-                      </h2>
-                    </a>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                      {item.title}
+                    </h2>
                   </Link>
                 </div>
                 <div className="text-sm sm:text-base whitespace-nowrap text-gray-500">
@@ -53,13 +51,12 @@ export const PreviewNote = ({ items }: PreviewNoteProps) => {
                   <item.Preview />
                 </div>
                 <div className="flex text-base font-medium">
-                  <Link href={item.href}>
-                    <a
-                      className="text-teal-600 hover:text-teal-700"
-                      aria-label={item.title}
-                    >
-                      Read more →
-                    </a>
+                  <Link
+                    href={item.href}
+                    className="text-teal-600 hover:text-teal-700"
+                    ariaLabel={item.title}
+                  >
+                    Read more →
                   </Link>
                 </div>
               </div>
@@ -77,12 +74,13 @@ interface TagProps {
 
 export const Tag = ({ tag }: TagProps) => {
   return (
-    <Link href={`/note/tags/${tag}`}>
-      <a className="inline-flex rounded-sm bg-blue-100 hover:bg-blue-600 px-2 py-0.5 text-sm">
-        <span className="font-medium text-blue-700 hover:text-white">
-          # {tag}
-        </span>
-      </a>
+    <Link
+      href={`/note/tags/${tag}`}
+      className="inline-flex rounded-sm bg-blue-100 hover:bg-blue-600 px-2 py-0.5 text-sm"
+    >
+      <span className="font-medium text-blue-700 hover:text-white">
+        # {tag}
+      </span>
     </Link>
   );
 };

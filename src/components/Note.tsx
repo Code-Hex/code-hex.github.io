@@ -1,7 +1,7 @@
 import { MDXProvider } from '@mdx-js/react';
 import { Metadata } from '~/mdx/config';
 import Head from 'next/head';
-import Link from 'next/link';
+import Link from '~/components/Link';
 import { useRouter } from 'next/router';
 import { ReactNode, useEffect } from 'react';
 import Prism from 'prismjs';
@@ -57,10 +57,8 @@ const Note = (props: NoteProps) => {
       <footer className="w-full mx-auto max-w-3xl xl:max-w-5xl">
         <div className="text-md font-medium leading-5 divide-y divide-gray-200">
           <div className="mx-8 sm:mx-10 md:mx-12 pb-24 lg:pb-16">
-            <Link href="/note">
-              <a className="text-teal-500 hover:text-teal-600">
-                ← Back to the note
-              </a>
+            <Link href="/note" className="text-teal-500 hover:text-teal-600">
+              ← Back to the note
             </Link>
           </div>
         </div>
