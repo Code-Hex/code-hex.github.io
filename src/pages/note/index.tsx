@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from '~/components/Link';
 import { getAllNotes } from '~/mdx/notes';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
@@ -28,10 +28,11 @@ export default function Index() {
     <NoteItems title="Notes" items={items} Preview={PreviewNote}>
       <p className="mt-3 text-xl text-gray-500 sm:mt-4">
         This is{' '}
-        <Link href="/">
-          <a className="text-blue-400 hover:text-blue-600 hover:underline">
-            @codehex
-          </a>
+        <Link
+          href="/"
+          className="text-blue-400 hover:text-blue-600 hover:underline"
+        >
+          @codehex
         </Link>
         &apos;s personal note. Candid thoughts any technical stacks and other
         interesting things.
