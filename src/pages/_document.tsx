@@ -5,6 +5,8 @@ import Document, {
   NextScript,
   DocumentContext,
 } from 'next/document';
+import { GoogleAnalytics } from '~/components/GoogleAnalitics';
+import { gaId } from '~/lib/gtag';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -15,7 +17,9 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="ja">
-        <Head />
+        <Head>
+          <GoogleAnalytics gaId={gaId} />
+        </Head>
         <body>
           <Main />
           <NextScript />
