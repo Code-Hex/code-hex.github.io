@@ -1,11 +1,17 @@
 import '../styles/globals.css';
 import '../styles/mdx.css';
 import type { AppProps } from 'next/app';
-import { usePageView } from '~/lib/gtag';
+import { gaId, usePageView } from '~/lib/gtag';
+import { GoogleAnalytics } from '~/components/GoogleAnalytics';
 
 function MyApp({ Component, pageProps }: AppProps) {
   usePageView();
-  return <Component {...pageProps} />;
+  return (
+    <>
+      <GoogleAnalytics gaId={gaId} />
+      <Component {...pageProps} />
+    </>
+  );
 }
 
 export default MyApp;
