@@ -5,7 +5,7 @@ export default function Unknown() {
   return (
     <HomePageLayout>
       <div className="codehex-unknown">
-        <h1>Unknown list</h1>
+        <h1 className="title py-4 text-3xl font-bold">Unknown list</h1>
         <CodeHexUnknown width="200px" height="200px" />
         <p>What&apos;s this?</p>
         <ul>
