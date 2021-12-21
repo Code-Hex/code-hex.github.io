@@ -1,0 +1,26 @@
+name: build check
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: "12.x"
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+           # npm キャッシュファイルは Linux/macOS の `~/.npm` に保存される
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+      - run: npm ci
+      - run: npm run build
