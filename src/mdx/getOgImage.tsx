@@ -72,8 +72,8 @@ const getOgImage = async (date: string, title: string, path: string) => {
     headless: true,
   });
   const ogImageDir = `./public/assets/images`;
-  const imagePath = `${ogImageDir}/${hash}.png`;
-  const publicPath = `/assets/images/${hash}.png`;
+  const imagePath = `${ogImageDir}/${hash}.webp`;
+  const publicPath = `/assets/images/${hash}.webp`;
 
   try {
     fs.statSync(imagePath);
@@ -88,7 +88,7 @@ const getOgImage = async (date: string, title: string, path: string) => {
 
   const page = await browser.newPage();
   await page.setContent(html);
-  const buffer = await page.screenshot({ type: 'png' });
+  const buffer = await page.screenshot({ type: 'webp' });
   await browser.close();
 
   if (!buffer) throw new Error('invalid screenshot result');
