@@ -2,7 +2,7 @@ import { MDXProvider } from '@mdx-js/react';
 import { Metadata } from '~/mdx/config';
 import Link from '~/components/Link';
 import { useRouter } from 'next/router';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, VFC } from 'react';
 import Prism from 'prismjs';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -10,6 +10,44 @@ import { Tag } from './PreviewNote';
 import NextHeadSeo from 'next-head-seo';
 
 dayjs.extend(relativeTime);
+
+interface NoteHeadProps {
+  title?: string;
+  description?: string;
+  ogpPath?: string;
+}
+
+export const NoteHead: VFC<NoteHeadProps> = ({
+  title,
+  description,
+  ogpPath,
+}) => {
+  const router = useRouter();
+  return (
+    <NextHeadSeo
+      title={title ? `${title} – アルパカの徒然文` : 'アルパカの徒然文'}
+      description={
+        description ??
+        'これ我が徒然文なり。わざを含めしゆかしき事柄につきて、率直なる感想を述ぶ。'
+      }
+      canonical={`https://codehex.dev${router.pathname}`}
+      twitter={{
+        card: 'summary_large_image',
+        site: '@codehex',
+      }}
+      og={{
+        image: `https://codehex.dev${ogpPath}`,
+        type: 'article',
+      }}
+      customMetaTags={[
+        {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1',
+        },
+      ]}
+    />
+  );
+};
 
 interface NoteProps {
   meta: Metadata;
@@ -22,30 +60,11 @@ interface NoteProps {
 
 const Note = (props: NoteProps) => {
   const { meta, components, children, ogpPath } = props;
-  const router = useRouter();
   const title = meta.title;
   const description = meta.description;
   return (
     <>
-      <NextHeadSeo
-        title={`${title} – codehex note`}
-        description={description}
-        canonical={`https://codehex.dev${router.pathname}`}
-        twitter={{
-          card: 'summary_large_image',
-          site: '@codehex',
-        }}
-        og={{
-          image: `https://codehex.dev${ogpPath}`,
-          type: 'article',
-        }}
-        customMetaTags={[
-          {
-            name: 'viewport',
-            content: 'width=device-width, initial-scale=1',
-          },
-        ]}
-      />
+      <NoteHead title={title} description={description} ogpPath={ogpPath} />
       <main className="w-full mx-auto max-w-3xl xl:max-w-5xl">
         <NoteContent meta={meta} components={components}>
           {children}
