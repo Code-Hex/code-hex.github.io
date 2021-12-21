@@ -8,6 +8,7 @@ import Prism from 'prismjs';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Tag } from './PreviewNote';
+import NextHeadSeo from 'next-head-seo';
 
 dayjs.extend(relativeTime);
 
@@ -28,26 +29,25 @@ const Note = (props: NoteProps) => {
   return (
     <>
       <Head>
-        <title>{title} – codehex note</title>
-        <meta name="description" content={description}></meta>
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@codehex" />
-        <meta name="twitter:creator" content="@codehex" />
-        <meta name="twitter:title" content={`${title} – codehex note`} />
-        <meta name="twitter:description" content={description} />
-        <meta
-          name="twitter:image:src"
-          content={`https://codehex.dev${ogpPath}`}
+        <NextHeadSeo
+          title={`${title} – codehex note`}
+          description={description}
+          canonical={`https://codehex.dev${router.pathname}`}
+          twitter={{
+            card: 'summary_large_image',
+            site: '@codehex',
+          }}
+          og={{
+            image: `https://codehex.dev${ogpPath}`,
+            type: 'article',
+          }}
+          customMetaTags={[
+            {
+              name: 'viewport',
+              content: 'width=device-width, initial-scale=1',
+            },
+          ]}
         />
-        <meta
-          property="og:url"
-          content={`https://codehex.dev${router.pathname}`}
-        />
-        <meta property="og:type" content="article" />
-        <meta property="og:title" content={`${title} – codehex note`} />
-        <meta property="og:description" content={description} />
-        <meta property="og:image" content={`https://codehex.dev${ogpPath}`} />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className="w-full mx-auto max-w-3xl xl:max-w-5xl">
         <NoteContent meta={meta} components={components}>

@@ -1,6 +1,7 @@
 import HomePageLayout from '~/layouts/HomePageLayout';
 import CodeHex from '~/components/CodeHex';
 import Link from '~/components/Link';
+import { VFC } from 'react';
 
 export default function Home() {
   return (
@@ -14,36 +15,46 @@ export default function Home() {
         <CodeHex width="200px" height="200px" isShake={true} />
         <p className="py-2">My accounts</p>
         <ul className="list-disc pl-8">
-          <li>
-            <span>
-              <a href="https://okinawa.pm.org/">Okinawa.pm</a>
-            </span>
-          </li>
-          <li>
-            <span>
-              GitHub: <a href="https://github.com/Code-Hex/">Code-Hex</a>
-            </span>
-          </li>
-          <li>
-            <span>
-              Twitter: <a href="https://twitter.com/codehex/">@codehex</a>
-            </span>
-          </li>
-          <li>
-            <span>
-              Hatena: <a href="http://profile.hatena.ne.jp/codehex/">codehex</a>
-            </span>
-          </li>
-          <li>
-            <span>
-              CPAN: <a href="https://metacpan.org/author/CODEHEX/">CODEHEX</a>
-            </span>
-          </li>
-          <li>
-            <span>
-              Blog: <a href="https://codehex.hateblo.jp/">codehex.hateblo.jp</a>
-            </span>
-          </li>
+          {[
+            <BlankLink href={'https://okinawa.pm.org/'} title="Okinawa.pm" />,
+            <>
+              GitHub:{' '}
+              <BlankLink
+                href={'https://github.com/Code-Hex/'}
+                title="Code-Hex"
+              />
+            </>,
+            <>
+              Twitter:{' '}
+              <BlankLink
+                href={'https://twitter.com/codehex/'}
+                title="@codehex"
+              />
+            </>,
+            <>
+              Hatena:{' '}
+              <BlankLink
+                href={'http://profile.hatena.ne.jp/codehex/'}
+                title="codehex"
+              />
+            </>,
+            <>
+              CPAN:{' '}
+              <BlankLink
+                href={'https://metacpan.org/author/CODEHEX/'}
+                title="CODEHEX"
+              />
+            </>,
+            <>
+              Blog:{' '}
+              <BlankLink
+                href={'https://codehex.hateblo.jp/'}
+                title="codehex.hateblo.jp"
+              />
+            </>,
+          ].map((v, i) => (
+            <li key={`sns-${i}`}>{v}</li>
+          ))}
         </ul>
         <p className="py-2">Maps</p>
         <ul className="page-list list-disc pl-8">
@@ -73,7 +84,7 @@ export default function Home() {
               title: 'My Stylish Page （工事中）',
             },
           ].map((v, i) => (
-            <li key={i}>
+            <li key={`page-${i}`}>
               <Link href={v.href}>{v.title}</Link>
             </li>
           ))}
@@ -81,17 +92,16 @@ export default function Home() {
             <a href="/wikipedia.html">Random Wikipedia</a>
           </li>
           <li>
-            <a href="https://docs.google.com/spreadsheets/d/17_8cvRg7YFruqvayDgLY22aFZm_woGt7TkWbPlhopnQ/edit#gid=0">
-              covid-19 沖縄の動向
-            </a>
+            <BlankLink
+              href={
+                'https://docs.google.com/spreadsheets/d/17_8cvRg7YFruqvayDgLY22aFZm_woGt7TkWbPlhopnQ/edit#gid=0'
+              }
+              title="covid-19 沖縄の動向"
+            />
           </li>
         </ul>
       </div>
       <style jsx>{`
-        .page-list > li {
-          padding: 4px 0;
-        }
-
         .marquee {
           width: 100%;
           overflow: hidden;
@@ -121,3 +131,9 @@ export default function Home() {
     </HomePageLayout>
   );
 }
+
+const BlankLink: VFC<{ title: string; href: string }> = ({ title, href }) => (
+  <a href={href} target="_blank" rel="noopener noreferrer">
+    {title}
+  </a>
+);
