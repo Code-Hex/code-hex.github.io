@@ -1,6 +1,5 @@
 import { MDXProvider } from '@mdx-js/react';
 import { Metadata } from '~/mdx/config';
-import Head from 'next/head';
 import Link from '~/components/Link';
 import { useRouter } from 'next/router';
 import { ReactNode, useEffect } from 'react';
@@ -28,27 +27,25 @@ const Note = (props: NoteProps) => {
   const description = meta.description;
   return (
     <>
-      <Head>
-        <NextHeadSeo
-          title={`${title} – codehex note`}
-          description={description}
-          canonical={`https://codehex.dev${router.pathname}`}
-          twitter={{
-            card: 'summary_large_image',
-            site: '@codehex',
-          }}
-          og={{
-            image: `https://codehex.dev${ogpPath}`,
-            type: 'article',
-          }}
-          customMetaTags={[
-            {
-              name: 'viewport',
-              content: 'width=device-width, initial-scale=1',
-            },
-          ]}
-        />
-      </Head>
+      <NextHeadSeo
+        title={`${title} – codehex note`}
+        description={description}
+        canonical={`https://codehex.dev${router.pathname}`}
+        twitter={{
+          card: 'summary_large_image',
+          site: '@codehex',
+        }}
+        og={{
+          image: `https://codehex.dev${ogpPath}`,
+          type: 'article',
+        }}
+        customMetaTags={[
+          {
+            name: 'viewport',
+            content: 'width=device-width, initial-scale=1',
+          },
+        ]}
+      />
       <main className="w-full mx-auto max-w-3xl xl:max-w-5xl">
         <NoteContent meta={meta} components={components}>
           {children}
