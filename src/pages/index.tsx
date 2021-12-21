@@ -16,7 +16,11 @@ export default function Home() {
         <p className="py-2">My accounts</p>
         <ul className="list-disc pl-8">
           {[
-            <BlankLink href={'https://okinawa.pm.org/'} title="Okinawa.pm" />,
+            <BlankLink
+              key="perl"
+              href="https://okinawa.pm.org/"
+              title="Okinawa.pm"
+            />,
             <>
               GitHub:{' '}
               <BlankLink
