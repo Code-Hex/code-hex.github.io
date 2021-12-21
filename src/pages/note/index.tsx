@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { PreviewItem, PreviewNote } from '~/components/PreviewNote';
 import { NoteItems } from '~/layouts/NoteItems';
+import { NoteHead } from '~/components/Note';
 
 export default function Index() {
   const notes = getAllNotes();
@@ -25,18 +26,21 @@ export default function Index() {
   );
 
   return (
-    <NoteItems title="Notes" items={items} Preview={PreviewNote}>
-      <p className="mt-3 text-xl text-gray-500 sm:mt-4">
-        This is{' '}
-        <Link
-          href="/"
-          className="text-blue-400 hover:text-blue-600 hover:underline"
-        >
-          @codehex
-        </Link>
-        &apos;s personal note. Candid thoughts any technical stacks and other
-        interesting things.
-      </p>
-    </NoteItems>
+    <>
+      <NoteHead ogpPath="/assets/images/main-note-ogp.png" />
+      <NoteItems title="Notes" items={items} Preview={PreviewNote}>
+        <p className="mt-3 text-xl text-gray-500 sm:mt-4">
+          This is{' '}
+          <Link
+            href="/"
+            className="text-blue-400 hover:text-blue-600 hover:underline"
+          >
+            @codehex
+          </Link>
+          &apos;s personal note. Candid thoughts any technical stacks and other
+          interesting things.
+        </p>
+      </NoteItems>
+    </>
   );
 }
