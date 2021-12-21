@@ -13,60 +13,58 @@ const HomePageLayout = ({ title, children }: HomePageLayoutProps) => {
   const siteTitle = 'codehex homepage';
   return (
     <div className="page">
-      <Head>
-        <NextHeadSeo
-          title={title ? `${title} - ${siteTitle}` : siteTitle}
-          description="codehex's homepage. There are links which are codehex has collected that I found interesting. In addition, information on each social networking site account."
-          canonical={`https://codehex.dev${router.pathname}`}
-          twitter={{
-            site: '@codehex',
-          }}
-          og={{
-            type: 'article',
-          }}
-          customMetaTags={[
-            {
-              name: 'viewport',
-              content: 'width=device-width, initial-scale=1',
-            },
-            {
-              name: 'msapplication-TileColor',
-              content: '#da532c',
-            },
-            {
-              name: 'theme-color',
-              content: '#ffffff',
-            },
-          ]}
-          customLinkTags={[
-            {
-              rel: 'icon',
-              href: '/assets/favicon/favicon.ico',
-            },
-            {
-              rel: 'apple-touch-icon',
-              sizes: '180x180',
-              href: '/assets/favicon/apple-touch-icon.png',
-            },
-            {
-              rel: 'icon',
-              type: 'image/png',
-              sizes: '32x32',
-              href: '/assets/favicon/favicon-32x32.png',
-            },
-            {
-              rel: 'icon',
-              type: 'image/png',
-              sizes: '16x16',
-              href: '/assets/favicon/favicon-16x16.png',
-            },
-            {
-              rel: 'manifest',
-              href: '/assets/favicon/site.webmanifest',
-            },
-          ]}
-        />
-      </Head>
+      <NextHeadSeo
+        title={title ? `${title} - ${siteTitle}` : siteTitle}
+        description="codehex's homepage. There are links which are codehex has collected that I found interesting. In addition, information on each social networking site account."
+        canonical={`https://codehex.dev${router.pathname}`}
+        twitter={{
+          site: '@codehex',
+        }}
+        og={{
+          type: 'article',
+        }}
+        customMetaTags={[
+          {
+            name: 'viewport',
+            content: 'width=device-width, initial-scale=1',
+          },
+          {
+            name: 'msapplication-TileColor',
+            content: '#da532c',
+          },
+          {
+            name: 'theme-color',
+            content: '#ffffff',
+          },
+        ]}
+        customLinkTags={[
+          {
+            rel: 'icon',
+            href: '/assets/favicon/favicon.ico',
+          },
+          {
+            rel: 'apple-touch-icon',
+            sizes: '180x180',
+            href: '/assets/favicon/apple-touch-icon.png',
+          },
+          {
+            rel: 'icon',
+            type: 'image/png',
+            sizes: '32x32',
+            href: '/assets/favicon/favicon-32x32.png',
+          },
+          {
+            rel: 'icon',
+            type: 'image/png',
+            sizes: '16x16',
+            href: '/assets/favicon/favicon-16x16.png',
+          },
+          {
+            rel: 'manifest',
+            href: '/assets/favicon/site.webmanifest',
+          },
+        ]}
+      />
       <main>
         <div className="page-main">{children}</div>
       </main>
