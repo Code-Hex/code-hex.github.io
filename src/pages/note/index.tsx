@@ -27,7 +27,7 @@ export default function Index() {
 
   return (
     <>
-      <NoteHead ogpPath="/assets/images/main-note-ogp.png" />
+      <NoteHead ogpPath="/assets/images/main-note-ogp.webp" />
       <NoteItems title="Notes" items={items} Preview={PreviewNote}>
         <p className="mt-3 text-xl text-gray-500 sm:mt-4">
           This is{' '}
