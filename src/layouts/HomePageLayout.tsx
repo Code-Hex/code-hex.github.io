@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import { ReactNode } from 'react';
 import NextHeadSeo from 'next-head-seo';
 import { useRouter } from 'next/router';
