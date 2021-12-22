@@ -64,6 +64,7 @@ const EditorPage = () => {
       <NoteContent
         meta={mdxResult.meta}
         components={{ LoopVideo, Information }}
+        bookmarkCount={0}
       >
         <MDXContent />
       </NoteContent>
