@@ -76,7 +76,7 @@ export const Tag = ({ tag }: TagProps) => {
   return (
     <Link
       href={`/note/tags/${tag}`}
-      className="inline-flex rounded-sm bg-blue-100 hover:bg-blue-600 px-2 py-0.5 text-sm"
+      className="w-max inline-flex rounded-sm bg-blue-100 hover:bg-blue-600 px-2 py-0.5 text-sm"
     >
       <span className="font-medium text-blue-700 hover:text-white">
         # {tag}
