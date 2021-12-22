@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import Link from '~/components/Link';
 import { ComponentType } from 'react';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { TagList, PublishedOn } from './Note';
 
 dayjs.extend(relativeTime);
 
@@ -33,18 +34,8 @@ export const PreviewNote = ({ items }: PreviewNoteProps) => {
                     </h2>
                   </Link>
                 </div>
-                <div className="text-sm sm:text-base whitespace-nowrap text-gray-500">
-                  <div className="sr-only">Published on</div>
-                  <time dateTime={item.datetime}>
-                    {dayjs(item.datetime).format('MMMM DD, YYYY')} (
-                    {dayjs(item.datetime).fromNow()})
-                  </time>
-                </div>
-                <div className="flex space-x-2 py-2">
-                  {item.tags.map((tag) => (
-                    <Tag tag={tag} key={tag} />
-                  ))}
-                </div>
+                <PublishedOn datetime={item.datetime} />
+                <TagList tags={item.tags} />
               </div>
               <div className="flex flex-col space-y-6">
                 <div className="prose sm:prose-sm md:prose-md">
@@ -54,7 +45,7 @@ export const PreviewNote = ({ items }: PreviewNoteProps) => {
                   <Link
                     href={item.href}
                     className="text-teal-600 hover:text-teal-700"
-                    ariaLabel={item.title}
+                    ariaLabel={`${item.title}の続きを読む`}
                   >
                     Read more →
                   </Link>
@@ -65,22 +56,5 @@ export const PreviewNote = ({ items }: PreviewNoteProps) => {
         </li>
       ))}
     </ul>
-  );
-};
-
-interface TagProps {
-  tag: string;
-}
-
-export const Tag = ({ tag }: TagProps) => {
-  return (
-    <Link
-      href={`/note/tags/${tag}`}
-      className="w-max inline-flex rounded-sm bg-blue-100 hover:bg-blue-600 px-2 py-0.5 text-sm"
-    >
-      <span className="font-medium text-blue-700 hover:text-white">
-        # {tag}
-      </span>
-    </Link>
   );
 };

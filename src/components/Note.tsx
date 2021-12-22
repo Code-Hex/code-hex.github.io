@@ -6,7 +6,6 @@ import { ReactNode, useEffect, VFC } from 'react';
 import Prism from 'prismjs';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { Tag } from './PreviewNote';
 import NextHeadSeo from 'next-head-seo';
 import { BlankLink } from './Link';
 
@@ -67,7 +66,7 @@ const Note = (props: NoteProps) => {
   return (
     <>
       <NoteHead title={title} description={description} ogpPath={ogpPath} />
-      <main className="w-full mx-auto max-w-3xl xl:max-w-5xl">
+      <main role="main" className="w-full mx-auto max-w-3xl xl:max-w-5xl">
         <NoteContent
           meta={meta}
           components={components}
@@ -76,10 +75,13 @@ const Note = (props: NoteProps) => {
           {children}
         </NoteContent>
       </main>
-      <footer className="w-full mx-auto max-w-3xl xl:max-w-5xl">
+      <footer
+        role="contentinfo"
+        className="w-full mx-auto max-w-3xl xl:max-w-5xl"
+      >
         <div className="text-md font-medium leading-5 divide-y divide-gray-200">
           <div className="mx-8 sm:mx-10 md:mx-12 pb-24 lg:pb-16">
-            <Link href="/note" className="text-teal-500 hover:text-teal-600">
+            <Link href="/note" className="text-teal-600 hover:text-teal-700">
               ← Back to the note
             </Link>
           </div>
@@ -105,7 +107,6 @@ export const NoteContent = ({
   useEffect(() => {
     Prism.highlightAll();
   }, []);
-  const date = dayjs(meta.date);
   return (
     <div className="w-full bg-white antialiased">
       <div className="mx-8 sm:mx-10 md:mx-12 pt-10 pb-16">
@@ -113,22 +114,13 @@ export const NoteContent = ({
           <h1 className="inline-block text-3xl font-bold text-gray-900 tracking-tight">
             {meta.title}
           </h1>
-          <div className="text-sm sm:text-base whitespace-nowrap text-gray-500">
-            <div className="sr-only">Published on</div>
-            <time dateTime={meta.date}>
-              {date.format('MMMM DD, YYYY')} ({date.fromNow()})
-            </time>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {meta.tags.map((tag) => (
-              <Tag tag={tag} key={tag} />
-            ))}
-          </div>
+          <PublishedOn datetime={meta.date} />
+          <TagList tags={meta.tags} />
         </div>
-        <article className="prose sm:prose-sm md:prose-md">
+        <article role="article" className="prose sm:prose-sm md:prose-md">
           <MDXProvider components={components}>{children}</MDXProvider>
         </article>
-        <div role="share" className="flex space-x-2 mt-8">
+        <div aria-label="SNSで共有する" className="flex space-x-2 mt-8">
           <HatenaBookmark count={bookmarkCount} />
           <Tweet title={meta.title} />
         </div>
@@ -145,6 +137,7 @@ export const HatenaBookmark: VFC<{
     <BlankLink
       href={`https://b.hatena.ne.jp/entry/s/codehex.dev${pathname}`}
       className="w-16 max-h-6 rounded-sm border border-blue-400"
+      ariaLabel="Hatena Bookmarkで共有する"
     >
       <div className="w-full flex justify-between items-center">
         <span className="bg-blue-400 hover:bg-blue-500 text-white text-sm font-bold py-px px-1">
@@ -170,6 +163,7 @@ export const Tweet: VFC<{
     <BlankLink
       href={href}
       className="flex items-center w-20 rounded-sm bg-blue-400 hover:bg-blue-500"
+      ariaLabel="Twitterで共有する"
     >
       <div className="px-2 w-full flex justify-between items-center">
         <TwitterLogo />
@@ -205,4 +199,33 @@ const TwitterLogo: VFC<{}> = () => (
   </svg>
 );
 
+const Tag: VFC<{ tag: string }> = ({ tag }) => {
+  return (
+    <Link
+      href={`/note/tags/${tag}`}
+      className="w-max inline-flex rounded-sm bg-blue-100 hover:bg-blue-600 px-2 py-0.5 text-sm"
+    >
+      <span className="font-medium text-blue-700 hover:text-white">
+        # {tag}
+      </span>
+    </Link>
+  );
+};
+
+export const TagList: VFC<{ tags: string[] }> = ({ tags }) => (
+  <div aria-label="タグ一覧" className="flex flex-wrap gap-2">
+    {tags.map((tag) => (
+      <Tag tag={tag} key={tag} />
+    ))}
+  </div>
+);
+
+export const PublishedOn: VFC<{ datetime: string }> = ({ datetime }) => (
+  <div className="text-sm sm:text-base whitespace-nowrap text-gray-500">
+    <div className="sr-only">Published on</div>
+    <time dateTime={datetime}>
+      {dayjs(datetime).format('MMMM DD, YYYY')} ({dayjs(datetime).fromNow()})
+    </time>
+  </div>
+);
 export default Note;

@@ -20,7 +20,12 @@ const Link = ({ children, href, className, ariaLabel, gaLabel }: LinkProps) => {
   }, [event, gaLabel]);
   return (
     <NextLink href={href}>
-      <a className={className} aria-label={ariaLabel} onClick={gaClickEvent}>
+      <a
+        role="link"
+        className={className}
+        aria-label={ariaLabel}
+        onClick={gaClickEvent}
+      >
         {children}
       </a>
     </NextLink>
@@ -31,12 +36,15 @@ export const BlankLink: VFC<{
   children: ReactNode;
   href: string;
   className?: string;
-}> = ({ children, href, className }) => (
+  ariaLabel?: string;
+}> = ({ children, href, className, ariaLabel }) => (
   <a
     href={href}
     className={className}
     target="_blank"
     rel="noopener noreferrer"
+    role="link"
+    aria-label={ariaLabel}
   >
     {children}
   </a>
