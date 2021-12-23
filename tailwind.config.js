@@ -5,9 +5,8 @@ const mdx = require('@mdx-js/mdx');
 // https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/defaultConfig.stub.js
 // https://github.com/sindresorhus/github-markdown-css/blob/main/github-markdown.css
 module.exports = {
-  mode: 'jit',
-  purge: {
-    content: [
+  content: {
+    files: [
       './src/pages/**/*.{ts,tsx,mdx}',
       './src/components/**/*.tsx',
       './src/layouts/**/*.tsx',
@@ -17,7 +16,6 @@ module.exports = {
       mdx: mdx.sync,
     },
   },
-  darkMode: false, // or 'media' or 'class'
   theme: {
     cursor: {
       'col-resize': 'col-resize',
@@ -37,7 +35,7 @@ module.exports = {
       cyan: colors.cyan,
       emerald: colors.emerald,
       fuchsia: colors.fuchsia,
-      gray: colors.coolGray,
+      gray: colors.gray,
       green: colors.green,
       indigo: colors.indigo,
       sky: colors.sky,
