@@ -5,9 +5,8 @@ const mdx = require('@mdx-js/mdx');
 // https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/defaultConfig.stub.js
 // https://github.com/sindresorhus/github-markdown-css/blob/main/github-markdown.css
 module.exports = {
-  mode: 'jit',
-  purge: {
-    content: [
+  content: {
+    files: [
       './src/pages/**/*.{ts,tsx,mdx}',
       './src/components/**/*.tsx',
       './src/layouts/**/*.tsx',
@@ -17,7 +16,6 @@ module.exports = {
       mdx: mdx.sync,
     },
   },
-  darkMode: false, // or 'media' or 'class'
   theme: {
     cursor: {
       'col-resize': 'col-resize',
@@ -37,7 +35,7 @@ module.exports = {
       cyan: colors.cyan,
       emerald: colors.emerald,
       fuchsia: colors.fuchsia,
-      gray: colors.coolGray,
+      gray: colors.gray,
       green: colors.green,
       indigo: colors.indigo,
       sky: colors.sky,
@@ -72,26 +70,30 @@ module.exports = {
           h1: {
             fontWeight: '700',
             letterSpacing: theme('letterSpacing.tight'),
-            fontSize: theme('fontSize.3xl'),
+            fontSize: theme('fontSize.3xl')[0],
+            ...theme('fontSize.3xl')[1],
             marginTop: theme('margin.4'),
             marginBottom: theme('margin.3'),
           },
           h2: {
             fontWeight: '700',
             letterSpacing: theme('letterSpacing.tight'),
-            fontSize: theme('fontSize.2xl'),
+            fontSize: theme('fontSize.2xl')[0],
+            ...theme('fontSize.2xl')[1],
             marginTop: theme('margin.8'),
             marginBottom: theme('margin.7'),
           },
           h3: {
             fontWeight: '600',
-            fontSize: theme('fontSize.xl'),
+            fontSize: theme('fontSize.xl')[0],
+            ...theme('fontSize.xl')[1],
             marginTop: theme('margin.6'),
             marginBottom: theme('margin.5'),
           },
           h4: {
             fontWeight: '600',
-            fontSize: theme('fontSize.lg'),
+            fontSize: theme('fontSize.lg')[0],
+            ...theme('fontSize.lg')[1],
             marginTop: theme('margin.4'),
             marginBottom: theme('margin.3'),
           },
