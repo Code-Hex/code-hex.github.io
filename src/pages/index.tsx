@@ -88,6 +88,9 @@ export default function Home() {
             <a href="/wikipedia.html">Random Wikipedia</a>
           </li>
           <li>
+            <a href="/takopi.html">Takopi</a>
+          </li>
+          <li>
             <BlankLink
               href={
                 'https://docs.google.com/spreadsheets/d/17_8cvRg7YFruqvayDgLY22aFZm_woGt7TkWbPlhopnQ/edit#gid=0'
