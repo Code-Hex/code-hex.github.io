@@ -8,6 +8,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  VFC,
 } from 'react';
 import Fuse from 'fuse.js';
 
@@ -119,7 +120,7 @@ const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
         'ja.roleTitle',
         'ja.roleName',
       ],
-      threshold: 0,
+      threshold: 0.2,
     }),
     []
   );
@@ -142,53 +143,13 @@ const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
         <meta property="og:description" content={description} />
       </Head>
       <div className="w-full h-full bg-gray-300">
-        <div className="pb-4 sm:px-8">
-          <div className="">
-            <div className="w-full bg-white flex flex-col sm:flex-row">
-              <a
-                className="pl-4 py-4 hover:underline col-span-3 sm:col-span-1"
-                href="https://cloud.google.com/iam/docs/understanding-roles#predefined_roles"
-              >
-                <span className="flex flex-row space-x-2 items-center">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    alt="GCP Logo"
-                    className="h-6"
-                    src="https://lh3.googleusercontent.com/VEnnK2SyklusfxZ3dIYjlQH3xSwK2BFSJ69TFQ9g8HjM6m3CouRlTia5FW3z3GS0x83WC9TylZCaA9Jf_2kmr7mXxI9_HYLZTFy_bg"
-                  />
-                  <h1 className="flex-shrink-0 text-blue-600 font-bold w-60">
-                    Predifined Roles Finder
-                  </h1>
-                </span>
-              </a>
-              <div className="w-full flex flex-row items-center">
-                <div className="relative bg-transparent">
-                  <select
-                    className="appearance-none pl-4 pr-8 block text-gray-500 focus:outline-none"
-                    onChange={(e) =>
-                      setCurrentLocale(e.currentTarget.value as locale)
-                    }
-                    defaultValue={currentLocale}
-                  >
-                    {Object.keys(locales).map((lang, i) => (
-                      <option key={i} value={locales[lang]}>
-                        {lang}
-                      </option>
-                    ))}
-                  </select>
-                  <SelectorIcon className="w-5 h-5 text-gray-400 absolute top-1/2 right-0 -mt-2.5 pointer-events-none" />
-                </div>
-                <input
-                  className="w-full py-4 px-4 text-gray-700 leading-tight focus:outline-none"
-                  id="search"
-                  type="text"
-                  placeholder="Search"
-                  role="search"
-                  onChange={(e) => setQuery(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
+        <div className="pb-4">
+          <Filter
+            setQuery={setQuery}
+            currentLocale={currentLocale}
+            setCurrentLocale={setCurrentLocale}
+            resultNum={result.length}
+          />
           <div className="py-4">
             <div className="w-full bg-white overflow-x-scroll h-screen">
               <GCPRoles
@@ -205,6 +166,78 @@ const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
 };
 
 export default GCPRolesPage;
+
+const Filter: VFC<{
+  setQuery: Dispatch<SetStateAction<string>>;
+  currentLocale: locale;
+  setCurrentLocale: Dispatch<SetStateAction<locale>>;
+  resultNum: number;
+}> = ({ setQuery, currentLocale, setCurrentLocale, resultNum }) => {
+  return (
+    <div className="w-full bg-white flex flex-col sm:flex-row">
+      <div className="flex flex-row items-center">
+        <FilterTitle />
+        <FilterSelect
+          currentLocale={currentLocale}
+          setCurrentLocale={setCurrentLocale}
+        />
+      </div>
+      <div className="w-full flex flex-row items-center">
+        <input
+          className="w-full py-4 px-4 leading-tight focus:outline-none"
+          id="search"
+          type="text"
+          placeholder="Search"
+          role="search"
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <div className="px-2 whitespace-nowrap flex flex-row space-x-2">
+          <span className="text-pink-600">{resultNum}</span>
+          <span className="text-gray-600">results</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const FilterTitle = () => (
+  <a
+    className="pl-4 py-4 hover:underline col-span-3 sm:col-span-1"
+    href="https://cloud.google.com/iam/docs/understanding-roles#predefined_roles"
+  >
+    <span className="flex flex-row space-x-2 items-center">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        alt="GCP Logo"
+        className="h-6"
+        src="https://lh3.googleusercontent.com/VEnnK2SyklusfxZ3dIYjlQH3xSwK2BFSJ69TFQ9g8HjM6m3CouRlTia5FW3z3GS0x83WC9TylZCaA9Jf_2kmr7mXxI9_HYLZTFy_bg"
+      />
+      <h1 className="flex-shrink-0 text-blue-600 font-bold w-60">
+        Predifined Roles Finder
+      </h1>
+    </span>
+  </a>
+);
+
+const FilterSelect: VFC<{
+  currentLocale: locale;
+  setCurrentLocale: Dispatch<SetStateAction<locale>>;
+}> = ({ currentLocale, setCurrentLocale }) => (
+  <div className="relative bg-transparent text-gray-700">
+    <select
+      className="appearance-none pl-4 pr-8 block focus:outline-none"
+      onChange={(e) => setCurrentLocale(e.currentTarget.value as locale)}
+      defaultValue={currentLocale}
+    >
+      {Object.keys(locales).map((lang, i) => (
+        <option key={i} value={locales[lang]}>
+          {lang}
+        </option>
+      ))}
+    </select>
+    <SelectorIcon className="w-5 h-5 text-gray-400 absolute top-1/2 right-0 -mt-2.5 pointer-events-none" />
+  </div>
+);
 
 interface GCPRolesProps {
   result: ReadonlyArray<GCPRole>;
