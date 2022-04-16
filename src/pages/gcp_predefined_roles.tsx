@@ -5,11 +5,11 @@ import {
   Dispatch,
   memo,
   SetStateAction,
-  useCallback,
   useEffect,
   useMemo,
   useState,
 } from 'react';
+import Fuse from 'fuse.js';
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -27,39 +27,36 @@ type GCPRole = {
   permissions: string[];
 };
 
-async function filteringHandler<T>(
-  list: T[],
-  predicate: (item: T, query: string) => boolean,
-  query: string
-): Promise<T[]> {
-  if (query === '') {
-    return list;
-  }
-  return list.filter((item) => predicate(item, query));
-}
-
-type useSearchTuple<T> = [T[], boolean, Dispatch<SetStateAction<string>>];
+type useSearchTuple<T> = [
+  ReadonlyArray<T>,
+  boolean,
+  Dispatch<SetStateAction<string>>
+];
 
 function useSearch<T>(
-  list: T[],
-  predicate: (item: T, query: string) => boolean,
+  list: ReadonlyArray<T>,
+  options: Fuse.IFuseOptions<T>,
   debounce: number = 1000
 ): useSearchTuple<T> {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(list);
   const [query, setQuery] = useState('');
+  const fuseList = useMemo(() => new Fuse(list, options), [list, options]);
 
   useEffect(() => {
+    if (query === '') {
+      setLoading(false);
+      setResult(list);
+      return;
+    }
     setLoading(true);
     const compileWithDelay = setTimeout(() => {
-      (async () => {
-        const result = await filteringHandler(list, predicate, query);
-        setLoading(false);
-        setResult(result);
-      })();
+      const result = fuseList.search(query);
+      setLoading(false);
+      setResult(result.map((v) => v.item));
     }, debounce);
     return () => clearTimeout(compileWithDelay);
-  }, [query, predicate, setLoading, setResult]);
+  }, [query, fuseList, setLoading, setResult]);
 
   return [result, loading, setQuery];
 }
@@ -112,24 +109,21 @@ const description =
 
 const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
   const [currentLocale, setCurrentLocale] = useState<locale>('en');
-  const predicate = useCallback((item: GCPRole, query: string): boolean => {
-    const { permissions, ...localeItems } = item;
-
-    const localeItemFounds = Object.values(localeItems).find((localeItem) => {
-      if (localeItem.roleTitle.includes(query)) {
-        return true;
-      }
-      if (localeItem.roleName.includes(query)) {
-        return true;
-      }
-      return false;
-    });
-    return !!localeItemFounds;
-  }, []);
-
   const roles = useMemo(() => Object.values(jsonPayload), [jsonPayload]);
-
-  const [result, loading, setQuery] = useSearch(roles, predicate);
+  const options = useMemo(
+    (): Fuse.IFuseOptions<any> => ({
+      keys: [
+        'permissions',
+        'en.roleTitle',
+        'en.roleName',
+        'ja.roleTitle',
+        'ja.roleName',
+      ],
+      threshold: 0,
+    }),
+    []
+  );
+  const [result, loading, setQuery] = useSearch(roles, options);
 
   return (
     <>
@@ -149,7 +143,7 @@ const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
       </Head>
       <div className="w-full h-full bg-gray-300">
         <div className="pb-4 sm:px-8">
-          <div className="sticky top-0 shadow-xl">
+          <div className="">
             <div className="w-full bg-white flex flex-col sm:flex-row">
               <a
                 className="pl-4 py-4 hover:underline col-span-3 sm:col-span-1"
@@ -196,7 +190,7 @@ const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
             </div>
           </div>
           <div className="py-4">
-            <div className="w-full bg-white overflow-x-scroll">
+            <div className="w-full bg-white overflow-x-scroll h-screen">
               <GCPRoles
                 result={result}
                 loading={loading}
@@ -213,7 +207,7 @@ const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
 export default GCPRolesPage;
 
 interface GCPRolesProps {
-  result: GCPRole[];
+  result: ReadonlyArray<GCPRole>;
   loading: boolean;
   locale: locale;
 }
@@ -229,7 +223,7 @@ const GCPRoles = ({ result, loading, locale }: GCPRolesProps): JSX.Element => {
 
   return (
     <table className="w-full table-auto">
-      <thead className="bg-gray-100">
+      <thead className="bg-gray-100 sticky top-0 z-10">
         <tr className="text-left text-gray-500">
           <th className="px-4 py-4">Role</th>
           <th className="px-4 py-4">Permissions</th>
@@ -253,10 +247,12 @@ const GCPRoleRow = memo(
     if (!localeItem) return <></>;
     return (
       <tr className="border-b border-gray-300">
-        <td className="px-4 py-4 align-top">
-          <p className="font-bold">{localeItem.roleTitle}</p>
-          <p className="text-pink-600 font-mono">{localeItem.roleName}</p>
-          <p className="py-2">{localeItem.roleDescription}</p>
+        <td className="px-4 align-top">
+          <div className="sticky top-14 py-4">
+            <p className="font-bold">{localeItem.roleTitle}</p>
+            <p className="text-pink-600 font-mono">{localeItem.roleName}</p>
+            <p className="py-2">{localeItem.roleDescription}</p>
+          </div>
         </td>
         <td className="px-4 py-4">
           <GCPRolePermissions permissions={permissions} />
