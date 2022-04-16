@@ -86,7 +86,7 @@ const Loading = () => (
 
 export const getStaticProps = async (_: GetStaticPropsContext) => {
   const url =
-    'https://gist.githubusercontent.com/Code-Hex/b653ac81786e7117a63b2f13f1f11035/raw/b11e92635efc78843f23066146450b7ea91b0197/roles.json';
+    'https://gist.githubusercontent.com/Code-Hex/b653ac81786e7117a63b2f13f1f11035/raw/0a33d60c4596b56cd52a27733a4f82645346584a/roles.json';
   const response = await fetch(url);
   const rawPayload = await response.text();
   return {
