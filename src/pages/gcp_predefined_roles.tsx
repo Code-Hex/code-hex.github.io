@@ -106,8 +106,7 @@ const locales: { [lang: string]: locale } = {
 
 const appName = 'GCP Predefined Roles Finder';
 const title = `${appName} - codehex.dev`;
-const description =
-  `You can look for Predefined Roles in GCP. Search in any language you enter - ${appName} - codehex.dev`;
+const description = `You can look for Predefined Roles in GCP. Search in any language you enter - ${appName} - codehex.dev`;
 
 const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
   const [currentLocale, setCurrentLocale] = useState<locale>('en');
@@ -176,7 +175,7 @@ const Filter: VFC<{
 }> = ({ setQuery, currentLocale, setCurrentLocale, resultNum }) => {
   return (
     <div className="w-full bg-white flex flex-col sm:flex-row">
-      <div className="flex flex-row items-center">
+      <div className="flex flex-row items-center flex-shrink-0 justify-between">
         <FilterTitle />
         <FilterSelect
           currentLocale={currentLocale}
@@ -213,9 +212,7 @@ const FilterTitle = () => (
         className="h-6"
         src="https://lh3.googleusercontent.com/VEnnK2SyklusfxZ3dIYjlQH3xSwK2BFSJ69TFQ9g8HjM6m3CouRlTia5FW3z3GS0x83WC9TylZCaA9Jf_2kmr7mXxI9_HYLZTFy_bg"
       />
-      <h1 className="flex-shrink-0 text-blue-600 font-bold w-60">
-        {appName}
-      </h1>
+      <h1 className="whitespace-nowrap text-blue-600 font-bold">{appName}</h1>
     </span>
   </a>
 );
