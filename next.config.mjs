@@ -1,14 +1,10 @@
-require('ts-node').register({
-  compilerOptions: {
-    module: 'commonjs',
-    baseUrl: '.',
-    strict: true,
-  },
-}); // for remarkPlugins
-const { remarkPlugins } = require('./src/lib/remarkPlugins');
-const nextBuildId = require('next-build-id');
-const withPlugins = require('next-compose-plugins');
-const { createLoader } = require('simple-functional-loader');
+import { remarkPlugins } from './src/lib/remarkPlugins.mjs';
+import nextBuildId from 'next-build-id';
+import withPlugins from 'next-compose-plugins';
+import { createLoader } from 'simple-functional-loader';
+import * as url from 'url';
+
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 /**
  * @type {import("next").NextConfig}
@@ -94,4 +90,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withPlugins([], nextConfig);
+export default withPlugins([], nextConfig);
