@@ -1,0 +1,1 @@
+self.__SSG_MANIFEST=new Set(["\u002Fgcp_predefined_roles","\u002Fnote\u002Fhello","\u002Fnote\u002Fhello2","\u002Fnote\u002Fraci_matrix","\u002Fnote\u002Ftags\u002F[tag]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
