@@ -25,6 +25,11 @@ const nextConfig = {
     if (!options.isServer) {
       // https://github.com/vercel/next.js/issues/7755#issuecomment-812805708
       config.resolve.fallback.fs = false;
+      config.resolve.fallback.child_process = false;
+      config.resolve.fallback.net = false;
+      config.resolve.fallback.dns = false;
+      config.resolve.fallback.tls = false;
+      config.resolve.fallback.readline = false;
 
       // for worker
       // https://nju33.com/notes/nextjs/articles/Web%20Worker%20%E3%82%92%E4%BD%BF%E3%81%86#next.config.js
