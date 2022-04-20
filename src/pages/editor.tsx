@@ -1,12 +1,17 @@
-import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  ComponentType,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
 import Editor from '@monaco-editor/react';
-import { compile, CompileOptions } from '@mdx-js/mdx';
-import { remove } from 'unist-util-remove';
+import { compileSync, runSync } from '@mdx-js/mdx';
 import { NoteContent } from '~/components/Note';
-import { Plugin, Pluggable } from 'unified';
-import esbuild from '~/lib/esbuild';
+import { Pluggable } from 'unified';
+import * as runtime from 'react/jsx-runtime.js';
 import { useLanguageLoader } from '~/monaco/hooks';
 import { SetupEditor } from '~/monaco/monaco';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
@@ -14,12 +19,40 @@ import { SidebarLayout } from '~/components/Resize';
 import remarkPlugins from '~/lib/remarkPlugins';
 import { LoopVideo } from '~/components/MDXVideo';
 import { Information } from '~/components/Feedback';
+import { Metadata } from '~/mdx/config';
+
+interface MDXCompileStatus {
+  content?: ComponentType;
+  meta?: Metadata;
+  error?: Error;
+}
+
+const useMDXPreview = (src?: string): MDXCompileStatus => {
+  return useMemo(() => {
+    try {
+      const compiledSrc = compileSync(src ?? '', {
+        outputFormat: 'function-body',
+        remarkPlugins: [...(remarkPlugins as Pluggable[])],
+      });
+      const result = runSync(compiledSrc.value, runtime);
+      return {
+        content: result.default,
+        meta: result.meta,
+      };
+    } catch (err) {
+      return {
+        error: err as Error,
+      };
+    }
+  }, [src]);
+};
 
 const EditorPage = () => {
   const [value, setValue] = useState<string | undefined>();
   const markdown = useLanguageLoader('markdown');
-  const [mdxResult, setMdxResult] = useState<MDXResult | undefined>();
+  const [mdxSrc, setMdxSrc] = useState<string | undefined>();
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | undefined>();
+  const status = useMDXPreview(mdxSrc);
 
   useEffect(() => {
     const editor = editorRef.current;
@@ -30,43 +63,10 @@ const EditorPage = () => {
   useEffect(() => {
     if (!value) return;
     const compileWithDelay = setTimeout(() => {
-      (async () => {
-        try {
-          const result = await compileMdx(value);
-          setMdxResult(result);
-        } catch (err) {
-          console.error('mdx error:', err);
-        }
-      })();
+      setMdxSrc(value);
     }, 1000);
     return () => clearTimeout(compileWithDelay);
   }, [value]);
-
-  const Preview = useMemo(() => {
-    if (!mdxResult) return Fragment;
-
-    const fullScope = { React };
-    const keys = Object.keys(fullScope);
-    const values = Object.values(fullScope);
-
-    const esmRun = Reflect.construct(
-      Function,
-      keys.concat([mdxResult.code].join('\n'))
-    );
-    const result = esmRun.apply(esmRun, values);
-    const MDXContent = result.default;
-
-    // eslint-disable-next-line react/display-name
-    return () => (
-      <NoteContent
-        meta={result.meta}
-        components={{ LoopVideo, Information }}
-        bookmarkCount={0}
-      >
-        <MDXContent />
-      </NoteContent>
-    );
-  }, [mdxResult]);
 
   if (markdown.loading) {
     return <div>loading...</div>;
@@ -100,7 +100,18 @@ const EditorPage = () => {
           />
         </div>
         <div className="h-screen overflow-y-scroll">
-          <Preview />
+          {status.error && (
+            <div className="p-2 whitespace-pre-wrap">{`${status.error}`}</div>
+          )}
+          {status.content && status.meta && (
+            <NoteContent
+              meta={status.meta}
+              components={{ LoopVideo, Information }}
+              bookmarkCount={0}
+            >
+              <status.content />
+            </NoteContent>
+          )}
         </div>
       </SidebarLayout>
     </div>
@@ -129,41 +140,6 @@ export const meta = {
 </div>
 `;
 }
-
-/**
- * remark plugin which removes all import and export statements
- */
-const removeImportsExportsPlugin: Plugin = () => (tree: any) =>
-  remove(tree, ['import', 'export']);
-
-interface MDXResult {
-  code: string;
-}
-
-const compileMdx = async (src: string): Promise<MDXResult> => {
-  const options: CompileOptions = {
-    outputFormat: 'function-body',
-    jsx: true,
-    remarkPlugins: [
-      ...(remarkPlugins as Pluggable[]),
-      removeImportsExportsPlugin,
-    ],
-  };
-
-  // TODO(codehex): error handling. e.g. SyntaxError
-  const transpiled2JSX = await compile(src, options);
-
-  const { code } = await esbuild.transform(transpiled2JSX.value, {
-    loader: 'jsx',
-    jsxFactory: 'React.createElement',
-    minify: true,
-    target: ['esnext', 'node12'],
-  });
-
-  return {
-    code,
-  };
-};
 
 // const meta = {
 //   title: 'Title',
