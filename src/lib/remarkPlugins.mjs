@@ -4,7 +4,7 @@ import autoLinkHeadings from 'remark-autolink-headings';
 import remarkFootnotes from 'remark-footnotes';
 import remarkGfm from 'remark-gfm';
 
-export const remarkPlugins = [
+const remarkPlugins = [
   slug,
   [
     autoLinkHeadings,
@@ -40,3 +40,5 @@ export const remarkPlugins = [
   remarkFootnotes,
   remarkGfm,
 ];
+
+export default remarkPlugins;

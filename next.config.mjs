@@ -1,4 +1,4 @@
-import { remarkPlugins } from './src/lib/remarkPlugins.mjs';
+import remarkPlugins from './src/lib/remarkPlugins.mjs';
 import nextBuildId from 'next-build-id';
 import withPlugins from 'next-compose-plugins';
 import { createLoader } from 'simple-functional-loader';
