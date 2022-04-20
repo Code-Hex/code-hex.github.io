@@ -11,7 +11,7 @@ import { useLanguageLoader } from '~/monaco/hooks';
 import { SetupEditor } from '~/monaco/monaco';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { SidebarLayout } from '~/components/Resize';
-import remarkPlugins from '~/lib/remarkPlugins.mjs';
+import remarkPlugins from '~/lib/remarkPlugins';
 import { LoopVideo } from '~/components/MDXVideo';
 import { Information } from '~/components/Feedback';
 
