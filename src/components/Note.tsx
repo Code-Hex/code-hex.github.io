@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import NextHeadSeo from 'next-head-seo';
 import { BlankLink } from './Link';
+import { MDXComponents } from 'mdx/types';
 
 dayjs.extend(relativeTime);
 
@@ -51,7 +52,7 @@ export const NoteHead: VFC<NoteHeadProps> = ({
 
 interface NoteProps {
   meta: Metadata;
-  components?: Record<string, React.ReactNode>;
+  components?: MDXComponents;
   children: ReactNode;
 
   // getStaticProps
@@ -94,7 +95,7 @@ const Note = (props: NoteProps) => {
 export interface NoteContentProps {
   meta: Metadata;
   children: ReactNode;
-  components?: Record<string, React.ReactNode>;
+  components?: MDXComponents;
   bookmarkCount: number;
 }
 
