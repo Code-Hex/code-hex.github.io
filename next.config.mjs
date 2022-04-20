@@ -54,8 +54,8 @@ const nextConfig = {
           use: [
             ...mdx,
             createLoader(function (src) {
-              if (src.includes('<!--more-->')) {
-                const [preview] = src.split('<!--more-->');
+              if (src.includes('{/* more */}')) {
+                const [preview] = src.split('{/* more */}');
                 // @ts-ignore
                 return this.callback(null, preview);
               }
@@ -77,11 +77,11 @@ const nextConfig = {
                 'export default (props) => <Note meta={meta} {...props} />',
               ].join('\n');
 
-              if (content.includes('<!--more-->')) {
+              if (content.includes('{/* more */}')) {
                 // @ts-ignore
                 return this.callback(
                   null,
-                  content.split('<!--more-->').join('\n')
+                  content.split('{/* more */}').join('\n')
                 );
               }
               // @ts-ignore
