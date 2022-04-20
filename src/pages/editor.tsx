@@ -2,9 +2,7 @@ import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
 import Editor from '@monaco-editor/react';
-import * as MDX from '@mdx-js/react';
-import mdx from '@mdx-js/mdx';
-import { visit } from 'unist-util-visit';
+import { compile, CompileOptions } from '@mdx-js/mdx';
 import { remove } from 'unist-util-remove';
 import { NoteContent } from '~/components/Note';
 import { Plugin, Pluggable } from 'unified';
@@ -13,11 +11,9 @@ import { useLanguageLoader } from '~/monaco/hooks';
 import { SetupEditor } from '~/monaco/monaco';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { SidebarLayout } from '~/components/Resize';
-import { Metadata } from '~/mdx/config';
-import { remarkPlugins } from '~/lib/remarkPlugins';
+import remarkPlugins from '~/lib/remarkPlugins';
 import { LoopVideo } from '~/components/MDXVideo';
 import { Information } from '~/components/Feedback';
-import { Base64 } from 'js-base64';
 
 const EditorPage = () => {
   const [value, setValue] = useState<string | undefined>();
@@ -49,20 +45,21 @@ const EditorPage = () => {
   const Preview = useMemo(() => {
     if (!mdxResult) return Fragment;
 
-    const fullScope = { mdx: MDX.mdx, React };
+    const fullScope = { React };
     const keys = Object.keys(fullScope);
     const values = Object.values(fullScope);
 
     const esmRun = Reflect.construct(
       Function,
-      keys.concat([mdxResult.code, `return MDXContent`].join('\n'))
+      keys.concat([mdxResult.code].join('\n'))
     );
-    const MDXContent = esmRun.apply(esmRun, values);
+    const result = esmRun.apply(esmRun, values);
+    const MDXContent = result.default;
 
     // eslint-disable-next-line react/display-name
     return () => (
       <NoteContent
-        meta={mdxResult.meta}
+        meta={result.meta}
         components={{ LoopVideo, Information }}
         bookmarkCount={0}
       >
@@ -139,53 +136,58 @@ export const meta = {
 const removeImportsExportsPlugin: Plugin = () => (tree: any) =>
   remove(tree, ['import', 'export']);
 
-const filterOnlyExportPlugin = (exports: string[]): Plugin => () => {
-  return (tree: any) => {
-    visit(tree, 'export', (node: any) => {
-      exports.push(node.value);
-    });
-    return tree;
-  };
-};
-
 interface MDXResult {
   code: string;
-  meta: Metadata;
 }
 
 const compileMdx = async (src: string): Promise<MDXResult> => {
-  const exportNodes: string[] = [];
-  const options: mdx.Options = {
-    skipExport: true,
+  const options: CompileOptions = {
+    outputFormat: 'function-body',
+    jsx: true,
     remarkPlugins: [
       ...(remarkPlugins as Pluggable[]),
-      filterOnlyExportPlugin(exportNodes),
       removeImportsExportsPlugin,
     ],
   };
 
   // TODO(codehex): error handling. e.g. SyntaxError
-  const transpiled2JSX = await mdx(src, options);
+  const transpiled2JSX = await compile(src, options);
 
-  const { code } = await esbuild.transform(transpiled2JSX, {
+  const { code } = await esbuild.transform(transpiled2JSX.value, {
     loader: 'jsx',
     jsxFactory: 'React.createElement',
     minify: true,
-    target: ['es2020', 'node12'],
+    target: ['esnext', 'node12'],
   });
-
-  const exportsCode = exportNodes.join('\n');
-
-  // Nextjs cannot use import as data:text format.
-  // To treat export variables, we have to call it in reflection.
-  const esm = `data:text/javascript;base64,${Base64.encodeURI(exportsCode)}`;
-  const c = `return import('${esm}')`;
-
-  const esmRun = Reflect.construct(Function, [c]);
-  const exports = await esmRun.apply(esmRun, [console]);
 
   return {
     code,
-    meta: exports.meta,
   };
 };
+
+// const meta = {
+//   title: 'Title',
+//   description: 'description is here',
+//   date: '2022-04-20T11:35:39+09:00',
+//   tags: []
+// };
+// function MDXContent(props = {}) {
+//   const {wrapper: MDXLayout} = props.components || ({});
+//   return MDXLayout ? <MDXLayout {...props}><_createMdxContent /></MDXLayout> : _createMdxContent();
+//   function _createMdxContent() {
+//     const _components = Object.assign({
+//       p: "p",
+//       em: "em",
+//       strong: "strong"
+//     }, props.components);
+//     return <><_components.p>{"// # Hello, "}<_components.em>{"world"}</_components.em>{"!"}</_components.p>{"\n"}<_components.p>{"// Below is an example of JSX embedded in Markdown. "}<br />{" "}<_components.strong>{"Try and change\n// the background color!"}</_components.strong></_components.p>{"\n"}<div style={{
+//       padding: '20px',
+//       backgroundColor: 'tomato'
+//     }}><h3>{"This is JSX"}</h3></div></>;
+//   }
+// }
+// return {
+//   meta,
+//   default: MDXContent
+// };
+// "

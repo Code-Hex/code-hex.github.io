@@ -1,14 +1,10 @@
-require('ts-node').register({
-  compilerOptions: {
-    module: 'commonjs',
-    baseUrl: '.',
-    strict: true,
-  },
-}); // for remarkPlugins
-const { remarkPlugins } = require('./src/lib/remarkPlugins');
-const nextBuildId = require('next-build-id');
-const withPlugins = require('next-compose-plugins');
-const { createLoader } = require('simple-functional-loader');
+import remarkPlugins from './src/lib/remarkPlugins.mjs';
+import nextBuildId from 'next-build-id';
+import withPlugins from 'next-compose-plugins';
+import { createLoader } from 'simple-functional-loader';
+import * as url from 'url';
+
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 /**
  * @type {import("next").NextConfig}
@@ -29,6 +25,11 @@ const nextConfig = {
     if (!options.isServer) {
       // https://github.com/vercel/next.js/issues/7755#issuecomment-812805708
       config.resolve.fallback.fs = false;
+      config.resolve.fallback.child_process = false;
+      config.resolve.fallback.net = false;
+      config.resolve.fallback.dns = false;
+      config.resolve.fallback.tls = false;
+      config.resolve.fallback.readline = false;
 
       // for worker
       // https://nju33.com/notes/nextjs/articles/Web%20Worker%20%E3%82%92%E4%BD%BF%E3%81%86#next.config.js
@@ -94,4 +95,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withPlugins([], nextConfig);
+export default withPlugins([], nextConfig);

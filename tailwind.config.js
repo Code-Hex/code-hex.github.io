@@ -1,5 +1,5 @@
 const colors = require('tailwindcss/colors');
-const mdx = require('@mdx-js/mdx');
+// const mdx = require('@mdx-js/mdx');
 
 // ref:
 // https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/defaultConfig.stub.js
@@ -10,11 +10,11 @@ module.exports = {
       './src/pages/**/*.{ts,tsx,mdx}',
       './src/components/**/*.tsx',
       './src/layouts/**/*.tsx',
-      './next.config.js',
+      // './next.config.js',
     ],
-    transform: {
-      mdx: mdx.sync,
-    },
+    // transform: {
+    //   mdx: mdx.sync,
+    // },
   },
   theme: {
     cursor: {
