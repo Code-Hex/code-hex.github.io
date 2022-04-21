@@ -10,7 +10,7 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
  * @type {import("next").NextConfig}
  */
 const nextConfig = {
-  swcMinify: true,
+  swcMinify: false,
   generateBuildId: () => nextBuildId({ dir: __dirname }),
   trailingSlash: true,
   pageExtensions: ['ts', 'tsx', 'mdx'],
