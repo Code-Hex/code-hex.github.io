@@ -81,7 +81,7 @@ module.exports = {
             fontSize: theme('fontSize.2xl')[0],
             ...theme('fontSize.2xl')[1],
             marginTop: theme('margin.8'),
-            marginBottom: theme('margin.7'),
+            marginBottom: theme('margin.4'),
           },
           h3: {
             fontWeight: '600',
@@ -121,12 +121,12 @@ module.exports = {
           ul: {
             listStyleType: 'disc',
             paddingLeft: theme('padding.4'),
-            marginBottom: theme('margin.4'),
+            marginBottom: theme('margin.2'),
           },
           ol: {
             listStyleType: 'decimal',
             paddingLeft: theme('padding.4'),
-            marginBottom: theme('margin.4'),
+            marginBottom: theme('margin.2'),
           },
           a: {
             color: theme('colors.blue.700'),

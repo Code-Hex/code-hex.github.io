@@ -26,7 +26,7 @@ export const NoteHead: VFC<NoteHeadProps> = ({
   const router = useRouter();
   return (
     <NextHeadSeo
-      title={title ? `${title} – アルパカの徒然文` : 'アルパカの徒然文'}
+      title={title ? `${title} - アルパカの徒然文` : 'アルパカの徒然文'}
       description={
         description ??
         'これ我が徒然文なり。わざを含めしゆかしき事柄につきて、率直なる感想を述ぶ。'
