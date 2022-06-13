@@ -102,7 +102,7 @@ factorial := func(n int) int {
 }
 ```
 
-さて、どうすれば良いのか。その方法を少し複雑になるがその方法をここに記述する。
+ではどうすれば良いのか。少し複雑になるがその方法をここに記述する。
 
 ```go
 type FactorialFunc func(int) int
@@ -119,8 +119,6 @@ factorialMaker := func(self FactorialMakerFunc) FactorialFunc {
 factorial := factorialMaker(factorialMaker)
 factorial(10) // 3628800
 ```
-
-このコードを書くときに考えることとして
 
 1. `factorialMaker` は階乗の計算を行わない。代わりに無名関数を返す。この無名関数は `factorialMaker` が返したのと同じ関数を受け取ることを期待している。
 2. `factorial := factorialMaker(factorialMaker)` では `factorialMaker` が返す無名関数に `factorialMaker` 自身を渡すことで階乗の計算を行う無名関数を完成させる。
@@ -157,7 +155,7 @@ func fib(n int) int {
 fib(10) // 55
 ```
 
-これも階乗の計算のコードと同じように無名関数を利用して表現してみる。
+これも階乗の計算と同じように無名関数を利用して表現してみる。
 
 ```go
 type FibFunc func(int) int
