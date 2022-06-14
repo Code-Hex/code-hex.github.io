@@ -16,45 +16,39 @@ export interface PreviewItem {
 }
 
 export interface PreviewNoteProps {
-  items: PreviewItem[];
+  item: PreviewItem;
 }
 
-export const PreviewNote = ({ items }: PreviewNoteProps) => {
+export const PreviewNote = ({ item }: PreviewNoteProps) => {
   return (
-    <ul className="divide-y divide-gray-200">
-      {items.map((item) => (
-        <li key={item.href} className="py-4">
-          <div className="mb-4 pt-4">
-            <div className="flex flex-col space-y-8">
-              <div className="flex flex-col space-y-1">
-                <div className="pt-1.5 flex justify-between items-center">
-                  <Link href={item.href}>
-                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                      {item.title}
-                    </h2>
-                  </Link>
-                </div>
-                <PublishedOn datetime={item.datetime} />
-                <TagList tags={item.tags} />
-              </div>
-              <div className="flex flex-col space-y-6">
-                <div className="prose sm:prose-sm md:prose-md">
-                  <item.Preview />
-                </div>
-                <div className="flex text-base font-medium">
-                  <Link
-                    href={item.href}
-                    className="text-teal-600 hover:text-teal-700"
-                    ariaLabel={`${item.title}の続きを読む`}
-                  >
-                    Read more →
-                  </Link>
-                </div>
-              </div>
-            </div>
+    <div className="mb-4 pt-4">
+      <div className="flex flex-col space-y-8">
+        <div className="flex flex-col space-y-1">
+          <div className="pt-1.5 flex justify-between items-center">
+            <Link href={item.href}>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                {item.title}
+              </h2>
+            </Link>
           </div>
-        </li>
-      ))}
-    </ul>
+          <PublishedOn datetime={item.datetime} />
+          <TagList tags={item.tags} />
+        </div>
+        <div className="flex flex-col space-y-6">
+          <div className="prose sm:prose-sm md:prose-md">
+            <item.Preview />
+          </div>
+          <div className="flex text-base font-medium">
+            <Link
+              href={item.href}
+              className="text-teal-600 hover:text-teal-700"
+              ariaLabel={`${item.title}の続きを読む`}
+            >
+              Read more →
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
