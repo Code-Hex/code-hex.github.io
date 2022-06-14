@@ -9,6 +9,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import NextHeadSeo from 'next-head-seo';
 import { BlankLink } from './Link';
 import { MDXComponents } from 'mdx/types';
+import { NonSSRAdSense } from './NonSSRAdSense';
 
 dayjs.extend(relativeTime);
 
@@ -97,6 +98,7 @@ export interface NoteContentProps {
   children: ReactNode;
   components?: MDXComponents;
   bookmarkCount: number;
+  hideAdSense?: boolean;
 }
 
 export const NoteContent = ({
@@ -104,6 +106,7 @@ export const NoteContent = ({
   components = {},
   bookmarkCount,
   children,
+  hideAdSense,
 }: NoteContentProps) => {
   useEffect(() => {
     Prism.highlightAll();
@@ -119,6 +122,15 @@ export const NoteContent = ({
           <TagList tags={meta.tags} />
         </div>
         <article role="article" className="prose sm:prose-sm md:prose-md">
+          {!hideAdSense && (
+            <NonSSRAdSense
+              adLayout="in-article"
+              adFormat="fluid"
+              adClient="ca-pub-8097329174824434"
+              adSlot="4846730828"
+              style={{ display: 'block', textAlign: 'center' }}
+            />
+          )}
           <MDXProvider components={components}>{children}</MDXProvider>
         </article>
         <div aria-label="SNSで共有する" className="flex space-x-2 mt-8">

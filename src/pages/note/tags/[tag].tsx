@@ -1,6 +1,6 @@
 import { getAllNotes } from '~/mdx/notes';
 import dayjs from 'dayjs';
-import { PreviewItem, PreviewNote } from '~/components/PreviewNote';
+import { PreviewItem } from '~/components/PreviewNote';
 import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { invariant } from 'ts-invariant';
 import Prism from 'prismjs';
@@ -76,7 +76,7 @@ export default function TagPage({
   }, []);
 
   return (
-    <NoteItems title={`# ${tag}`} items={items} Preview={PreviewNote}>
+    <NoteItems title={`# ${tag}`} items={items}>
       <p className="mt-3 text-xl text-gray-500 sm:mt-4">
         <span className="text-pink-600">{items.length}</span> posts in{' '}
         <span className="font-bold text-black"># {tag}</span>

@@ -20,6 +20,7 @@ import remarkPlugins from '~/lib/remarkPlugins';
 import { LoopVideo } from '~/components/MDXVideo';
 import { Information } from '~/components/Feedback';
 import { Metadata } from '~/mdx/config';
+import Prism from 'prismjs';
 
 interface MDXCompileStatus {
   content?: ComponentType;
@@ -64,6 +65,7 @@ const EditorPage = () => {
     if (!value) return;
     const compileWithDelay = setTimeout(() => {
       setMdxSrc(value);
+      Prism.highlightAll();
     }, 1000);
     return () => clearTimeout(compileWithDelay);
   }, [value]);
@@ -108,6 +110,7 @@ const EditorPage = () => {
               meta={status.meta}
               components={{ LoopVideo, Information }}
               bookmarkCount={0}
+              hideAdSense
             >
               <status.content />
             </NoteContent>

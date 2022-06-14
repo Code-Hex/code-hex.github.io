@@ -2,7 +2,7 @@ import Link from '~/components/Link';
 import { getAllNotes } from '~/mdx/notes';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
-import { PreviewItem, PreviewNote } from '~/components/PreviewNote';
+import { PreviewItem } from '~/components/PreviewNote';
 import { NoteItems } from '~/layouts/NoteItems';
 import { NoteHead } from '~/components/Note';
 
@@ -28,7 +28,7 @@ export default function Index() {
   return (
     <>
       <NoteHead ogpPath="/assets/images/main-note-ogp.webp" />
-      <NoteItems title="Notes" items={items} Preview={PreviewNote}>
+      <NoteItems title="Notes" items={items}>
         <p className="mt-3 text-xl text-gray-500 sm:mt-4">
           This is{' '}
           <Link
