@@ -26,6 +26,11 @@ export const NoteItems = ({ title, items, children }: NoteItemsProps) => {
           </div>
           <div aria-label="preview" className="mx-auto">
             <ul className="divide-y divide-gray-200">
+              {items.map((item) => (
+                <li key={item.href} className="py-4">
+                  <PreviewNote item={item} />
+                </li>
+              ))}
               <li className="py-4">
                 <NonSSRAdSense
                   adFormat="auto"
@@ -35,11 +40,6 @@ export const NoteItems = ({ title, items, children }: NoteItemsProps) => {
                   fullWidthResponsive
                 />
               </li>
-              {items.map((item) => (
-                <li key={item.href} className="py-4">
-                  <PreviewNote item={item} />
-                </li>
-              ))}
             </ul>
           </div>
         </main>

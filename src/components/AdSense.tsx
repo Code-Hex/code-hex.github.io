@@ -31,7 +31,7 @@ const AdSense = ({
     <div key={`${adSlot}-${asPath}`}>
       <ins
         className="adsbygoogle"
-        style={style ?? { display: 'block', textAlign: 'center' }}
+        style={style}
         data-ad-layout={adLayout}
         data-ad-format={adFormat}
         data-ad-client={adClient}
