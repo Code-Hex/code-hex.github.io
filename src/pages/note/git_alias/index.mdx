@@ -7,7 +7,9 @@ export const meta = {
 
 [Gitのおすすめエイリアス5選](https://motemen.hatenablog.com/entry/2022/04/git-aliases)を読んで自分も幾つか晒してみようと思った。
 
-## シンプルなコミットログとグラフを表示する `git l`
+## シンプルなコミットログとグラフを表示する
+
+`git l`
 
 ```
 l = log --graph --decorate --pretty=oneline --abbrev-commit
@@ -21,7 +23,9 @@ l = log --graph --decorate --pretty=oneline --abbrev-commit
 
 {/* more */}
 
-## 人に優しい変更差分を表示する `git dsf`
+## 人に優しい変更差分を表示する
+
+`git dsf`
 
 ```
 dsf = "!f() { [ -z \"$GIT_PREFIX\" ] || cd \"$GIT_PREFIX\" && git diff --color \"$@\" | diff-so-fancy  | less --tabs=4 -RFX; }; f"
@@ -40,7 +44,9 @@ GtHub リポジトリの README でも通常の diff とどう違うのかがス
 
 ![diff-so-fancy を使った差分表示](https://user-images.githubusercontent.com/6500104/173623988-5422be53-6fe0-4dd8-abd1-516957f04313.png)
 
-## コミットメッセージだけ書く `git cm`
+## コミットメッセージだけ書く
+
+`git cm`
 
 ```
 cm = commit -m
@@ -50,7 +56,9 @@ cm = commit -m
 
 コミット作成の背景など詳細を記述したい場合は `git cm 'title' -m 'description'` のように使う。
 
-## ブランチを切り替える `g ck`
+## ブランチを切り替える
+
+`git ck`
 
 ```
 ck = "!f() { [ $# -eq 0 ] && git checkout $(git branch --sort=-authordate | perl -a -nle '$F[0] ne \"*\" and print $F[0]' | fzf --height 40%) || git checkout $@; }; f"
@@ -66,7 +74,9 @@ ck = "!f() { [ $# -eq 0 ] && git checkout $(git branch --sort=-authordate | perl
 
 その前にまず git コマンドの呼び出しを `g` だけで行えるようにしている。
 
-## 直近のコミットから削除したファイルを復元する `git restore`
+## 直近のコミットから削除したファイルを復元する
+
+`git restore`
 
 ```
 restore = "!f() { git checkout \"$(git log --format='%h:%ar' -- \"$@\" | head -n 1 | cut -d: -f 1,1)^\" -- \"$@\"; }; f"
