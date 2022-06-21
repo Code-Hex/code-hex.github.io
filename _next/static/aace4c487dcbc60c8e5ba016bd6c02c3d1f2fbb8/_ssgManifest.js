@@ -1,0 +1,1 @@
+self.__SSG_MANIFEST=new Set(["\u002Fgcp_predefined_roles","\u002Fnote\u002Fgit_alias","\u002Fnote\u002Fgoogle_spf_dkim_dmarc","\u002Fnote\u002Fhello","\u002Fnote\u002Fhello2","\u002Fnote\u002Foneline_sqlite","\u002Fnote\u002Fraci_matrix","\u002Fnote\u002Fy_combinator_in_go_generics","\u002Fnote\u002Ftags\u002F[tag]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()

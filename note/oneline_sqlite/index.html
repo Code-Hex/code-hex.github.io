@@ -1,0 +1,114 @@
+<!DOCTYPE html><html lang="ja"><head><meta charSet="utf-8"/><title>ワンライナーで CSV に対して SQLite クエリを実行する - アルパカの徒然文</title><meta name="description" content="SQLite3 を使ってワンライナーで CSV ファイルに SQL クエリを実行します。"/><link rel="canonical" href="https://codehex.dev/note/oneline_sqlite"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:site" content="@codehex"/><meta property="og:url" content="https://codehex.dev/note/oneline_sqlite"/><meta property="og:title" content="ワンライナーで CSV に対して SQLite クエリを実行する - アルパカの徒然文"/><meta property="og:image" content="https://codehex.dev/assets/images/3f59453ed941d59c918301bd19e9bba9.png"/><meta property="og:description" content="SQLite3 を使ってワンライナーで CSV ファイルに SQL クエリを実行します。"/><meta property="og:type" content="article"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="next-head-count" content="12"/><script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8097329174824434" crossorigin="anonymous"></script><link rel="preload" href="/_next/static/css/1386383271a5d05d.css" as="style"/><link rel="stylesheet" href="/_next/static/css/1386383271a5d05d.css" data-n-g=""/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/_next/static/chunks/polyfills-5cd94c89d3acac5f.js"></script><script src="/_next/static/chunks/webpack-e7f9a8f407d6abab.js" defer=""></script><script src="/_next/static/chunks/framework-bb5c596eafb42b22.js" defer=""></script><script src="/_next/static/chunks/main-5b1095b7dd901b1a.js" defer=""></script><script src="/_next/static/chunks/pages/_app-a21fb48766517705.js" defer=""></script><script src="/_next/static/chunks/186-52595008a9b3875f.js" defer=""></script><script src="/_next/static/chunks/55-818e347ebc0aa2d2.js" defer=""></script><script src="/_next/static/chunks/463-c79017b7d878f8c9.js" defer=""></script><script src="/_next/static/chunks/pages/note/oneline_sqlite-0e3233fb43ba7d99.js" defer=""></script><script src="/_next/static/aace4c487dcbc60c8e5ba016bd6c02c3d1f2fbb8/_buildManifest.js" defer=""></script><script src="/_next/static/aace4c487dcbc60c8e5ba016bd6c02c3d1f2fbb8/_ssgManifest.js" defer=""></script><script src="/_next/static/aace4c487dcbc60c8e5ba016bd6c02c3d1f2fbb8/_middlewareManifest.js" defer=""></script></head><body><div id="__next" data-reactroot=""><main role="main" class="w-full mx-auto max-w-3xl xl:max-w-5xl"><div class="w-full bg-white antialiased"><div class="mx-8 sm:mx-10 md:mx-12 pt-10 pb-16"><div class="pb-2 border-b border-gray-200 mb-10"><h1 class="inline-block text-3xl font-bold text-gray-900 tracking-tight">ワンライナーで CSV に対して SQLite クエリを実行する</h1><div class="text-sm sm:text-base whitespace-nowrap text-gray-500"><div class="sr-only">Published on</div><time dateTime="2022-06-22T00:06:57+09:00">June 21, 2022<!-- --> (<!-- -->39 minutes ago<!-- -->)</time></div><div aria-label="タグ一覧" class="flex flex-wrap gap-2"><a role="link" class="w-max inline-flex rounded-sm bg-blue-100 hover:bg-blue-600 px-2 py-0.5 text-sm" href="/note/tags/SQL/"><span class="font-medium text-blue-700 hover:text-white"># <!-- -->SQL</span></a><a role="link" class="w-max inline-flex rounded-sm bg-blue-100 hover:bg-blue-600 px-2 py-0.5 text-sm" href="/note/tags/SQLite/"><span class="font-medium text-blue-700 hover:text-white"># <!-- -->SQLite</span></a></div></div><article role="article" class="prose sm:prose-sm md:prose-md"><p><a href="https://til.simonwillison.net/sqlite/one-line-csv-operations">One-liner for running queries against CSV files with SQLite</a> という記事で紹介されていた、ワンライナーを使って CSV ファイルに対して SQL クエリを実行する方法。</p>
+<pre><code class="language-bash">$ sqlite3 :memory: -cmd &#x27;.mode csv&#x27; -cmd &#x27;.import taxi.csv taxi&#x27; \
+  &#x27;SELECT passenger_count, COUNT(*), AVG(total_amount) FROM taxi GROUP BY passenger_count&#x27;
+</code></pre>
+<p>ソース元に記述されてる通り、<a href="https://github.com/multiprocessio/dsq/blob/43e72ff1d2c871082fed0ae401dd59e2ff9f6cfe/testdata/taxi.csv.7z">taxi.csv</a> を GitHub からダウンロードして試すことができる。7z で圧縮されていて解凍する必要がある。</p>
+<p>SQLite は通常ストレージディスク（SSD とか）上に保存して利用するのが一般的だが、SQLite 側で用意されている特別なファイル名 <code>:memory:</code> を指定して開くことでデータをインメモリで扱うことができる。これについては SQLite の <a href="https://www.sqlite.org/inmemorydb.html">In-Memory Databases
+</a><sup><a href="#user-content-fn-1" id="user-content-fnref-1" data-footnote-ref="true" aria-describedby="footnote-label">1</a></sup> のページで紹介されている。</p>
+<p>taxi.csv の中身はこんな感じの CSV ファイル。</p>
+<pre><code class="language-csv">VendorID,tpep_pickup_datetime,tpep_dropoff_datetime,passenger_count,trip_distance,RatecodeID,store_and_fwd_flag,PULocationID,DOLocationID,payment_type,fare_amount,extra,mta_tax,tip_amount,tolls_amount,improvement_surcharge,total_amount,congestion_surcharge
+1,2021-04-01 00:00:18,2021-04-01 00:21:54,1,8.40,1,N,79,116,1,25.5,3,0.5,5.85,0,0.3,35.15,2.5
+1,2021-04-01 00:42:37,2021-04-01 00:46:23,1,.90,1,N,75,236,2,5,3,0.5,0,0,0.3,8.8,2.5
+1,2021-04-01 00:57:56,2021-04-01 01:08:22,1,3.40,1,N,236,168,2,11.5,3,0.5,0,0,0.3,15.3,2.5
+1,2021-04-01 00:01:58,2021-04-01 00:54:27,1,.00,1,N,47,61,1,44.2,0,0.5,0,0,0.3,45,0
+</code></pre>
+<p>始めの <code>-cmd &#x27;.mode csv&#x27; -cmd &#x27;.import taxi.csv taxi&#x27;</code> を指定することで <code>taxi</code> というテーブルを作成し、CSV 形式としてファイルの中身をテーブルにインポートするらしい。実際にテーブルスキーマを確認すると <code>taxi</code> テーブルが作成されていることがわかる。</p>
+<pre><code class="language-bash">$ sqlite3 :memory: -cmd &#x27;.mode csv&#x27; -cmd &#x27;.import taxi.csv taxi&#x27; &#x27;.schema taxi&#x27;
+</code></pre>
+<pre><code class="language-sql">CREATE TABLE IF NOT EXISTS &quot;taxi&quot;(
+  &quot;VendorID&quot; TEXT,
+  &quot;tpep_pickup_datetime&quot; TEXT,
+  &quot;tpep_dropoff_datetime&quot; TEXT,
+  &quot;passenger_count&quot; TEXT,
+  &quot;trip_distance&quot; TEXT,
+  &quot;RatecodeID&quot; TEXT,
+  &quot;store_and_fwd_flag&quot; TEXT,
+  &quot;PULocationID&quot; TEXT,
+  &quot;DOLocationID&quot; TEXT,
+  &quot;payment_type&quot; TEXT,
+  &quot;fare_amount&quot; TEXT,
+  &quot;extra&quot; TEXT,
+  &quot;mta_tax&quot; TEXT,
+  &quot;tip_amount&quot; TEXT,
+  &quot;tolls_amount&quot; TEXT,
+  &quot;improvement_surcharge&quot; TEXT,
+  &quot;total_amount&quot; TEXT,
+  &quot;congestion_surcharge&quot; TEXT
+);
+</code></pre>
+<p>ソース記事にも記述されているが、そのまま実行するとカラムの情報が表示されず CSV フォーマットとして結果のみ出力される。</p>
+<pre><code class="language-csv">&quot;&quot;,128020,32.2371511482553
+0,42228,17.0214016766151
+1,1533197,17.6418833067999
+2,286461,18.0975870711456
+3,72852,17.9153958710923
+4,25510,18.452774990196
+5,50291,17.2709248175672
+6,32623,17.6002964166367
+7,2,87.17
+8,2,95.705
+9,1,113.6
+</code></pre>
+<p>上記コマンドに <code>-cmd &#x27;.mode column&#x27;</code> を指定するとカラム名と一緒に SQL の見慣れたフォーマットとして出力される。</p>
+<pre><code class="language-bash">$ sqlite3 :memory: -cmd &#x27;.mode csv&#x27; -cmd &#x27;.import taxi.csv taxi&#x27; -cmd &#x27;.mode column&#x27; \
+  &#x27;SELECT passenger_count, COUNT(*), AVG(total_amount) FROM taxi GROUP BY passenger_count&#x27;
+</code></pre>
+<pre><code>passenger_count  COUNT(*)  AVG(total_amount)
+---------------  --------  -----------------
+                 128020    32.2371511482553
+0                42228     17.0214016766151
+1                1533197   17.6418833067999
+2                286461    18.0975870711456
+3                72852     17.9153958710923
+4                25510     18.452774990196
+5                50291     17.2709248175672
+6                32623     17.6002964166367
+7                2         87.17
+8                2         95.705
+9                1         113.6
+</code></pre>
+<p>また、<code>-cmd &#x27;.mode json&#x27;</code> とすることで JSON 形式で出力することもできる。</p>
+<pre><code class="language-bash">$ sqlite3 :memory: -cmd &#x27;.mode csv&#x27; -cmd &#x27;.import taxi.csv taxi&#x27; -cmd &#x27;.mode json&#x27; \
+  &#x27;SELECT passenger_count, COUNT(*), AVG(total_amount) FROM taxi GROUP BY passenger_count&#x27;
+</code></pre>
+<pre><code>[{&quot;passenger_count&quot;:&quot;&quot;,&quot;COUNT(*)&quot;:128020,&quot;AVG(total_amount)&quot;:32.23715114825532968},
+{&quot;passenger_count&quot;:&quot;0&quot;,&quot;COUNT(*)&quot;:42228,&quot;AVG(total_amount)&quot;:17.021401676615067088},
+{&quot;passenger_count&quot;:&quot;1&quot;,&quot;COUNT(*)&quot;:1533197,&quot;AVG(total_amount)&quot;:17.641883306799908126},
+{&quot;passenger_count&quot;:&quot;2&quot;,&quot;COUNT(*)&quot;:286461,&quot;AVG(total_amount)&quot;:18.097587071145646575},
+{&quot;passenger_count&quot;:&quot;3&quot;,&quot;COUNT(*)&quot;:72852,&quot;AVG(total_amount)&quot;:17.915395871092314905},
+{&quot;passenger_count&quot;:&quot;4&quot;,&quot;COUNT(*)&quot;:25510,&quot;AVG(total_amount)&quot;:18.452774990196012083},
+{&quot;passenger_count&quot;:&quot;5&quot;,&quot;COUNT(*)&quot;:50291,&quot;AVG(total_amount)&quot;:17.270924817567234299},
+{&quot;passenger_count&quot;:&quot;6&quot;,&quot;COUNT(*)&quot;:32623,&quot;AVG(total_amount)&quot;:17.600296416636713736},
+{&quot;passenger_count&quot;:&quot;7&quot;,&quot;COUNT(*)&quot;:2,&quot;AVG(total_amount)&quot;:87.170000000000005258},
+{&quot;passenger_count&quot;:&quot;8&quot;,&quot;COUNT(*)&quot;:2,&quot;AVG(total_amount)&quot;:95.704999999999991189},
+{&quot;passenger_count&quot;:&quot;9&quot;,&quot;COUNT(*)&quot;:1,&quot;AVG(total_amount)&quot;:113.59999999999998987}]
+</code></pre>
+<p>面白い。出力できる mode はこれだけある。markdown フォーマットとしても出力可能とのこと。</p>
+<pre><code class="language-bash">$ sqlite3 -cmd &#x27;.help mode&#x27;
+.mode MODE ?TABLE?       Set output mode
+   MODE is one of:
+     ascii     Columns/rows delimited by 0x1F and 0x1E
+     box       Tables using unicode box-drawing characters
+     csv       Comma-separated values
+     column    Output in columns.  (See .width)
+     html      HTML &lt;table&gt; code
+     insert    SQL insert statements for TABLE
+     json      Results in a JSON array
+     line      One value per line
+     list      Values delimited by &quot;|&quot;
+     markdown  Markdown table format
+     quote     Escape answers as for SQL
+     table     ASCII-art table
+     tabs      Tab-separated values
+     tcl       TCL list elements
+SQLite version 3.36.0 2021-06-18 18:58:49
+Enter &quot;.help&quot; for usage hints.
+</code></pre>
+<!-- -->
+<section data-footnotes="true" class="footnotes"><h2 id="footnote-label" class="sr-only">Footnotes</h2>
+<ol>
+<li id="user-content-fn-1">
+<p>これは <a href="https://www.sqlite.org/vtab.html">virtual table API</a> を利用して実現されているらしい。この API は全文検索でも利用されているっぽい。 <a href="#user-content-fnref-1" data-footnote-backref="true" class="data-footnote-backref" aria-label="Back to content">↩</a></p>
+</li>
+</ol>
+</section></article><div aria-label="SNSで共有する" class="flex space-x-2 mt-8"><a href="https://b.hatena.ne.jp/entry/s/codehex.dev/note/oneline_sqlite" class="w-16 max-h-6 rounded-sm border border-blue-400" target="_blank" rel="noopener noreferrer" role="link" aria-label="Hatena Bookmarkで共有する"><div class="w-full flex justify-between items-center"><span class="bg-blue-400 hover:bg-blue-500 text-white text-sm font-bold py-px px-1">B!</span><span class="w-full text-center text-gray-600 text-sm hover:bg-blue-100 hover:bg-opacity-50">0</span></div></a><a href="https://twitter.com/intent/tweet?text=%E3%83%AF%E3%83%B3%E3%83%A9%E3%82%A4%E3%83%8A%E3%83%BC%E3%81%A7%20CSV%20%E3%81%AB%E5%AF%BE%E3%81%97%E3%81%A6%20SQLite%20%E3%82%AF%E3%82%A8%E3%83%AA%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B&amp;url=https://codehex.dev/note/oneline_sqlite" class="flex items-center w-20 rounded-sm bg-blue-400 hover:bg-blue-500" target="_blank" rel="noopener noreferrer" role="link" aria-label="Twitterで共有する"><div class="px-2 w-full flex justify-between items-center"><svg version="1.1" id="Logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="w-4 h-4" viewBox="0 0 248 204" xml:space="preserve"><g id="Logo_1_"><path id="white_background" fill="#fff" d="M221.95,51.29c0.15,2.17,0.15,4.34,0.15,6.53c0,66.73-50.8,143.69-143.69,143.69v-0.04 C50.97,201.51,24.1,193.65,1,178.83c3.99,0.48,8,0.72,12.02,0.73c22.74,0.02,44.83-7.61,62.72-21.66 c-21.61-0.41-40.56-14.5-47.18-35.07c7.57,1.46,15.37,1.16,22.8-0.87C27.8,117.2,10.85,96.5,10.85,72.46c0-0.22,0-0.43,0-0.64 c7.02,3.91,14.88,6.08,22.92,6.32C11.58,63.31,4.74,33.79,18.14,10.71c25.64,31.55,63.47,50.73,104.08,52.76 c-4.07-17.54,1.49-35.92,14.61-48.25c20.34-19.12,52.33-18.14,71.45,2.19c11.31-2.23,22.15-6.38,32.07-12.26 c-3.77,11.69-11.66,21.62-22.2,27.93c10.01-1.18,19.79-3.86,29-7.95C240.37,35.29,231.83,44.14,221.95,51.29z"></path></g></svg><span class="text-white text-xs font-bold py-px px-1">Tweet</span></div></a></div></div></div></main><footer role="contentinfo" class="w-full mx-auto max-w-3xl xl:max-w-5xl"><div class="text-md font-medium leading-5 divide-y divide-gray-200"><div class="mx-8 sm:mx-10 md:mx-12 pb-24 lg:pb-16"><a role="link" class="text-teal-600 hover:text-teal-700" href="/note/">← Back to the note</a></div></div></footer></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"ogpPath":"/assets/images/3f59453ed941d59c918301bd19e9bba9.png","bookmarkCount":"0"},"__N_SSG":true},"page":"/note/oneline_sqlite","query":{},"buildId":"aace4c487dcbc60c8e5ba016bd6c02c3d1f2fbb8","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>
