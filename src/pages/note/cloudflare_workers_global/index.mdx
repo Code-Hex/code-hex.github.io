@@ -6,7 +6,9 @@ export const meta = {
 }
 
 Cloudflare Workers では **Module Worker Syntax** と **Service Worker Syntax** の２つの記述方式が存在している。
-Service Worker Syntax を利用している場合、環境変数はすべてグローバル変数として利用可能になる。たまにデバッグ目的とかで使える便利な技である。
+Service Worker Syntax を利用している場合、環境変数はすべてグローバル変数として利用可能になる。
+
+この方法はデバッグ目的とかで使える多分便利な技である。
 
 ```ts
 addEventListener('fetch', (event: FetchEvent) => {
