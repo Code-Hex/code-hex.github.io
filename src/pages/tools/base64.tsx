@@ -235,7 +235,7 @@ const DecodeBase64DestText: FC<DecodeBase64DestProps> = ({ source, run }) => {
 };
 
 const DecodeBase64DestImage = (mime: string): FC<DecodeBase64DestProps> => {
-  return ({ source }) => {
+  return function DecodeBase64DestImageComponent({ source }) {
     return (
       <div className="flex flex-col space-y-2">
         <label
@@ -245,7 +245,11 @@ const DecodeBase64DestImage = (mime: string): FC<DecodeBase64DestProps> => {
           Result
         </label>
         <div>
-          <img src={`data:${mime};base64,${source}`} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt="result is displayed as date uri"
+            src={`data:${mime};base64,${source}`}
+          />
         </div>
       </div>
     );
