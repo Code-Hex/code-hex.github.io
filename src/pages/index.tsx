@@ -72,6 +72,10 @@ export default function Home() {
               title: 'GCP Predefined Roles Finder',
             },
             {
+              href: '/tools',
+              title: 'Serverless Tools',
+            },
+            {
               href: '/slack_invitation',
               title: 'Join code-hex workspace on Slack!',
             },
