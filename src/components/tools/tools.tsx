@@ -18,6 +18,43 @@ import {
 import { useClipboard } from "src/hooks/clipboard";
 import { Listbox, RadioGroup, Tab } from "@headlessui/react";
 import Link from "next/link";
+import NextHeadSeo from "next-head-seo";
+import { useRouter } from "next/router";
+
+export const ToolsLogo: FC<{ className: string }> = ({ className }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    fill="none"
+    stroke="url(#grad1)"
+    strokeWidth={2}
+    viewBox="0 0 24 24"
+  >
+    <defs>
+      <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop
+          offset="0%"
+          style={{
+            stopColor: "#9061f9",
+            stopOpacity: 1,
+          }}
+        />
+        <stop
+          offset="100%"
+          style={{
+            stopColor: "#e74694",
+            stopOpacity: 1,
+          }}
+        />
+      </linearGradient>
+    </defs>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M11 15H6l7-14v8h5l-7 14v-8Z"
+    />
+  </svg>
+);
 
 export const ToolsNavigationHeader: FC = () => {
   return (
@@ -25,8 +62,15 @@ export const ToolsNavigationHeader: FC = () => {
       <div className="px-5 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex-1 flex items-center sm:items-stretch sm:justify-start">
-            <div className="flex-shrink-0 flex items-center font-bold text-xl">
-              <Link href="/tools/">Serverless Tools</Link>
+            <div className="flex-shrink-0">
+              <Link href="/tools/">
+                <a className="flex items-center font-bold text-xl space-x-2">
+                  <ToolsLogo className="h-7 w-7" />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-sky-400">
+                    Serverless Tools
+                  </span>
+                </a>
+              </Link>
             </div>
           </div>
           {/* <div className="hidden lg:block">Search</div> */}
@@ -46,7 +90,7 @@ const ToolsPageTitle: FC<{ title: string; subTitle: string }> = (
           {title}
         </h1>
       </div>
-      <h2 className="mt-2 text-lg text-slate-700 dark:text-slate-400">
+      <h2 className="mt-2 text-lg text-slate-400">
         {subTitle}
       </h2>
     </header>
@@ -157,20 +201,37 @@ export const ToolsContentLayout: FC<{
 }> = (
   { title, subTitle, children },
 ) => {
+  const mainTitle = "Serverless Tools";
+  const router = useRouter();
   return (
-    <div className="bg-gray-900 text-slate-200 flex flex-col">
-      <ToolsNavigationHeader />
-      <main className="flex-grow max-w-8xl mb-auto px-4 sm:px-6 md:px-8">
-        <div className="max-w-3xl pt-10 xl:max-w-none xl:ml-0 xl:mr-[15.5rem] xl:pr-16">
-          <ToolsPageTitle
-            title={title}
-            subTitle={subTitle}
-          />
-          {children}
-        </div>
-      </main>
-      <ToolsFooter />
-    </div>
+    <>
+      <NextHeadSeo
+        title={title !== mainTitle ? `${title} - ${mainTitle}` : mainTitle}
+        description={subTitle}
+        canonical={`https://codehex.dev${router.pathname}`}
+        twitter={{
+          card: "summary_large_image",
+          site: "@codehex",
+        }}
+        og={{
+          image: `https://codehex.dev/assets/images/serverless-tools-ogp.png`,
+          type: "website",
+        }}
+      />
+      <div className="bg-gray-900 text-slate-200 flex flex-col">
+        <ToolsNavigationHeader />
+        <main className="flex-grow max-w-8xl mb-auto px-4 sm:px-6 md:px-8">
+          <div className="max-w-3xl pt-10 xl:max-w-none xl:ml-0 xl:mr-[15.5rem] xl:pr-16">
+            <ToolsPageTitle
+              title={title}
+              subTitle={subTitle}
+            />
+            {children}
+          </div>
+        </main>
+        <ToolsFooter />
+      </div>
+    </>
   );
 };
 
