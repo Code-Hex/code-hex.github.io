@@ -397,7 +397,7 @@ const GenerateKeyPage = () => {
   return (
     <ToolsContentLayout
       title={"Private Key & Public Key Generator"}
-      subTitle={"A tool to generate public key and private key pair. Supported Elliptic-curve-based key pair (ECDSA or ECDH) and RSA-based key pair (RSASSA-PKCS1-v1_5, RSA-PSS or RSA-OAEP)."}
+      subTitle={"A tool to generate public key and private key pair. Supported Elliptic-curve-based algorithm and RSA-based algorithm."}
     >
       <div className="mt-4 p-4 bg-slate-800">
         <div className="flex flex-col space-y-4">
