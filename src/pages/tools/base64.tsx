@@ -6,15 +6,12 @@ import {
   encodeBase64Url,
 } from "~/lib/base64";
 import { utf8Decoder, utf8Encoder } from "~/lib/utf8";
-import { Listbox } from "@headlessui/react";
-import {
-  CheckIcon,
-  CloudUploadIcon,
-  SelectorIcon,
-} from "@heroicons/react/solid";
+import { CloudUploadIcon } from "@heroicons/react/solid";
 import { useDropzone } from "react-dropzone";
 import {
   ToolsContentLayout,
+  ToolsLabel,
+  ToolsList,
   ToolsTabs,
   ToolsTextArea,
 } from "~/components/tools/tools";
@@ -85,52 +82,11 @@ const Base64ModeList: FC<{
   setSelected,
 }) => {
   return (
-    <div className="w-56">
-      <Listbox value={selected} onChange={setSelected}>
-        <div className="relative mt-1">
-          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-slate-50 text-gray-900 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 sm:text-sm">
-            <span className="block truncate">{selected.title}</span>
-            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-              <SelectorIcon
-                className="h-5 w-5 text-gray-400"
-                aria-hidden="true"
-              />
-            </span>
-          </Listbox.Button>
-          <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-slate-50 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-20">
-            {base64Mode.map((mode) => (
-              <Listbox.Option
-                key={mode.id}
-                value={mode}
-                className={({ active }) =>
-                  `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                    active ? "bg-sky-100 text-sky-900" : "text-gray-900"
-                  }`}
-              >
-                {({ selected }) => (
-                  <>
-                    <span
-                      className={`block truncate ${
-                        selected ? "font-medium" : "font-normal"
-                      }`}
-                    >
-                      {mode.title}
-                    </span>
-                    {selected
-                      ? (
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-sky-600">
-                          <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                        </span>
-                      )
-                      : null}
-                  </>
-                )}
-              </Listbox.Option>
-            ))}
-          </Listbox.Options>
-        </div>
-      </Listbox>
-    </div>
+    <ToolsList
+      list={base64Mode}
+      selected={selected}
+      setSelected={setSelected}
+    />
   );
 };
 
@@ -143,11 +99,13 @@ const EncodeBase64TextSource: FC<EncodeBase64SourceProps> = (
   { selected, setSource },
 ) => {
   return (
-    <ToolsTextArea
-      label={selected.description}
-      placeholder="Type (or paste) here..."
-      onChange={(e) => setSource(e.target.value)}
-    />
+    <div className="flex flex-col space-y-2">
+      <ToolsLabel label={selected.description} />
+      <ToolsTextArea
+        placeholder="Type (or paste) here..."
+        onChange={(e) => setSource(e.target.value)}
+      />
+    </div>
   );
 };
 
@@ -225,12 +183,14 @@ interface DecodeBase64DestProps {
 
 const DecodeBase64DestText: FC<DecodeBase64DestProps> = ({ source, run }) => {
   return (
-    <ToolsTextArea
-      label={"Result"}
-      placeholder={"Result goes here"}
-      value={run(source)}
-      readOnly
-    />
+    <div className="flex flex-col space-y-2">
+      <ToolsLabel label="Result" />
+      <ToolsTextArea
+        placeholder={"Result goes here"}
+        value={run(source)}
+        readOnly
+      />
+    </div>
   );
 };
 
@@ -313,12 +273,14 @@ const Base64Content: FC<{
 
       {isEncodeMode
         ? (
-          <ToolsTextArea
-            label={"Result"}
-            placeholder={"Result goes here"}
-            value={run(source)}
-            readOnly
-          />
+          <div className="flex flex-col space-y-2">
+            <ToolsLabel label="Result" />
+            <ToolsTextArea
+              placeholder={"Result goes here"}
+              value={run(source)}
+              readOnly
+            />
+          </div>
         )
         : (
           <DecodeBase64DestTabs

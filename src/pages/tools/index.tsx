@@ -9,9 +9,10 @@ const IndexPage = () => {
     >
       <p className="leading-6 mt-4">
         Sensitive information can be{" "}
-        <span className="underline text-pink-500">safely</span>{" "}
-        used as parameters. Because all the tools provided on this site are{" "}
-        <span className="underline text-pink-500">
+        <span className="font-bold underline decoration-pink-500 underline-offset-2 decoration-2">
+          safely used as parameters
+        </span>. Because all the tools provided on this site are{" "}
+        <span className="font-bold underline decoration-pink-500 underline-offset-2 decoration-2">
           processed only on your browser
         </span>.
       </p>
@@ -26,6 +27,10 @@ const IndexPage = () => {
           {
             title: "Base64 encoder & decoder",
             href: "/base64/",
+          },
+          {
+            title: "Private Key & Public Key Generator",
+            href: "/keypair-generator/",
           },
         ].map((v) => (
           <li key={v.title} className="underline">
