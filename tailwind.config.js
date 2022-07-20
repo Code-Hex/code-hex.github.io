@@ -21,7 +21,11 @@ module.exports = {
       'col-resize': 'col-resize',
     },
     fontFamily: {
+      'mono': ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'],
       'noto-sans-jp': ['Noto Sans JP'],
+    },
+    textDecorationColor: {
+      pink: colors.pink,
     },
     colors: {
       transparent: 'transparent',

@@ -11,7 +11,7 @@ import Editor from '@monaco-editor/react';
 import { compileSync, runSync } from '@mdx-js/mdx';
 import { NoteContent } from '~/components/Note';
 import { Pluggable } from 'unified';
-import * as runtime from 'react/jsx-runtime.js';
+import * as runtime from 'react/jsx-runtime';
 import { useLanguageLoader } from '~/monaco/hooks';
 import { SetupEditor } from '~/monaco/monaco';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
