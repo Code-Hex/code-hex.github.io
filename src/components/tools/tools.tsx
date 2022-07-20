@@ -184,19 +184,19 @@ const ToolsFooter = () => {
   );
 };
 
-interface TabCategory<T extends any> {
+interface TabCategory<T> {
   id: string;
   title: string;
   Content: FC<T>;
 }
 
-type ToolsTabProps<T extends any> = {
+type ToolsTabProps<T> = {
   categories: TabCategory<T>[];
   children: (_: TabCategory<T>) => ReactNode;
 };
 
-export const ToolsTabs = <T extends any>(
-  { categories, children }: PropsWithChildren<ToolsTabProps<T>>,
+export const ToolsTabs = (
+  { categories, children }: PropsWithChildren<ToolsTabProps<any>>,
 ) => {
   return (
     <Tab.Group>

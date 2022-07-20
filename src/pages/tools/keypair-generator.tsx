@@ -66,7 +66,7 @@ const exportKeyPair = async (
     isPrivate ? "pkcs8" : "spki",
     key,
   );
-  const b64 = encodeBase64(exported).match(/.{1,64}/g)!.join("\n");
+  const b64 = encodeBase64(exported).match(/.{1,64}/g)?.join("\n");
   const msg = isPrivate ? "PRIVATE KEY" : "PUBLIC KEY";
   return `-----BEGIN ${msg}-----\n${b64}\n-----END ${msg}-----`;
 };
@@ -83,7 +83,7 @@ const generateKeyMode: GenerateKeyMode[] = [
           className="underline"
           href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/sign#rsassa-pkcs1-v1_5"
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
         >
           RSASSA-PKCS1-v1_5
         </a>,{" "}
@@ -91,7 +91,7 @@ const generateKeyMode: GenerateKeyMode[] = [
           className="underline"
           href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/sign#rsa-pss"
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
         >
           RSA-PSS
         </a>, or{" "}
@@ -99,7 +99,7 @@ const generateKeyMode: GenerateKeyMode[] = [
           className="underline"
           href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/encrypt#rsa-oaep"
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
         >
           RSA-OAEP
         </a>.
@@ -117,7 +117,7 @@ const generateKeyMode: GenerateKeyMode[] = [
           className="underline"
           href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/sign#ecdsa"
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
         >
           ECDSA
         </a>{" "}
@@ -126,7 +126,7 @@ const generateKeyMode: GenerateKeyMode[] = [
           className="underline"
           href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/deriveKey#ecdh"
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
         >
           ECDH
         </a>.

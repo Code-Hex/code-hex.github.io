@@ -187,7 +187,7 @@ export const Tweet: VFC<{
 };
 
 // https://about.twitter.com/en/who-we-are/brand-toolkit
-const TwitterLogo: VFC<{}> = () => (
+const TwitterLogo = () => (
   <svg
     version="1.1"
     id="Logo"

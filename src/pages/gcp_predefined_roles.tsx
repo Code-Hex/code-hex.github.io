@@ -37,7 +37,7 @@ type useSearchTuple<T> = [
 function useSearch<T>(
   list: ReadonlyArray<T>,
   options: Fuse.IFuseOptions<T>,
-  debounce: number = 1000
+  debounce = 1000
 ): useSearchTuple<T> {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(list);
@@ -85,6 +85,7 @@ const Loading = () => (
   </svg>
 );
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getStaticProps = async (_: GetStaticPropsContext) => {
   const url =
     'https://gist.githubusercontent.com/Code-Hex/b653ac81786e7117a63b2f13f1f11035/raw/0a33d60c4596b56cd52a27733a4f82645346584a/roles.json';
