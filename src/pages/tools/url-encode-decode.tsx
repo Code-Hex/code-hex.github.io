@@ -1,4 +1,11 @@
-import { FC, useCallback, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   ToolsContentLayout,
   ToolsLabel,
@@ -24,21 +31,23 @@ const UrlEncodeDecodeMode: UrlEncodeDecodeMode[] = [
   },
 ];
 
-const UrlEncodeDecodeContent: FC<{ mode: Mode }> = ({ mode }) => {
-  const [enter, setEnter] = useState("");
-  const run = useCallback((text: string) => {
-    if (mode === "decode") {
-      return decodeURI(text);
-    }
-    return encodeURI(text);
-  }, [mode]);
-  const result = run(enter);
+const UrlEncodeDecodeContent: FC<
+  {
+    mode: Mode;
+    result: string;
+    setResult: Dispatch<SetStateAction<string>>;
+  }
+> = ({ mode, result, setResult }) => {
+  const [enter, setEnter] = useState(result);
+  const run = useMemo(() => mode === "decode" ? decodeURI : encodeURI, [mode]);
+  useEffect(() => setResult(run(enter)), [enter, setResult]);
   return (
     <div className="flex flex-col space-y-8 border-t py-4">
       <div className="flex flex-col space-y-2">
         <ToolsLabel label="Enter text" />
         <ToolsTextArea
           placeholder="Enter text"
+          value={enter}
           onChange={(e) => setEnter(e.target.value)}
         />
       </div>
@@ -56,6 +65,7 @@ const UrlEncodeDecodeContent: FC<{ mode: Mode }> = ({ mode }) => {
 
 const UrlEncodeDecodePage = () => {
   const [selected, setSelected] = useState(UrlEncodeDecodeMode[0]);
+  const [result, setResult] = useState("");
   return (
     <ToolsContentLayout
       title={"URL encoder & decoder"}
@@ -69,7 +79,12 @@ const UrlEncodeDecodePage = () => {
             selected={selected}
             setSelected={setSelected}
           />
-          <UrlEncodeDecodeContent mode={selected.value} />
+          <UrlEncodeDecodeContent
+            key={selected.value}
+            mode={selected.value}
+            result={result}
+            setResult={setResult}
+          />
         </div>
       </div>
     </ToolsContentLayout>

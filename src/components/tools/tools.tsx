@@ -110,7 +110,14 @@ export const ToolsTextArea: FC<
     };
   }
 > = (
-  { placeholder, onChange, value, readOnly, height = "h-40", saveAs },
+  {
+    placeholder,
+    onChange,
+    value,
+    readOnly,
+    height = "h-40",
+    saveAs,
+  },
 ) => {
   const [copyed, setCopied] = useState(false);
   const onCopied = useCallback(() => {
