@@ -9,6 +9,7 @@ import {
 } from "react";
 import { SuspenseReader, useSuspense } from "src/hooks/suspense";
 import {
+  ToolsCard,
   ToolsContentLayout,
   ToolsLabel,
   ToolsList,
@@ -399,7 +400,7 @@ const GenerateKeyPage = () => {
       title={"Private Key & Public Key Generator"}
       subTitle={"A tool to generate public key and private key pair. Supported Elliptic-curve-based algorithm and RSA-based algorithm."}
     >
-      <div className="mt-4 p-4 bg-slate-800">
+      <ToolsCard>
         <div className="flex flex-col space-y-4">
           <div className="flex justify-end">
             <KeyGenerateModeList
@@ -410,7 +411,7 @@ const GenerateKeyPage = () => {
           {/* https://beta.reactjs.org/learn/you-might-not-need-an-effect#resetting-all-state-when-a-prop-changes */}
           <GenerateKeyContent key={selected.id} mode={selected} />
         </div>
-      </div>
+      </ToolsCard>
     </ToolsContentLayout>
   );
 };

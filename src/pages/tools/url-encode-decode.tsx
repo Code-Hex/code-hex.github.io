@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import {
+  ToolsCard,
   ToolsContentLayout,
   ToolsLabel,
   ToolsRadioGroup,
@@ -71,7 +72,7 @@ const UrlEncodeDecodePage = () => {
       title={"URL encoder & decoder"}
       subTitle={"A tool for URL encoding text and vice versa"}
     >
-      <div className="mt-4 p-4 bg-slate-800">
+      <ToolsCard>
         <div className="flex flex-col space-y-4">
           <ToolsRadioGroup
             title="What do you want?"
@@ -86,7 +87,7 @@ const UrlEncodeDecodePage = () => {
             setResult={setResult}
           />
         </div>
-      </div>
+      </ToolsCard>
     </ToolsContentLayout>
   );
 };

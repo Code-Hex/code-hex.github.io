@@ -9,6 +9,7 @@ import { utf8Decoder, utf8Encoder } from "~/lib/utf8";
 import { CloudUploadIcon } from "@heroicons/react/solid";
 import { useDropzone } from "react-dropzone";
 import {
+  ToolsCard,
   ToolsContentLayout,
   ToolsLabel,
   ToolsList,
@@ -306,7 +307,7 @@ const Base64Page = () => {
       title={"Base64 encoder & decoder"}
       subTitle={"A tool for encoding text or binary data like images to base64 and vice versa"}
     >
-      <div className="mt-4 p-4 bg-slate-800">
+      <ToolsCard>
         <div className="flex flex-col space-y-4">
           <div className="flex justify-end">
             <Base64ModeList selected={selected} setSelected={setSelected} />
@@ -314,7 +315,7 @@ const Base64Page = () => {
           {/* https://beta.reactjs.org/learn/you-might-not-need-an-effect#resetting-all-state-when-a-prop-changes */}
           <Base64Content key={selected.id} selected={selected} run={run} />
         </div>
-      </div>
+      </ToolsCard>
     </ToolsContentLayout>
   );
 };

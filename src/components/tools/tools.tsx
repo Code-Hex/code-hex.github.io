@@ -7,6 +7,7 @@ import {
   ReactNode,
   SetStateAction,
   useCallback,
+  useMemo,
   useState,
 } from "react";
 import {
@@ -56,7 +57,9 @@ export const ToolsLogo: FC<{ className: string }> = ({ className }) => (
   </svg>
 );
 
-export const ToolsNavigationHeader: FC = () => {
+export const ToolsNavigationHeader: FC<{ mainTitle: string }> = (
+  { mainTitle },
+) => {
   return (
     <nav className="bg-gray-800 text-sky-400">
       <div className="px-5 lg:px-8">
@@ -67,7 +70,7 @@ export const ToolsNavigationHeader: FC = () => {
                 <a className="flex items-center font-bold text-xl space-x-2">
                   <ToolsLogo className="h-7 w-7" />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-sky-400">
-                    Serverless Tools
+                    {mainTitle}
                   </span>
                 </a>
               </Link>
@@ -84,9 +87,9 @@ const ToolsPageTitle: FC<{ title: string; subTitle: string }> = (
   { title, subTitle },
 ) => {
   return (
-    <header className="relative">
+    <header className="relative mb-4">
       <div className="flex items-center">
-        <h1 className="inline-block text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight dark:text-slate-200">
+        <h1 className="inline-block text-2xl sm:text-3xl font-bold tracking-tight text-slate-200">
           {title}
         </h1>
       </div>
@@ -226,7 +229,7 @@ export const ToolsContentLayout: FC<{
         }}
       />
       <div className="bg-gray-900 text-slate-200 flex flex-col">
-        <ToolsNavigationHeader />
+        <ToolsNavigationHeader mainTitle={mainTitle} />
         <main className="flex-grow max-w-8xl mb-auto px-4 sm:px-6 md:px-8">
           <div className="max-w-3xl pt-10 xl:max-w-none xl:ml-0 xl:mr-[15.5rem] xl:pr-16">
             <ToolsPageTitle
@@ -236,17 +239,37 @@ export const ToolsContentLayout: FC<{
             {children}
           </div>
         </main>
-        <ToolsFooter />
+        <ToolsFooter mainTitle={mainTitle} />
       </div>
     </>
   );
 };
 
-const ToolsFooter = () => {
+const ToolsFooter: FC<{ mainTitle: string }> = ({ mainTitle }) => {
+  const subTitle = "Server-independent web tools powered by Web Standard APIs.";
+  const year = useMemo(() => new Date().getFullYear(), []);
   return (
-    <footer className="bg-gray-800 text-sky-400 mt-6">
-      <div className="px-4 py-6">
-        <Link href="/">Web Tools are developed by @codehex</Link>
+    <footer className="border-t border-slate-600 text-slate-300 mt-6">
+      <div className="px-4 py-6 flex flex-col space-y-2">
+        <div className="flex flex-col space-y-2">
+          <div className="flex items-center font-bold text-xl space-x-2">
+            <ToolsLogo className="h-7 w-7" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-sky-400">
+              {mainTitle}
+            </span>
+          </div>
+          <span className="text-sm">{subTitle}</span>
+        </div>
+        <div className="flex flex-row items-end space-x-2">
+          <span className="text-sm">
+            © {year} {mainTitle}
+          </span>
+          <Link href="/">
+            <span className="underline cursor-[_pointer]">
+              made by @codehex
+            </span>
+          </Link>
+        </div>
       </div>
     </footer>
   );
@@ -429,3 +452,7 @@ export const ToolsButton: FC<{
     </button>
   );
 };
+
+export const ToolsCard: FC<{ children: ReactNode }> = ({ children }) => (
+  <div className="p-4 bg-slate-800 rounded-md">{children}</div>
+);
