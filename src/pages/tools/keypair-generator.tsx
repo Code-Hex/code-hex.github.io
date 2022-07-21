@@ -48,7 +48,7 @@ const generateRSAKeyPair = async (
       ...params,
     },
     true,
-    params.name === "RSA-OAEP" ? ["encrypt", "decrypt"] : ["sign", "verify"],
+    params.name === "RSA-OAEP" ? ["encrypt", "decrypt", "wrapKey", "unwrapKey"] : ["sign", "verify"],
   );
 };
 
