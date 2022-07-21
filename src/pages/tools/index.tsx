@@ -29,6 +29,10 @@ const IndexPage = () => {
             href: "/base64/",
           },
           {
+            title: "URL encoder & decoder",
+            href: "/url-encode-decode/",
+          },
+          {
             title: "Private Key & Public Key Generator",
             href: "/keypair-generator/",
           },
