@@ -1,26 +1,27 @@
 import React, {
   ComponentType,
+  FC,
+  Suspense,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
-import Editor from '@monaco-editor/react';
+import Editor, { useMonaco } from '@monaco-editor/react';
 import { compileSync, runSync } from '@mdx-js/mdx';
 import { NoteContent } from '~/components/Note';
 import { Pluggable } from 'unified';
 import * as runtime from 'react/jsx-runtime';
-import { useLanguageLoader } from '~/monaco/hooks';
 import { SetupEditor } from '~/monaco/monaco';
-import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { SidebarLayout } from '~/components/Resize';
 import remarkPlugins from '~/lib/remarkPlugins';
 import { LoopVideo } from '~/components/MDXVideo';
 import { Information } from '~/components/Feedback';
 import { Metadata } from '~/mdx/config';
 import Prism from 'prismjs';
+import { SuspenseReader, useSuspense } from 'src/hooks/suspense';
+import { MonacoLanguageLoaderResult } from '~/monaco/types';
 
 interface MDXCompileStatus {
   content?: ComponentType;
@@ -49,17 +50,41 @@ const useMDXPreview = (src?: string): MDXCompileStatus => {
 };
 
 const EditorPage = () => {
-  const [value, setValue] = useState<string | undefined>();
-  const markdown = useLanguageLoader('markdown');
-  const [mdxSrc, setMdxSrc] = useState<string | undefined>();
-  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | undefined>();
-  const status = useMDXPreview(mdxSrc);
+  const m = useMonaco();
+  const languageId = 'markdown';
+  const language = m?.languages
+    .getLanguages()
+    .find((lang) => lang.id === languageId);
 
-  useEffect(() => {
-    const editor = editorRef.current;
-    if (!editor) return;
-    // editor.deltaDecorations()
-  }, [editorRef]);
+  if (!language) {
+    return <div>loading...</div>;
+  }
+
+  const loader = useSuspense(
+    (async () => {
+      const loaded = await (language as any).loader();
+      return loaded as MonacoLanguageLoaderResult;
+    })()
+  );
+
+  return (
+    <Suspense fallback={<div>loading...</div>}>
+      <EditorContent languageReader={loader} />
+    </Suspense>
+  );
+};
+
+export default dynamic(() => Promise.resolve(EditorPage), { ssr: false });
+
+interface EditorContentProps {
+  languageReader: SuspenseReader<MonacoLanguageLoaderResult>;
+}
+
+const EditorContent: FC<EditorContentProps> = ({ languageReader }) => {
+  const markdownLanguage = languageReader.read();
+  const [mdxSrc, setMdxSrc] = useState<string | undefined>();
+  const [value, setValue] = useState<string | undefined>();
+  const status = useMDXPreview(mdxSrc);
 
   useEffect(() => {
     if (!value) return;
@@ -70,16 +95,6 @@ const EditorPage = () => {
     return () => clearTimeout(compileWithDelay);
   }, [value]);
 
-  if (markdown.loading) {
-    return <div>loading...</div>;
-  }
-
-  const { loaded: markdownLanguage } = markdown;
-  if (!markdownLanguage) {
-    console.error(`error markdown is loading: ${markdown.error}`);
-    return <div>See console</div>;
-  }
-
   return (
     <div className="w-full h-full fixed">
       <SidebarLayout defaultSidebarWidth={window.innerWidth / 2}>
@@ -88,12 +103,9 @@ const EditorPage = () => {
             defaultValue={getSampleCodeForLanguage()}
             defaultLanguage="mdx"
             theme="monokai"
-            onChange={(value) => setValue(value)}
+            onChange={(v) => setValue(v)}
             beforeMount={(monaco) => SetupEditor(monaco, markdownLanguage)}
-            onMount={(editor) => {
-              editorRef.current = editor;
-              setValue(editor.getValue());
-            }}
+            onMount={(editor) => setValue(editor.getValue())}
             options={{
               minimap: {
                 enabled: true,
@@ -120,8 +132,6 @@ const EditorPage = () => {
     </div>
   );
 };
-
-export default dynamic(() => Promise.resolve(EditorPage), { ssr: false });
 
 function getSampleCodeForLanguage(): string {
   const now = dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ssZ');
