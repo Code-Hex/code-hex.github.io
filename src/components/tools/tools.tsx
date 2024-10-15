@@ -9,18 +9,18 @@ import {
   useCallback,
   useMemo,
   useState,
-} from "react";
+} from 'react';
 import {
   CheckIcon,
   ClipboardCopyIcon,
   DownloadIcon,
   SelectorIcon,
-} from "@heroicons/react/solid";
-import { useClipboard } from "src/hooks/clipboard";
-import { Listbox, RadioGroup, Tab } from "@headlessui/react";
-import Link from "next/link";
-import NextHeadSeo from "next-head-seo";
-import { useRouter } from "next/router";
+} from '@heroicons/react/solid';
+import { useClipboard } from 'src/hooks/clipboard';
+import { Listbox, RadioGroup, Tab } from '@headlessui/react';
+import Link from 'next/link';
+import NextHeadSeo from 'next-head-seo';
+import { useRouter } from 'next/router';
 
 export const ToolsLogo: FC<{ className: string }> = ({ className }) => (
   <svg
@@ -36,14 +36,14 @@ export const ToolsLogo: FC<{ className: string }> = ({ className }) => (
         <stop
           offset="0%"
           style={{
-            stopColor: "#9061f9",
+            stopColor: '#9061f9',
             stopOpacity: 1,
           }}
         />
         <stop
           offset="100%"
           style={{
-            stopColor: "#e74694",
+            stopColor: '#e74694',
             stopOpacity: 1,
           }}
         />
@@ -57,22 +57,23 @@ export const ToolsLogo: FC<{ className: string }> = ({ className }) => (
   </svg>
 );
 
-export const ToolsNavigationHeader: FC<{ mainTitle: string }> = (
-  { mainTitle },
-) => {
+export const ToolsNavigationHeader: FC<{ mainTitle: string }> = ({
+  mainTitle,
+}) => {
   return (
     <nav className="bg-gray-800 text-sky-400">
       <div className="px-5 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex-1 flex items-center sm:items-stretch sm:justify-start">
             <div className="flex-shrink-0">
-              <Link href="/tools/">
-                <a className="flex items-center font-bold text-xl space-x-2">
-                  <ToolsLogo className="h-7 w-7" />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-sky-400">
-                    {mainTitle}
-                  </span>
-                </a>
+              <Link
+                className="flex items-center font-bold text-xl space-x-2"
+                href="/tools/"
+              >
+                <ToolsLogo className="h-7 w-7" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-sky-400">
+                  {mainTitle}
+                </span>
               </Link>
             </div>
           </div>
@@ -83,9 +84,10 @@ export const ToolsNavigationHeader: FC<{ mainTitle: string }> = (
   );
 };
 
-const ToolsPageTitle: FC<{ title: string; subTitle: string }> = (
-  { title, subTitle },
-) => {
+const ToolsPageTitle: FC<{ title: string; subTitle: string }> = ({
+  title,
+  subTitle,
+}) => {
   return (
     <header className="relative mb-4">
       <div className="flex items-center">
@@ -93,35 +95,22 @@ const ToolsPageTitle: FC<{ title: string; subTitle: string }> = (
           {title}
         </h1>
       </div>
-      <h2 className="mt-2 text-lg text-slate-400">
-        {subTitle}
-      </h2>
+      <h2 className="mt-2 text-lg text-slate-400">{subTitle}</h2>
     </header>
   );
 };
 
-export const ToolsTextArea: FC<
-  {
-    placeholder: string;
-    onChange?: ChangeEventHandler<HTMLTextAreaElement>;
-    value?: string;
-    readOnly?: boolean;
-    height?: string;
-    saveAs?: {
-      filename: string;
-      mime?: string;
-    };
-  }
-> = (
-  {
-    placeholder,
-    onChange,
-    value,
-    readOnly,
-    height = "h-40",
-    saveAs,
-  },
-) => {
+export const ToolsTextArea: FC<{
+  placeholder: string;
+  onChange?: ChangeEventHandler<HTMLTextAreaElement>;
+  value?: string;
+  readOnly?: boolean;
+  height?: string;
+  saveAs?: {
+    filename: string;
+    mime?: string;
+  };
+}> = ({ placeholder, onChange, value, readOnly, height = 'h-40', saveAs }) => {
   const [copyed, setCopied] = useState(false);
   const onCopied = useCallback(() => {
     setCopied(true);
@@ -133,13 +122,13 @@ export const ToolsTextArea: FC<
     onCopied,
   });
   const save = useCallback(() => {
-    const blob = new Blob([value ?? ""], {
+    const blob = new Blob([value ?? ''], {
       type: saveAs?.mime,
     });
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     const downloadUrl = URL.createObjectURL(blob);
     a.href = downloadUrl;
-    a.download = saveAs?.filename ?? "";
+    a.download = saveAs?.filename ?? '';
     a.click();
     URL.revokeObjectURL(downloadUrl);
   }, [value, saveAs]);
@@ -154,9 +143,11 @@ export const ToolsTextArea: FC<
                 className="bg-black bg-opacity-0 hover:bg-opacity-90 rounded-md px-2 py-2 text-xs font-medium"
               >
                 <span>
-                  {copyed
-                    ? <CheckIcon className="w-5 h-5 text-green-300" />
-                    : <ClipboardCopyIcon className="w-5 h-5" />}
+                  {copyed ? (
+                    <CheckIcon className="w-5 h-5 text-green-300" />
+                  ) : (
+                    <ClipboardCopyIcon className="w-5 h-5" />
+                  )}
                 </span>
               </button>
               {saveAs && (
@@ -177,8 +168,8 @@ export const ToolsTextArea: FC<
         ref={targetRef}
         className={[
           height,
-          "flex p-2.5 w-full text-sm font-mono rounded-lg bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500",
-        ].join(" ")}
+          'flex p-2.5 w-full text-sm font-mono rounded-lg bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500',
+        ].join(' ')}
         placeholder={placeholder}
         onChange={onChange}
         value={value}
@@ -197,21 +188,15 @@ export const ToolsTextAreaPulseAnimation = () => (
 );
 
 export const ToolsLabel: FC<{ label: string }> = ({ label }) => {
-  return (
-    <label className="text-md font-semibold">
-      {label}
-    </label>
-  );
+  return <label className="text-md font-semibold">{label}</label>;
 };
 
 export const ToolsContentLayout: FC<{
   title: string;
   subTitle: string;
   children: ReactNode;
-}> = (
-  { title, subTitle, children },
-) => {
-  const mainTitle = "Serverless Tools";
+}> = ({ title, subTitle, children }) => {
+  const mainTitle = 'Serverless Tools';
   const router = useRouter();
   return (
     <>
@@ -220,22 +205,19 @@ export const ToolsContentLayout: FC<{
         description={subTitle}
         canonical={`https://codehex.dev${router.pathname}`}
         twitter={{
-          card: "summary_large_image",
-          site: "@codehex",
+          card: 'summary_large_image',
+          site: '@codehex',
         }}
         og={{
           image: `https://codehex.dev/assets/images/serverless-tools-ogp.png`,
-          type: "website",
+          type: 'website',
         }}
       />
       <div className="bg-gray-900 text-slate-200 flex flex-col">
         <ToolsNavigationHeader mainTitle={mainTitle} />
         <main className="flex-grow max-w-8xl mb-auto px-4 sm:px-6 md:px-8">
           <div className="max-w-3xl pt-10 xl:max-w-none xl:ml-0 xl:mr-[15.5rem] xl:pr-16">
-            <ToolsPageTitle
-              title={title}
-              subTitle={subTitle}
-            />
+            <ToolsPageTitle title={title} subTitle={subTitle} />
             {children}
           </div>
         </main>
@@ -246,7 +228,7 @@ export const ToolsContentLayout: FC<{
 };
 
 const ToolsFooter: FC<{ mainTitle: string }> = ({ mainTitle }) => {
-  const subTitle = "Server-independent web tools powered by Web Standard APIs.";
+  const subTitle = 'Server-independent web tools powered by Web Standard APIs.';
   const year = useMemo(() => new Date().getFullYear(), []);
   return (
     <footer className="border-t border-slate-600 text-slate-300 mt-6">
@@ -283,12 +265,13 @@ interface TabCategory<T> {
 
 type ToolsTabProps<T> = {
   categories: TabCategory<T>[];
-  children: (_: TabCategory<T>) => ReactNode;
+  children: ReactNode;
 };
 
-export const ToolsTabs = (
-  { categories, children }: PropsWithChildren<ToolsTabProps<any>>,
-) => {
+export const ToolsTabs = ({
+  categories,
+  children,
+}: PropsWithChildren<ToolsTabProps<any>>) => {
   return (
     <Tab.Group>
       <Tab.List className="flex space-x-1 rounded-xl bg-gray-50/10">
@@ -297,12 +280,13 @@ export const ToolsTabs = (
             key={category.id}
             className={({ selected }) =>
               [
-                "w-full rounded-lg py-2.5 text-sm font-semibold leading-5 text-sky-400",
-                "focus:outline-none focus:ring-2",
+                'w-full rounded-lg py-2.5 text-sm font-semibold leading-5 text-sky-400',
+                'focus:outline-none focus:ring-2',
                 selected
-                  ? "border border-sky-400"
-                  : "text-blue-100 hover:bg-white/[0.12] hover:text-white",
-              ].join(" ")}
+                  ? 'border border-sky-400'
+                  : 'text-blue-100 hover:bg-white/[0.12] hover:text-white',
+              ].join(' ')
+            }
           >
             {category.title}
           </Tab>
@@ -310,9 +294,7 @@ export const ToolsTabs = (
       </Tab.List>
       <Tab.Panels className="mt-8">
         {categories.map((category) => (
-          <Tab.Panel key={`${category.id}-panel`}>
-            {children(category)}
-          </Tab.Panel>
+          <Tab.Panel key={`${category.id}-panel`}>{children}</Tab.Panel>
         ))}
       </Tab.Panels>
     </Tab.Group>
@@ -352,25 +334,24 @@ export const ToolsList = <T extends ToolsListItem>({
                 value={item}
                 className={({ active }) =>
                   `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                    active ? "bg-sky-100 text-sky-900" : "text-gray-900"
-                  }`}
+                    active ? 'bg-sky-100 text-sky-900' : 'text-gray-900'
+                  }`
+                }
               >
                 {({ selected }) => (
                   <>
                     <span
                       className={`block truncate ${
-                        selected ? "font-medium" : "font-normal"
+                        selected ? 'font-medium' : 'font-normal'
                       }`}
                     >
                       {item.title}
                     </span>
-                    {selected
-                      ? (
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-sky-600">
-                          <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                        </span>
-                      )
-                      : null}
+                    {selected ? (
+                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-sky-600">
+                        <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                      </span>
+                    ) : null}
                   </>
                 )}
               </Listbox.Option>
@@ -412,19 +393,18 @@ export const ToolsRadioGroup = <T extends ToolsRadioGroupItem>({
             value={item}
             className={({ checked }) =>
               [
-                "cursor-[_pointer]",
-                "w-full justify-between flex items-center rounded-lg px-4 py-2.5 text-sm font-semibold leading-5 text-sky-400",
-                "focus:outline-none focus:ring-2",
+                'cursor-[_pointer]',
+                'w-full justify-between flex items-center rounded-lg px-4 py-2.5 text-sm font-semibold leading-5 text-sky-400',
+                'focus:outline-none focus:ring-2',
                 checked
-                  ? "border border-sky-400"
-                  : "text-blue-100 hover:bg-white/[0.12] hover:text-white",
-              ].join(" ")}
+                  ? 'border border-sky-400'
+                  : 'text-blue-100 hover:bg-white/[0.12] hover:text-white',
+              ].join(' ')
+            }
           >
             {({ checked }) => (
               <>
-                <span>
-                  {item.label}
-                </span>
+                <span>{item.label}</span>
                 {checked && (
                   <div className="shrink-0">
                     <CheckIcon className="h-4 w-4" />

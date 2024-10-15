@@ -1,13 +1,13 @@
-import { Dispatch, FC, SetStateAction, useCallback, useState } from "react";
+import { Dispatch, FC, SetStateAction, useCallback, useState } from 'react';
 import {
   decodeBase64,
   decodeBase64Url,
   encodeBase64,
   encodeBase64Url,
-} from "~/lib/base64";
-import { utf8Decoder, utf8Encoder } from "~/lib/utf8";
-import { CloudUploadIcon } from "@heroicons/react/solid";
-import { useDropzone } from "react-dropzone";
+} from '~/lib/base64';
+import { utf8Decoder, utf8Encoder } from '~/lib/utf8';
+import { CloudUploadIcon } from '@heroicons/react/solid';
+import { useDropzone } from 'react-dropzone';
 import {
   ToolsCard,
   ToolsContentLayout,
@@ -15,10 +15,10 @@ import {
   ToolsList,
   ToolsTabs,
   ToolsTextArea,
-} from "~/components/tools/tools";
+} from '~/components/tools/tools';
 
 interface Base64Mode {
-  id: "encode" | "decode" | "url_encode" | "url_decode";
+  id: 'encode' | 'decode' | 'url_encode' | 'url_decode';
   title: string;
   description: string;
   run: (s: string | ArrayBuffer) => string;
@@ -26,9 +26,9 @@ interface Base64Mode {
 
 const base64Mode: ReadonlyArray<Base64Mode> = [
   {
-    id: "encode",
-    title: "Base64 encode",
-    description: "Encode a UTF-8 text to Base64 as you type or paste",
+    id: 'encode',
+    title: 'Base64 encode',
+    description: 'Encode a UTF-8 text to Base64 as you type or paste',
     run: (s) => {
       if (s instanceof ArrayBuffer) {
         return encodeBase64(s);
@@ -38,21 +38,21 @@ const base64Mode: ReadonlyArray<Base64Mode> = [
     },
   },
   {
-    id: "decode",
-    title: "Base64 decode",
-    description: "Decode a Base64 to UTF-8 text as you type or paste",
+    id: 'decode',
+    title: 'Base64 decode',
+    description: 'Decode a Base64 to UTF-8 text as you type or paste',
     run: (s) => {
       if (s instanceof ArrayBuffer) {
-        throw new Error("unexpected array buffer in decode");
+        throw new Error('unexpected array buffer in decode');
       }
       const decoded = decodeBase64(s);
       return utf8Decoder.decode(decoded);
     },
   },
   {
-    id: "url_encode",
-    title: "Base64 URL encode",
-    description: "Encode a UTF-8 text to Base64 URL as you type or paste",
+    id: 'url_encode',
+    title: 'Base64 URL encode',
+    description: 'Encode a UTF-8 text to Base64 URL as you type or paste',
     run: (s) => {
       if (s instanceof ArrayBuffer) {
         return encodeBase64Url(s);
@@ -62,12 +62,12 @@ const base64Mode: ReadonlyArray<Base64Mode> = [
     },
   },
   {
-    id: "url_decode",
-    title: "Base64 URL decode",
-    description: "Decode a Base64 URL to UTF-8 text as you type or paste",
+    id: 'url_decode',
+    title: 'Base64 URL decode',
+    description: 'Decode a Base64 URL to UTF-8 text as you type or paste',
     run: (s) => {
       if (s instanceof ArrayBuffer) {
-        throw new Error("unexpected array buffer in decode");
+        throw new Error('unexpected array buffer in decode');
       }
       const decoded = decodeBase64Url(s);
       return utf8Decoder.decode(decoded);
@@ -78,10 +78,7 @@ const base64Mode: ReadonlyArray<Base64Mode> = [
 const Base64ModeList: FC<{
   selected: Base64Mode;
   setSelected: Dispatch<SetStateAction<Base64Mode>>;
-}> = ({
-  selected,
-  setSelected,
-}) => {
+}> = ({ selected, setSelected }) => {
   return (
     <ToolsList
       list={base64Mode}
@@ -96,9 +93,10 @@ interface EncodeBase64SourceProps {
   setSource: Dispatch<SetStateAction<string | ArrayBuffer>>;
 }
 
-const EncodeBase64TextSource: FC<EncodeBase64SourceProps> = (
-  { selected, setSource },
-) => {
+const EncodeBase64TextSource: FC<EncodeBase64SourceProps> = ({
+  selected,
+  setSource,
+}) => {
   return (
     <div className="flex flex-col space-y-2">
       <ToolsLabel label={selected.description} />
@@ -110,19 +108,19 @@ const EncodeBase64TextSource: FC<EncodeBase64SourceProps> = (
   );
 };
 
-const EncodeBase64UploadedSource: FC<EncodeBase64SourceProps> = (
-  { setSource },
-) => {
+const EncodeBase64UploadedSource: FC<EncodeBase64SourceProps> = ({
+  setSource,
+}) => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length === 0) {
-      throw new Error("accept only PNG, JPG or GIF images.");
+      throw new Error('accept only PNG, JPG or GIF images.');
     }
     acceptedFiles[0].arrayBuffer().then((buf) => setSource(buf));
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      "image/*": [".png", ".gif", ".jpeg", ".jpg"],
+      'image/*': ['.png', '.gif', '.jpeg', '.jpg'],
     },
     onError: (err: Error) => alert(err),
   });
@@ -138,13 +136,11 @@ const EncodeBase64UploadedSource: FC<EncodeBase64SourceProps> = (
           <p className="mb-2 text-sm">
             <span className="font-semibold">
               {isDragActive
-                ? "Drop the files here ..."
-                : "Click to upload or drag and drop"}
+                ? 'Drop the files here ...'
+                : 'Click to upload or drag and drop'}
             </span>
           </p>
-          <p className="text-xs">
-            PNG, JPG or GIF
-          </p>
+          <p className="text-xs">PNG, JPG or GIF</p>
         </div>
         <input {...getInputProps()} />
       </label>
@@ -154,25 +150,26 @@ const EncodeBase64UploadedSource: FC<EncodeBase64SourceProps> = (
 
 const sourceCategories = [
   {
-    id: "text",
-    title: "UTF-8 Text",
+    id: 'text',
+    title: 'UTF-8 Text',
     Content: EncodeBase64TextSource,
   },
   {
-    id: "file",
-    title: "File Upload",
+    id: 'file',
+    title: 'File Upload',
     Content: EncodeBase64UploadedSource,
   },
 ];
 
-const EncodeBase64SourceTabs: FC<EncodeBase64SourceProps> = (
-  { selected, setSource },
-) => {
+const EncodeBase64SourceTabs: FC<EncodeBase64SourceProps> = ({
+  selected,
+  setSource,
+}) => {
   return (
     <ToolsTabs categories={sourceCategories}>
-      {(category) => (
-        <category.Content selected={selected} setSource={setSource} />
-      )}
+      {sourceCategories.map((v) => (
+        <v.Content key={v.id} selected={selected} setSource={setSource} />
+      ))}
     </ToolsTabs>
   );
 };
@@ -187,7 +184,7 @@ const DecodeBase64DestText: FC<DecodeBase64DestProps> = ({ source, run }) => {
     <div className="flex flex-col space-y-2">
       <ToolsLabel label="Result" />
       <ToolsTextArea
-        placeholder={"Result goes here"}
+        placeholder={'Result goes here'}
         value={run(source)}
         readOnly
       />
@@ -199,10 +196,7 @@ const DecodeBase64DestImage = (mime: string): FC<DecodeBase64DestProps> => {
   return function DecodeBase64DestImageComponent({ source }) {
     return (
       <div className="flex flex-col space-y-2">
-        <label
-          htmlFor="message"
-          className="text-md font-semibold"
-        >
+        <label htmlFor="message" className="text-md font-semibold">
           Result
         </label>
         <div>
@@ -219,33 +213,33 @@ const DecodeBase64DestImage = (mime: string): FC<DecodeBase64DestProps> => {
 
 const destCategories = [
   {
-    id: "text",
-    title: "UTF-8",
+    id: 'text',
+    title: 'UTF-8',
     Content: DecodeBase64DestText,
   },
   {
-    id: "jpg",
-    title: "JPG",
-    Content: DecodeBase64DestImage("image/jpeg"),
+    id: 'jpg',
+    title: 'JPG',
+    Content: DecodeBase64DestImage('image/jpeg'),
   },
   {
-    id: "png",
-    title: "PNG",
-    Content: DecodeBase64DestImage("image/png"),
+    id: 'png',
+    title: 'PNG',
+    Content: DecodeBase64DestImage('image/png'),
   },
   {
-    id: "gif",
-    title: "GIF",
-    Content: DecodeBase64DestImage("image/gif"),
+    id: 'gif',
+    title: 'GIF',
+    Content: DecodeBase64DestImage('image/gif'),
   },
 ];
 
-const DecodeBase64DestTabs: FC<DecodeBase64DestProps> = (
-  { source, run },
-) => {
+const DecodeBase64DestTabs: FC<DecodeBase64DestProps> = ({ source, run }) => {
   return (
     <ToolsTabs categories={destCategories}>
-      {(category) => <category.Content source={source} run={run} />}
+      {destCategories.map((v) => (
+        <v.Content key={v.id} source={source} run={run} />
+      ))}
     </ToolsTabs>
   );
 };
@@ -254,58 +248,50 @@ const Base64Content: FC<{
   selected: Base64Mode;
   run: (src: string | ArrayBuffer) => string;
 }> = ({ selected, run }) => {
-  const [source, setSource] = useState<string | ArrayBuffer>("");
-  const isEncodeMode = selected.id.includes("encode");
+  const [source, setSource] = useState<string | ArrayBuffer>('');
+  const isEncodeMode = selected.id.includes('encode');
   return (
     <>
-      {isEncodeMode
-        ? (
-          <EncodeBase64SourceTabs
-            selected={selected}
-            setSource={setSource}
-          />
-        )
-        : (
-          <EncodeBase64TextSource
-            selected={selected}
-            setSource={setSource}
-          />
-        )}
+      {isEncodeMode ? (
+        <EncodeBase64SourceTabs selected={selected} setSource={setSource} />
+      ) : (
+        <EncodeBase64TextSource selected={selected} setSource={setSource} />
+      )}
 
-      {isEncodeMode
-        ? (
-          <div className="flex flex-col space-y-2">
-            <ToolsLabel label="Result" />
-            <ToolsTextArea
-              placeholder={"Result goes here"}
-              value={run(source)}
-              readOnly
-            />
-          </div>
-        )
-        : (
-          <DecodeBase64DestTabs
-            source={source}
-            run={run}
+      {isEncodeMode ? (
+        <div className="flex flex-col space-y-2">
+          <ToolsLabel label="Result" />
+          <ToolsTextArea
+            placeholder={'Result goes here'}
+            value={run(source)}
+            readOnly
           />
-        )}
+        </div>
+      ) : (
+        <DecodeBase64DestTabs source={source} run={run} />
+      )}
     </>
   );
 };
 
 const Base64Page = () => {
   const [selected, setSelected] = useState(base64Mode[0]);
-  const run = useCallback((src: string | ArrayBuffer) => {
-    try {
-      return selected.run(src);
-    } catch (err) {
-      return `error has caught: ${err}`;
-    }
-  }, [selected]);
+  const run = useCallback(
+    (src: string | ArrayBuffer) => {
+      try {
+        return selected.run(src);
+      } catch (err) {
+        return `error has caught: ${err}`;
+      }
+    },
+    [selected]
+  );
   return (
     <ToolsContentLayout
-      title={"Base64 encoder & decoder"}
-      subTitle={"A tool for encoding text or binary data like images to base64 and vice versa"}
+      title={'Base64 encoder & decoder'}
+      subTitle={
+        'A tool for encoding text or binary data like images to base64 and vice versa'
+      }
     >
       <ToolsCard>
         <div className="flex flex-col space-y-4">

@@ -1,4 +1,4 @@
-import dynamic from "next/dynamic";
+import dynamic from 'next/dynamic';
 import {
   Dispatch,
   FC,
@@ -6,8 +6,8 @@ import {
   SetStateAction,
   Suspense,
   useState,
-} from "react";
-import { SuspenseReader, useSuspense } from "src/hooks/suspense";
+} from 'react';
+import { SuspenseReader, wrap4Suspense } from 'src/hooks/suspense';
 import {
   ToolsCard,
   ToolsContentLayout,
@@ -17,8 +17,8 @@ import {
   ToolsRadioGroupItem,
   ToolsTextArea,
   ToolsTextAreaPulseAnimation,
-} from "~/components/tools/tools";
-import { encodeBase64 } from "~/lib/base64";
+} from '~/components/tools/tools';
+import { encodeBase64 } from '~/lib/base64';
 
 interface GenerateKeyMode {
   id: string;
@@ -26,19 +26,17 @@ interface GenerateKeyMode {
   description: ReactChild;
 }
 
-const generateECKeyPair = async (
-  params: EcKeyGenParams,
-) => {
+const generateECKeyPair = async (params: EcKeyGenParams) => {
   return await crypto.subtle.generateKey(
     params,
     true,
-    params.name === "ECDSA" ? ["sign", "verify"] : ["deriveKey", "deriveBits"],
+    params.name === 'ECDSA' ? ['sign', 'verify'] : ['deriveKey', 'deriveBits']
   );
 };
 
 // https://developer.mozilla.org/en-US/docs/Web/API/RsaHashedKeyGenParams#properties
 const generateRSAKeyPair = async (
-  params: Omit<RsaHashedKeyGenParams, "publicExponent" | "modulusLength">,
+  params: Omit<RsaHashedKeyGenParams, 'publicExponent' | 'modulusLength'>
 ) => {
   return await crypto.subtle.generateKey(
     {
@@ -49,37 +47,41 @@ const generateRSAKeyPair = async (
       ...params,
     },
     true,
-    params.name === "RSA-OAEP" ? ["encrypt", "decrypt", "wrapKey", "unwrapKey"] : ["sign", "verify"],
+    params.name === 'RSA-OAEP'
+      ? ['encrypt', 'decrypt', 'wrapKey', 'unwrapKey']
+      : ['sign', 'verify']
   );
 };
 
 const exportKeyPair = async (
-  format: "jwk" | "pem",
+  format: 'jwk' | 'pem',
   key: CryptoKey,
-  isPrivate: boolean,
+  isPrivate: boolean
 ): Promise<string> => {
-  if (format === "jwk") {
+  if (format === 'jwk') {
     const exported = await crypto.subtle.exportKey(format, key);
     return JSON.stringify(exported);
   }
   // pem
   const exported = await crypto.subtle.exportKey(
-    isPrivate ? "pkcs8" : "spki",
-    key,
+    isPrivate ? 'pkcs8' : 'spki',
+    key
   );
-  const b64 = encodeBase64(exported).match(/.{1,64}/g)?.join("\n");
-  const msg = isPrivate ? "PRIVATE KEY" : "PUBLIC KEY";
+  const b64 = encodeBase64(exported)
+    .match(/.{1,64}/g)
+    ?.join('\n');
+  const msg = isPrivate ? 'PRIVATE KEY' : 'PUBLIC KEY';
   return `-----BEGIN ${msg}-----\n${b64}\n-----END ${msg}-----`;
 };
 
 const generateKeyMode: GenerateKeyMode[] = [
   {
-    id: "RSA-based",
-    title: "RSA",
+    id: 'RSA-based',
+    title: 'RSA',
     description: (
       <>
         Generating any RSA-based key pair: that is, when the algorithm is
-        identified as any of{" "}
+        identified as any of{' '}
         <a
           className="underline"
           href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/sign#rsassa-pkcs1-v1_5"
@@ -87,7 +89,8 @@ const generateKeyMode: GenerateKeyMode[] = [
           rel="noopener noreferrer"
         >
           RSASSA-PKCS1-v1_5
-        </a>,{" "}
+        </a>
+        ,{' '}
         <a
           className="underline"
           href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/sign#rsa-pss"
@@ -95,7 +98,8 @@ const generateKeyMode: GenerateKeyMode[] = [
           rel="noopener noreferrer"
         >
           RSA-PSS
-        </a>, or{" "}
+        </a>
+        , or{' '}
         <a
           className="underline"
           href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/encrypt#rsa-oaep"
@@ -103,17 +107,18 @@ const generateKeyMode: GenerateKeyMode[] = [
           rel="noopener noreferrer"
         >
           RSA-OAEP
-        </a>.
+        </a>
+        .
       </>
     ),
   },
   {
-    id: "elliptic-curve-based",
-    title: "Elliptic-curve",
+    id: 'elliptic-curve-based',
+    title: 'Elliptic-curve',
     description: (
       <>
         Generating any elliptic-curve-based key pair: that is, when the
-        algorithm is identified as either of{" "}
+        algorithm is identified as either of{' '}
         <a
           className="underline"
           href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/sign#ecdsa"
@@ -121,8 +126,8 @@ const generateKeyMode: GenerateKeyMode[] = [
           rel="noopener noreferrer"
         >
           ECDSA
-        </a>{" "}
-        or{" "}
+        </a>{' '}
+        or{' '}
         <a
           className="underline"
           href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/deriveKey#ecdh"
@@ -130,7 +135,8 @@ const generateKeyMode: GenerateKeyMode[] = [
           rel="noopener noreferrer"
         >
           ECDH
-        </a>.
+        </a>
+        .
       </>
     ),
   },
@@ -139,10 +145,7 @@ const generateKeyMode: GenerateKeyMode[] = [
 const KeyGenerateModeList: FC<{
   selected: GenerateKeyMode;
   setSelected: Dispatch<SetStateAction<GenerateKeyMode>>;
-}> = ({
-  selected,
-  setSelected,
-}) => {
+}> = ({ selected, setSelected }) => {
   return (
     <ToolsList
       list={generateKeyMode}
@@ -152,38 +155,38 @@ const KeyGenerateModeList: FC<{
   );
 };
 
-const RSAAlgorithms = ["RSASSA-PKCS1-v1_5", "RSA-PSS", "RSA-OAEP"].map((v) => ({
+const RSAAlgorithms = ['RSASSA-PKCS1-v1_5', 'RSA-PSS', 'RSA-OAEP'].map((v) => ({
   label: v,
   value: v,
 }));
 
-const HashAlgorithms = ["SHA-1", "SHA-256", "SHA-384", "SHA-512"].map((v) => ({
+const HashAlgorithms = ['SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'].map((v) => ({
   label: v,
   value: v,
 }));
 
-const EcAlgorithms = ["ECDSA", "ECDH"].map((v) => ({
+const EcAlgorithms = ['ECDSA', 'ECDH'].map((v) => ({
   label: v,
   value: v,
 }));
 
-const EllipticCurves = ["P-256", "P-384", "P-521"].map((v) => ({
+const EllipticCurves = ['P-256', 'P-384', 'P-521'].map((v) => ({
   label: v,
   value: v,
 }));
 
 interface ExportFormat extends ToolsRadioGroupItem {
   label: string;
-  value: "pem" | "jwk";
+  value: 'pem' | 'jwk';
 }
 const ExportFormats: ExportFormat[] = [
   {
-    label: "PEM",
-    value: "pem",
+    label: 'PEM',
+    value: 'pem',
   },
   {
-    label: "JSON Web Key",
-    value: "jwk",
+    label: 'JSON Web Key',
+    value: 'jwk',
   },
 ];
 
@@ -195,12 +198,9 @@ interface KeyResultProps {
   exportFormat: ExportFormat;
 }
 
-const KeyResult: FC<KeyResultProps> = ({
-  keyPairExporter,
-  exportFormat,
-}) => {
+const KeyResult: FC<KeyResultProps> = ({ keyPairExporter, exportFormat }) => {
   const keyPair = keyPairExporter.read();
-  const ext = exportFormat.value === "jwk" ? "json" : exportFormat.value;
+  const ext = exportFormat.value === 'jwk' ? 'json' : exportFormat.value;
   return (
     <div className="flex flex-col space-y-8 border-t py-4">
       <div className="flex flex-col space-y-2">
@@ -231,20 +231,22 @@ const KeyResult: FC<KeyResultProps> = ({
 
 const GenerateRSAKeyContent = () => {
   const [algorithm, setAlgorithm] = useState<ToolsRadioGroupItem>(
-    RSAAlgorithms[0],
+    RSAAlgorithms[0]
   );
   const [hashAlgorithm, setHashAlgorithm] = useState<ToolsRadioGroupItem>(
-    HashAlgorithms[1],
+    HashAlgorithms[1]
   );
 
   const [exportFormat, setExportFormat] = useState<ExportFormat>(
-    ExportFormats[0],
+    ExportFormats[0]
   );
 
-  const keyPairReader = useSuspense(generateRSAKeyPair({
-    name: algorithm.value,
-    hash: hashAlgorithm.value,
-  }));
+  const keyPairReader = wrap4Suspense(
+    generateRSAKeyPair({
+      name: algorithm.value,
+      hash: hashAlgorithm.value,
+    })
+  );
 
   return (
     <div className="flex flex-col space-y-6">
@@ -284,26 +286,19 @@ interface ExportKeyResultProps {
   exportFormat: ExportFormat;
 }
 
-const _ExportKeyResult: FC<ExportKeyResultProps> = (
-  { keyPairReader, exportFormat },
-) => {
+const _ExportKeyResult: FC<ExportKeyResultProps> = ({
+  keyPairReader,
+  exportFormat,
+}) => {
   const keyPair = keyPairReader.read();
   const _keyPairExporter = Promise.all([
-    exportKeyPair(
-      exportFormat.value,
-      keyPair.privateKey,
-      true,
-    ),
-    exportKeyPair(
-      exportFormat.value,
-      keyPair.publicKey,
-      false,
-    ),
+    exportKeyPair(exportFormat.value, keyPair.privateKey, true),
+    exportKeyPair(exportFormat.value, keyPair.publicKey, false),
   ]).then(([privateKey, publicKey]) => ({
     privateKey,
     publicKey,
   }));
-  const keyPairExporter = useSuspense(_keyPairExporter);
+  const keyPairExporter = wrap4Suspense(_keyPairExporter);
 
   return (
     <Suspense fallback={<LoadingKeyResult />}>
@@ -336,19 +331,21 @@ const LoadingKeyResult = () => {
 
 const GenerateEcKeyContent = () => {
   const [algorithm, setAlgorithm] = useState<ToolsRadioGroupItem>(
-    EcAlgorithms[0],
+    EcAlgorithms[0]
   );
   const [ellipticCurve, setEllipticCurve] = useState<ToolsRadioGroupItem>(
-    EllipticCurves[0],
+    EllipticCurves[0]
   );
   const [exportFormat, setExportFormat] = useState<ExportFormat>(
-    ExportFormats[0],
+    ExportFormats[0]
   );
 
-  const keyPairReader = useSuspense(generateECKeyPair({
-    name: algorithm.value,
-    namedCurve: ellipticCurve.value,
-  }));
+  const keyPairReader = wrap4Suspense(
+    generateECKeyPair({
+      name: algorithm.value,
+      namedCurve: ellipticCurve.value,
+    })
+  );
 
   return (
     <div className="flex flex-col space-y-6">
@@ -387,8 +384,8 @@ const GenerateKeyContent: FC<{ mode: GenerateKeyMode }> = ({ mode }) => {
   return (
     <div key={mode.id} className="flex flex-col space-y-4">
       <div>{mode.description}</div>
-      {mode.id === "RSA-based" && <GenerateRSAKeyContent />}
-      {mode.id === "elliptic-curve-based" && <GenerateEcKeyContent />}
+      {mode.id === 'RSA-based' && <GenerateRSAKeyContent />}
+      {mode.id === 'elliptic-curve-based' && <GenerateEcKeyContent />}
     </div>
   );
 };
@@ -397,8 +394,10 @@ const GenerateKeyPage = () => {
   const [selected, setSelected] = useState(generateKeyMode[0]);
   return (
     <ToolsContentLayout
-      title={"Private Key & Public Key Generator"}
-      subTitle={"A tool to generate public key and private key pair. Supported Elliptic-curve-based algorithm and RSA-based algorithm."}
+      title={'Private Key & Public Key Generator'}
+      subTitle={
+        'A tool to generate public key and private key pair. Supported Elliptic-curve-based algorithm and RSA-based algorithm.'
+      }
     >
       <ToolsCard>
         <div className="flex flex-col space-y-4">
