@@ -44,8 +44,8 @@ export default function Home() {
             </>,
             <>
               Blog:{' '}
-              <BlankLink href={'https://codehex.hateblo.jp/'}>
-                codehex.hateblo.jp
+              <BlankLink href={'https://blog.codehex.dev/'}>
+                blog.codehex.dev
               </BlankLink>
             </>,
           ].map((v, i) => (
