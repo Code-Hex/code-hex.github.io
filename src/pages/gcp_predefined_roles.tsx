@@ -8,7 +8,7 @@ import {
   useEffect,
   useMemo,
   useState,
-  VFC,
+  FC,
 } from 'react';
 import Fuse from 'fuse.js';
 
@@ -31,13 +31,13 @@ type GCPRole = {
 type useSearchTuple<T> = [
   ReadonlyArray<T>,
   boolean,
-  Dispatch<SetStateAction<string>>
+  Dispatch<SetStateAction<string>>,
 ];
 
 function useSearch<T>(
   list: ReadonlyArray<T>,
   options: Fuse.IFuseOptions<T>,
-  debounce = 1000
+  debounce = 1000,
 ): useSearchTuple<T> {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(list);
@@ -57,7 +57,7 @@ function useSearch<T>(
       setResult(result.map((v) => v.item));
     }, debounce);
     return () => clearTimeout(compileWithDelay);
-  }, [query, fuseList, setLoading, setResult]);
+  }, [query, fuseList, list, debounce]);
 
   return [result, loading, setQuery];
 }
@@ -123,7 +123,7 @@ const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
       ],
       threshold: 0.2,
     }),
-    []
+    [],
   );
   const [result, loading, setQuery] = useSearch(roles, options);
 
@@ -168,7 +168,7 @@ const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
 
 export default GCPRolesPage;
 
-const Filter: VFC<{
+const Filter: FC<{
   setQuery: Dispatch<SetStateAction<string>>;
   currentLocale: locale;
   setCurrentLocale: Dispatch<SetStateAction<locale>>;
@@ -218,7 +218,7 @@ const FilterTitle = () => (
   </a>
 );
 
-const FilterSelect: VFC<{
+const FilterSelect: FC<{
   currentLocale: locale;
   setCurrentLocale: Dispatch<SetStateAction<locale>>;
 }> = ({ currentLocale, setCurrentLocale }) => (
@@ -291,7 +291,7 @@ const GCPRoleRow = memo(
         </td>
       </tr>
     );
-  }
+  },
 );
 
 // eslint-disable-next-line react/display-name
@@ -304,5 +304,5 @@ const GCPRolePermissions = memo(
         })}
       </ul>
     );
-  }
+  },
 );

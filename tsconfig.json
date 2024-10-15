@@ -21,15 +21,10 @@
     "paths": {
       "~/components/*": ["src/components/*"],
       "~/layouts/*": ["src/layouts/*"],
-      "~/monaco/*": ["src/monaco/*"],
-      "~/mdx/*": ["src/mdx/*"],
       "~/lib/*": ["src/lib/*"]
-    }
+    },
+    "incremental": true
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

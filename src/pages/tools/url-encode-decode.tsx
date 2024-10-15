@@ -5,7 +5,7 @@ import {
   useEffect,
   useMemo,
   useState,
-} from "react";
+} from 'react';
 import {
   ToolsCard,
   ToolsContentLayout,
@@ -13,9 +13,9 @@ import {
   ToolsRadioGroup,
   ToolsRadioGroupItem,
   ToolsTextArea,
-} from "~/components/tools/tools";
+} from '~/components/tools/tools';
 
-type Mode = "encode" | "decode";
+type Mode = 'encode' | 'decode';
 
 interface UrlEncodeDecodeMode extends ToolsRadioGroupItem {
   value: Mode;
@@ -23,25 +23,26 @@ interface UrlEncodeDecodeMode extends ToolsRadioGroupItem {
 
 const UrlEncodeDecodeMode: UrlEncodeDecodeMode[] = [
   {
-    label: "URL Encode",
-    value: "encode",
+    label: 'URL Encode',
+    value: 'encode',
   },
   {
-    label: "URL Decode",
-    value: "decode",
+    label: 'URL Decode',
+    value: 'decode',
   },
 ];
 
-const UrlEncodeDecodeContent: FC<
-  {
-    mode: Mode;
-    result: string;
-    setResult: Dispatch<SetStateAction<string>>;
-  }
-> = ({ mode, result, setResult }) => {
+const UrlEncodeDecodeContent: FC<{
+  mode: Mode;
+  result: string;
+  setResult: Dispatch<SetStateAction<string>>;
+}> = ({ mode, result, setResult }) => {
   const [enter, setEnter] = useState(result);
-  const run = useMemo(() => mode === "decode" ? decodeURI : encodeURI, [mode]);
-  useEffect(() => setResult(run(enter)), [enter, setResult]);
+  const run = useMemo(
+    () => (mode === 'decode' ? decodeURI : encodeURI),
+    [mode],
+  );
+  useEffect(() => setResult(run(enter)), [enter, setResult, run]);
   return (
     <div className="flex flex-col space-y-8 border-t py-4">
       <div className="flex flex-col space-y-2">
@@ -54,11 +55,7 @@ const UrlEncodeDecodeContent: FC<
       </div>
       <div className="flex flex-col space-y-2">
         <ToolsLabel label="Result" />
-        <ToolsTextArea
-          placeholder="Result goes here"
-          value={result}
-          readOnly
-        />
+        <ToolsTextArea placeholder="Result goes here" value={result} readOnly />
       </div>
     </div>
   );
@@ -66,11 +63,11 @@ const UrlEncodeDecodeContent: FC<
 
 const UrlEncodeDecodePage = () => {
   const [selected, setSelected] = useState(UrlEncodeDecodeMode[0]);
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState('');
   return (
     <ToolsContentLayout
-      title={"URL encoder & decoder"}
-      subTitle={"A tool for URL encoding text and vice versa"}
+      title={'URL encoder & decoder'}
+      subTitle={'A tool for URL encoding text and vice versa'}
     >
       <ToolsCard>
         <div className="flex flex-col space-y-4">

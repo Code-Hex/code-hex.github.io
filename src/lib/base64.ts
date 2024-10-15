@@ -1,16 +1,16 @@
 export const decodeBase64Url = (str: string): Uint8Array => {
   return decodeBase64(
-    str.replace(/_|-/g, (m) => ({ _: "/", "-": "+" }[m] ?? m)),
+    str.replace(/_|-/g, (m) => ({ _: '/', '-': '+' })[m] ?? m),
   );
 };
 
 export const encodeBase64Url = (buf: ArrayBufferLike): string =>
-  encodeBase64(buf).replace(/\/|\+/g, (m) => ({ "/": "_", "+": "-" }[m] ?? m));
+  encodeBase64(buf).replace(/\/|\+/g, (m) => ({ '/': '_', '+': '-' })[m] ?? m);
 
 // This approach is written in MDN.
 // btoa does not support utf-8 characters. So we need a little bit hack.
 export const encodeBase64 = (buf: ArrayBufferLike): string => {
-  let binary = "";
+  let binary = '';
   const bytes = new Uint8Array(buf);
   for (let i = 0; i < bytes.byteLength; i++) {
     binary += String.fromCharCode(bytes[i]);

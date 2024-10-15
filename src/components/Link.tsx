@@ -1,5 +1,5 @@
 import NextLink from 'next/link';
-import { useCallback, ReactNode, VFC } from 'react';
+import { useCallback, ReactNode, FC } from 'react';
 import { event } from '~/lib/gtag';
 
 interface LinkProps {
@@ -17,22 +17,21 @@ const Link = ({ children, href, className, ariaLabel, gaLabel }: LinkProps) => {
       category: 'homepage',
       label: gaLabel,
     });
-  }, [event, gaLabel]);
+  }, [gaLabel]);
   return (
-    <NextLink href={href}>
-      <a
-        role="link"
-        className={className}
-        aria-label={ariaLabel}
-        onClick={gaClickEvent}
-      >
-        {children}
-      </a>
+    <NextLink
+      role="link"
+      className={className}
+      aria-label={ariaLabel}
+      onClick={gaClickEvent}
+      href={href}
+    >
+      {children}
     </NextLink>
   );
 };
 
-export const BlankLink: VFC<{
+export const BlankLink: FC<{
   children: ReactNode;
   href: string;
   className?: string;
