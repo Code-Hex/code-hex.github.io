@@ -38,9 +38,10 @@ const UrlEncodeDecodeContent: FC<{
   setResult: Dispatch<SetStateAction<string>>;
 }> = ({ mode, result, setResult }) => {
   const [enter, setEnter] = useState(result);
-  const run = useMemo(() => (mode === 'decode' ? decodeURI : encodeURI), [
-    mode,
-  ]);
+  const run = useMemo(
+    () => (mode === 'decode' ? decodeURI : encodeURI),
+    [mode],
+  );
   useEffect(() => setResult(run(enter)), [enter, setResult, run]);
   return (
     <div className="flex flex-col space-y-8 border-t py-4">

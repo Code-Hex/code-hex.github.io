@@ -147,7 +147,9 @@ export default function SlackInvitation() {
           appearence: none;
           -webkit-appearence: none;
           outline: 0;
-          transition: background-color 150ms ease-in, color 150ms ease-in;
+          transition:
+            background-color 150ms ease-in,
+            color 150ms ease-in;
         }
 
         button.loading {

@@ -118,7 +118,7 @@ const EncodeBase64UploadedSource: FC<EncodeBase64SourceProps> = ({
       }
       acceptedFiles[0].arrayBuffer().then((buf) => setSource(buf));
     },
-    [setSource]
+    [setSource],
   );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -287,7 +287,7 @@ const Base64Page = () => {
         return `error has caught: ${err}`;
       }
     },
-    [selected]
+    [selected],
   );
   return (
     <ToolsContentLayout

@@ -30,13 +30,13 @@ const generateECKeyPair = async (params: EcKeyGenParams) => {
   return await crypto.subtle.generateKey(
     params,
     true,
-    params.name === 'ECDSA' ? ['sign', 'verify'] : ['deriveKey', 'deriveBits']
+    params.name === 'ECDSA' ? ['sign', 'verify'] : ['deriveKey', 'deriveBits'],
   );
 };
 
 // https://developer.mozilla.org/en-US/docs/Web/API/RsaHashedKeyGenParams#properties
 const generateRSAKeyPair = async (
-  params: Omit<RsaHashedKeyGenParams, 'publicExponent' | 'modulusLength'>
+  params: Omit<RsaHashedKeyGenParams, 'publicExponent' | 'modulusLength'>,
 ) => {
   return await crypto.subtle.generateKey(
     {
@@ -49,14 +49,14 @@ const generateRSAKeyPair = async (
     true,
     params.name === 'RSA-OAEP'
       ? ['encrypt', 'decrypt', 'wrapKey', 'unwrapKey']
-      : ['sign', 'verify']
+      : ['sign', 'verify'],
   );
 };
 
 const exportKeyPair = async (
   format: 'jwk' | 'pem',
   key: CryptoKey,
-  isPrivate: boolean
+  isPrivate: boolean,
 ): Promise<string> => {
   if (format === 'jwk') {
     const exported = await crypto.subtle.exportKey(format, key);
@@ -65,7 +65,7 @@ const exportKeyPair = async (
   // pem
   const exported = await crypto.subtle.exportKey(
     isPrivate ? 'pkcs8' : 'spki',
-    key
+    key,
   );
   const b64 = encodeBase64(exported)
     .match(/.{1,64}/g)
@@ -231,21 +231,21 @@ const KeyResult: FC<KeyResultProps> = ({ keyPairExporter, exportFormat }) => {
 
 const GenerateRSAKeyContent = () => {
   const [algorithm, setAlgorithm] = useState<ToolsRadioGroupItem>(
-    RSAAlgorithms[0]
+    RSAAlgorithms[0],
   );
   const [hashAlgorithm, setHashAlgorithm] = useState<ToolsRadioGroupItem>(
-    HashAlgorithms[1]
+    HashAlgorithms[1],
   );
 
   const [exportFormat, setExportFormat] = useState<ExportFormat>(
-    ExportFormats[0]
+    ExportFormats[0],
   );
 
   const keyPairReader = wrap4Suspense(
     generateRSAKeyPair({
       name: algorithm.value,
       hash: hashAlgorithm.value,
-    })
+    }),
   );
 
   return (
@@ -331,20 +331,20 @@ const LoadingKeyResult = () => {
 
 const GenerateEcKeyContent = () => {
   const [algorithm, setAlgorithm] = useState<ToolsRadioGroupItem>(
-    EcAlgorithms[0]
+    EcAlgorithms[0],
   );
   const [ellipticCurve, setEllipticCurve] = useState<ToolsRadioGroupItem>(
-    EllipticCurves[0]
+    EllipticCurves[0],
   );
   const [exportFormat, setExportFormat] = useState<ExportFormat>(
-    ExportFormats[0]
+    ExportFormats[0],
   );
 
   const keyPairReader = wrap4Suspense(
     generateECKeyPair({
       name: algorithm.value,
       namedCurve: ellipticCurve.value,
-    })
+    }),
   );
 
   return (

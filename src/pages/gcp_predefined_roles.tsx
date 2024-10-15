@@ -31,13 +31,13 @@ type GCPRole = {
 type useSearchTuple<T> = [
   ReadonlyArray<T>,
   boolean,
-  Dispatch<SetStateAction<string>>
+  Dispatch<SetStateAction<string>>,
 ];
 
 function useSearch<T>(
   list: ReadonlyArray<T>,
   options: Fuse.IFuseOptions<T>,
-  debounce = 1000
+  debounce = 1000,
 ): useSearchTuple<T> {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(list);
@@ -123,7 +123,7 @@ const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
       ],
       threshold: 0.2,
     }),
-    []
+    [],
   );
   const [result, loading, setQuery] = useSearch(roles, options);
 
@@ -291,7 +291,7 @@ const GCPRoleRow = memo(
         </td>
       </tr>
     );
-  }
+  },
 );
 
 // eslint-disable-next-line react/display-name
@@ -304,5 +304,5 @@ const GCPRolePermissions = memo(
         })}
       </ul>
     );
-  }
+  },
 );

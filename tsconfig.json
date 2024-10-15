@@ -6,11 +6,7 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "lib": [
-      "dom",
-      "esnext",
-      "webworker"
-    ],
+    "lib": ["dom", "esnext", "webworker"],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
@@ -23,30 +19,12 @@
     "target": "esnext",
     "baseUrl": ".",
     "paths": {
-      "~/components/*": [
-        "src/components/*"
-      ],
-      "~/layouts/*": [
-        "src/layouts/*"
-      ],
-      "~/monaco/*": [
-        "src/monaco/*"
-      ],
-      "~/mdx/*": [
-        "src/mdx/*"
-      ],
-      "~/lib/*": [
-        "src/lib/*"
-      ]
+      "~/components/*": ["src/components/*"],
+      "~/layouts/*": ["src/layouts/*"],
+      "~/lib/*": ["src/lib/*"]
     },
     "incremental": true
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

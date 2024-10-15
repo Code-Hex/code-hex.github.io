@@ -3,7 +3,7 @@ export interface SuspenseReader<T extends any> {
 }
 
 const wrapPromise = <T extends unknown>(
-  promise: Promise<T>
+  promise: Promise<T>,
 ): SuspenseReader<T> => {
   let status = 'pending';
   let result: T;
@@ -16,7 +16,7 @@ const wrapPromise = <T extends unknown>(
     (e) => {
       status = 'rejected';
       result = e;
-    }
+    },
   );
 
   const read = (): T => {

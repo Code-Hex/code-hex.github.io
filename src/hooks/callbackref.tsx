@@ -2,7 +2,7 @@ import { useCallback, useRef } from 'react';
 
 // https://github.com/facebook/react/issues/15176#issuecomment-512740882
 export function useCallbackRef<T extends (...args: any[]) => any>(
-  rawCallback: T
+  rawCallback: T,
 ) {
   const cleanupRef = useRef<T | null>(null);
   const callback = useCallback(
@@ -16,7 +16,7 @@ export function useCallbackRef<T extends (...args: any[]) => any>(
         cleanupRef.current = rawCallback(node);
       }
     },
-    [rawCallback]
+    [rawCallback],
   );
 
   return callback;

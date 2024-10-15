@@ -1,49 +1,49 @@
-import { useRouter } from "next/router"
-import { useEffect } from "react"
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
-export const gaId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ''
+export const gaId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || '';
 
 export type Event = {
-  action: string
-  category: string
-  label?: Record<string, string | number | boolean>
-  value?: string
-}
+  action: string;
+  category: string;
+  label?: Record<string, string | number | boolean>;
+  value?: string;
+};
 
 // PVを測定する
 export const pageview = (path: string) => {
   window.gtag('config', gaId, {
     page_path: path,
-  })
-}
+  });
+};
 
 // GAイベントを発火させる
-export const event = ({action, category, label}: Event) => {
+export const event = ({ action, category, label }: Event) => {
   if (gaId === '') {
-    return
+    return;
   }
   window.gtag('event', action, {
     event_category: category,
     event_label: label ? JSON.stringify(label) : undefined,
-  })
-}
+  });
+};
 
 // _app.tsx で読み込む
 export const usePageView = () => {
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     if (gaId === '') {
-      return
+      return;
     }
 
     const handleRouteChange = (path: string) => {
-      pageview(path)
-    }
+      pageview(path);
+    };
 
-    router.events.on('routeChangeComplete', handleRouteChange)
+    router.events.on('routeChangeComplete', handleRouteChange);
     return () => {
-      router.events.off('routeChangeComplete', handleRouteChange)
-    }
-  }, [router.events])
-}
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
+};
