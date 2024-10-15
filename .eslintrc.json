@@ -1,6 +1,4 @@
 {
-  "extends": ["next/core-web-vitals"],
-  "plugins": [
-    "@typescript-eslint"
-  ]
+  "extends": ["next", "prettier"],
+  "plugins": ["@typescript-eslint"]
 }
