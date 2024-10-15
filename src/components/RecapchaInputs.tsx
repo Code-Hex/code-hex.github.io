@@ -70,7 +70,7 @@ const RecapchaInputs: FC<Props> = (props: Props) => {
       document.body.removeChild(script);
       document.body.removeChild(widget);
     };
-  }, []);
+  }, [props.formID]);
 
   return props.children({
     isReady: isReady,

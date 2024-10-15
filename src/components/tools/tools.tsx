@@ -17,7 +17,15 @@ import {
   SelectorIcon,
 } from '@heroicons/react/solid';
 import { useClipboard } from 'src/hooks/clipboard';
-import { Listbox, RadioGroup, Tab } from '@headlessui/react';
+import {
+  Listbox,
+  RadioGroup,
+  Tab,
+  TabGroup,
+  TabList,
+  TabPanel,
+  TabPanels,
+} from '@headlessui/react';
 import Link from 'next/link';
 import NextHeadSeo from 'next-head-seo';
 import { useRouter } from 'next/router';
@@ -265,16 +273,13 @@ interface TabCategory<T> {
 
 type ToolsTabProps<T> = {
   categories: TabCategory<T>[];
-  children: ReactNode;
+  render: (_: TabCategory<T>) => JSX.Element;
 };
 
-export const ToolsTabs = ({
-  categories,
-  children,
-}: PropsWithChildren<ToolsTabProps<any>>) => {
+export const ToolsTabs = <T,>({ categories, render }: ToolsTabProps<T>) => {
   return (
-    <Tab.Group>
-      <Tab.List className="flex space-x-1 rounded-xl bg-gray-50/10">
+    <TabGroup>
+      <TabList className="flex space-x-1 rounded-xl bg-gray-50/10">
         {categories.map((category) => (
           <Tab
             key={category.id}
@@ -291,13 +296,13 @@ export const ToolsTabs = ({
             {category.title}
           </Tab>
         ))}
-      </Tab.List>
-      <Tab.Panels className="mt-8">
+      </TabList>
+      <TabPanels className="mt-8">
         {categories.map((category) => (
-          <Tab.Panel key={`${category.id}-panel`}>{children}</Tab.Panel>
+          <TabPanel key={`${category.id}-panel`}>{render(category)}</TabPanel>
         ))}
-      </Tab.Panels>
-    </Tab.Group>
+      </TabPanels>
+    </TabGroup>
   );
 };
 

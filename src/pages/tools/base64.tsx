@@ -111,12 +111,15 @@ const EncodeBase64TextSource: FC<EncodeBase64SourceProps> = ({
 const EncodeBase64UploadedSource: FC<EncodeBase64SourceProps> = ({
   setSource,
 }) => {
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles.length === 0) {
-      throw new Error('accept only PNG, JPG or GIF images.');
-    }
-    acceptedFiles[0].arrayBuffer().then((buf) => setSource(buf));
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (acceptedFiles.length === 0) {
+        throw new Error('accept only PNG, JPG or GIF images.');
+      }
+      acceptedFiles[0].arrayBuffer().then((buf) => setSource(buf));
+    },
+    [setSource]
+  );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
@@ -166,11 +169,12 @@ const EncodeBase64SourceTabs: FC<EncodeBase64SourceProps> = ({
   setSource,
 }) => {
   return (
-    <ToolsTabs categories={sourceCategories}>
-      {sourceCategories.map((v) => (
-        <v.Content key={v.id} selected={selected} setSource={setSource} />
-      ))}
-    </ToolsTabs>
+    <ToolsTabs
+      categories={sourceCategories}
+      render={(category) => (
+        <category.Content selected={selected} setSource={setSource} />
+      )}
+    />
   );
 };
 
@@ -236,11 +240,10 @@ const destCategories = [
 
 const DecodeBase64DestTabs: FC<DecodeBase64DestProps> = ({ source, run }) => {
   return (
-    <ToolsTabs categories={destCategories}>
-      {destCategories.map((v) => (
-        <v.Content key={v.id} source={source} run={run} />
-      ))}
-    </ToolsTabs>
+    <ToolsTabs
+      categories={destCategories}
+      render={(category) => <category.Content source={source} run={run} />}
+    />
   );
 };
 

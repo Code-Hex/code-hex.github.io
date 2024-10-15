@@ -8,7 +8,7 @@ import {
   useEffect,
   useMemo,
   useState,
-  VFC,
+  FC,
 } from 'react';
 import Fuse from 'fuse.js';
 
@@ -57,7 +57,7 @@ function useSearch<T>(
       setResult(result.map((v) => v.item));
     }, debounce);
     return () => clearTimeout(compileWithDelay);
-  }, [query, fuseList, setLoading, setResult]);
+  }, [query, fuseList, list, debounce]);
 
   return [result, loading, setQuery];
 }
@@ -168,7 +168,7 @@ const GCPRolesPage: NextPage<Props> = ({ jsonPayload }) => {
 
 export default GCPRolesPage;
 
-const Filter: VFC<{
+const Filter: FC<{
   setQuery: Dispatch<SetStateAction<string>>;
   currentLocale: locale;
   setCurrentLocale: Dispatch<SetStateAction<locale>>;
@@ -218,7 +218,7 @@ const FilterTitle = () => (
   </a>
 );
 
-const FilterSelect: VFC<{
+const FilterSelect: FC<{
   currentLocale: locale;
   setCurrentLocale: Dispatch<SetStateAction<locale>>;
 }> = ({ currentLocale, setCurrentLocale }) => (

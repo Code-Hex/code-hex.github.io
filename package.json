@@ -12,7 +12,7 @@
     "lint-fix": "next lint --fix"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.19",
+    "@headlessui/react": "^2.1.10",
     "@heroicons/react": "^1.0.6",
     "clipboard": "^2.0.11",
     "fuse.js": "^6.5.3",
