@@ -17,7 +17,7 @@
     "clipboard": "^2.0.11",
     "fuse.js": "^6.5.3",
     "idb-keyval": "^5.1.3",
-    "next": "^14.2.15",
+    "next": "^14.2.22",
     "next-build-id": "^3.0.0",
     "next-head-seo": "^0.1.3",
     "next-sitemap": "^4.2.3",
